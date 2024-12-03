@@ -10,9 +10,13 @@ body {
 }
 
 body::-webkit-scrollbar {
-  width: 0.1em;
+  width: 0.5em;
 }
 
 body::-webkit-scrollbar-thumb {
-  background-color: #4b5563;
+  @apply bg-gray-500 rounded-sm
+}
+
+body::-webkit-scrollbar-track {
+  @apply bg-white
 }
