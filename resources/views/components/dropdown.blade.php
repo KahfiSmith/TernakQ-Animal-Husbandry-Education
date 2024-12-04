@@ -1,43 +1,44 @@
-@props(['align' => 'right', 'width' => '48', 'contentClasses' => 'py-1 bg-white'])
+<ul class="flex flex-row space-x-7 text-base font-medium">
+    @foreach ($items as $item)
+        @if (isset($item['dropdown']))
+            <!-- Dropdown item -->
+            <li class="relative group">
+                <a href="javascript:void(0)" onclick="toggleDropdown(this)" class="inline-flex items-center">
+                    {{ $item['name'] }}
+                    <!-- Menambahkan icon di kanan -->
+                    <x-heroicon-o-chevron-down class="ml-2 w-4 h-4 text-gray-700 chevron-icon transition-transform duration-300 ease-in-out" />
+                </a>
+                <ul class="absolute left-0 mt-2 bg-white shadow-lg rounded-md w-48 hidden ring-2 ring-gray-700 transition-all duration-300 ease-in-out">
+                    @foreach ($item['dropdown'] as $dropdownItem)
+                        <li class="px-4 py-2 hover:bg-gray-200 rounded-md">
+                            <a href="{{ $dropdownItem['url'] }}">{{ $dropdownItem['name'] }}</a>
+                        </li>
+                    @endforeach
+                </ul>
+            </li>
+        @else
+            <!-- Regular item -->
+            <li><a href="{{ $item['url'] }}" id="{{ strtolower($item['name']) }}">{{ $item['name'] }}</a></li>
+        @endif
+    @endforeach
+</ul>
 
-@php
-switch ($align) {
-    case 'left':
-        $alignmentClasses = 'ltr:origin-top-left rtl:origin-top-right start-0';
-        break;
-    case 'top':
-        $alignmentClasses = 'origin-top';
-        break;
-    case 'right':
-    default:
-        $alignmentClasses = 'ltr:origin-top-right rtl:origin-top-left end-0';
-        break;
-}
+<!-- JavaScript untuk menangani klik dan toggle dropdown -->
+<script>
+    function toggleDropdown(element) {
+        const dropdown = element.closest('li').querySelector('ul');
+        const icon = element.querySelector('.chevron-icon');
 
-switch ($width) {
-    case '48':
-        $width = 'w-48';
-        break;
-}
-@endphp
-
-<div class="relative" x-data="{ open: false }" @click.outside="open = false" @close.stop="open = false">
-    <div @click="open = ! open">
-        {{ $trigger }}
-    </div>
-
-    <div x-show="open"
-            x-transition:enter="transition ease-out duration-200"
-            x-transition:enter-start="opacity-0 scale-95"
-            x-transition:enter-end="opacity-100 scale-100"
-            x-transition:leave="transition ease-in duration-75"
-            x-transition:leave-start="opacity-100 scale-100"
-            x-transition:leave-end="opacity-0 scale-95"
-            class="absolute z-50 mt-2 {{ $width }} rounded-md shadow-lg {{ $alignmentClasses }}"
-            style="display: none;"
-            @click="open = false">
-        <div class="rounded-md ring-1 ring-black ring-opacity-5 {{ $contentClasses }}">
-            {{ $content }}
-        </div>
-    </div>
-</div>
+        if (dropdown) {
+            // Menyembunyikan atau menampilkan dropdown dengan transisi
+            dropdown.classList.toggle('hidden');
+            
+            // Ganti ikon berdasarkan kondisi dropdown
+            if (dropdown.classList.contains('hidden')) {
+                icon.setAttribute('class', 'ml-2 w-4 h-4 text-gray-700 chevron-icon transition-transform duration-300 ease-in-out');  // Chevron-down
+            } else {
+                icon.setAttribute('class', 'ml-2 w-4 h-4 text-gray-700 chevron-icon -rotate-180 transition-transform duration-300 ease-in-out');  // Chevron-up
+            }
+        }
+    }
+</script>
