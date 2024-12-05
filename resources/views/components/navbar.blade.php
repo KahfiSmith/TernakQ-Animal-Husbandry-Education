@@ -11,7 +11,7 @@
                 [
                     'name' => 'Informasi',
                     'dropdown' => [
-                        ['name' => 'Tentang Kita', 'url' => '#tentang'],
+                        ['name' => 'Tentang Kita', 'url' => '#tentang-kita'],
                         ['name' => 'FAQ', 'url' => '#faq'],
                     ],
                 ],
@@ -19,13 +19,13 @@
         </ul>
         <div class="flex items-center space-x-6">
             <a href="{{ route('login') }}" wire:navigate>
-                <x-primary-button class="ring-2 ring-gray-700 bg-transparent hover:bg-pewterBlue">Masuk
+                <x-primary-button class="ring-2 ring-gray-700 hover:bg-pewterBlue bg-transparent">Masuk
                 </x-primary-button>
             </a>
             <div class="h-7 border-l-2 border-gray-700"></div>
             <a href="{{ route('register') }}" wire:navigate>
                 <x-primary-button
-                    class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] text-white hover:shadow-[2px_2px_0px_2px_#374151] hover:translate-y-0.5 hover:translate-x-0.5">
+                    class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] text-white hover:shadow-[2px_2px_0px_2px_#374151] hover:translate-y-0.5 hover:translate-x-0.5 bg-orangeCrayola">
                     Daftar
                 </x-primary-button>
             </a>

@@ -15,7 +15,7 @@ export default {
             },
             colors: {
                 cosmicLatte: "#FFF9E9",
-                orange: "#F97930",
+                orangeCrayola: "#F97930",
                 maize: "#FFC942",
                 pewterBlue: "#8BBDB2",
                 vodka: "#C3BBFC",
