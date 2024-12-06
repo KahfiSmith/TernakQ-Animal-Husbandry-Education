@@ -7,7 +7,7 @@
             <x-dropdown :items="[
                 ['name' => 'Beranda', 'url' => '#beranda'],
                 ['name' => 'Artikel', 'url' => '#artikel'],
-                ['name' => 'Forums', 'url' => '#forums'],
+                ['name' => 'Forum', 'url' => '#forum'],
                 [
                     'name' => 'Informasi',
                     'dropdown' => [

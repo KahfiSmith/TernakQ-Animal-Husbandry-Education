@@ -19,6 +19,7 @@ export default {
                 maize: "#FFC942",
                 pewterBlue: "#8BBDB2",
                 vodka: "#C3BBFC",
+                congoPink: "#F98080",
             },
         },
     },

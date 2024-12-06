@@ -4,8 +4,66 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7acf050f1b79f5ca7679f1b5f59b47a4",
+    "content-hash": "b3342502e2ad20547d4a6e37ebfc5c1e",
     "packages": [
+        {
+            "name": "andreiio/blade-remix-icon",
+            "version": "3.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/andreiio/blade-remix-icon.git",
+                "reference": "5a9acf4888fbdf95f56c426fbd492ef0a2f8a1cc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/andreiio/blade-remix-icon/zipball/5a9acf4888fbdf95f56c426fbd492ef0a2f8a1cc",
+                "reference": "5a9acf4888fbdf95f56c426fbd492ef0a2f8a1cc",
+                "shasum": ""
+            },
+            "require": {
+                "blade-ui-kit/blade-icons": "^1.0",
+                "php": "^7.4|^8.0|^8.1"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^6.0|^7.0|^8.0",
+                "phpunit/phpunit": "^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "AndreiIonita\\BladeRemixIcon\\BladeRemixIconServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "AndreiIonita\\BladeRemixIcon\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andrei Ioniță",
+                    "homepage": "https://andrei.io"
+                }
+            ],
+            "description": "A package to easily make use of Remix Icon in your Laravel Blade views.",
+            "support": {
+                "issues": "https://github.com/andreiio/blade-remix-icon/issues",
+                "source": "https://github.com/andreiio/blade-remix-icon/tree/3.5.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/code4romania",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-10-29T14:31:44+00:00"
+        },
         {
             "name": "blade-ui-kit/blade-heroicons",
             "version": "2.5.0",
@@ -286,17 +344,17 @@
             "time": "2023-12-11T17:09:12+00:00"
         },
         {
-            "name": "codeat3/blade-phosphor-icons",
-            "version": "2.2.0",
+            "name": "codeat3/blade-unicons",
+            "version": "1.8.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/codeat3/blade-phosphor-icons.git",
-                "reference": "d7d7c027ce0a0ce2f5e5c68688595f0a816e7508"
+                "url": "https://github.com/codeat3/blade-unicons.git",
+                "reference": "86ca9efede597f9cbeeb7bd2acd0bef46e26d0ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/codeat3/blade-phosphor-icons/zipball/d7d7c027ce0a0ce2f5e5c68688595f0a816e7508",
-                "reference": "d7d7c027ce0a0ce2f5e5c68688595f0a816e7508",
+                "url": "https://api.github.com/repos/codeat3/blade-unicons/zipball/86ca9efede597f9cbeeb7bd2acd0bef46e26d0ba",
+                "reference": "86ca9efede597f9cbeeb7bd2acd0bef46e26d0ba",
                 "shasum": ""
             },
             "require": {
@@ -314,13 +372,13 @@
             "extra": {
                 "laravel": {
                     "providers": [
-                        "Codeat3\\BladePhosphorIcons\\BladePhosphorIconsServiceProvider"
+                        "Codeat3\\BladeUnicons\\BladeUniconsServiceProvider"
                     ]
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Codeat3\\BladePhosphorIcons\\": "src"
+                    "Codeat3\\BladeUnicons\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -337,16 +395,16 @@
                     "homepage": "https://driesvints.com"
                 }
             ],
-            "description": "A package to easily make use of \"Phosphor Icons\" in your Laravel Blade views.",
-            "homepage": "https://github.com/codeat3/blade-phosphor-icons",
+            "description": "A package to easily make use of \"Unicons\" in your Laravel Blade views.",
+            "homepage": "https://github.com/codeat3/blade-unicons",
             "keywords": [
                 "blade",
                 "laravel",
-                "phosphor-icons"
+                "unicons"
             ],
             "support": {
-                "issues": "https://github.com/codeat3/blade-phosphor-icons/issues",
-                "source": "https://github.com/codeat3/blade-phosphor-icons/tree/2.2.0"
+                "issues": "https://github.com/codeat3/blade-unicons/issues",
+                "source": "https://github.com/codeat3/blade-unicons/tree/1.8.0"
             },
             "funding": [
                 {
@@ -354,78 +412,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-04-08T19:02:17+00:00"
-        },
-        {
-            "name": "codeat3/blade-teeny-icons",
-            "version": "1.10.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/codeat3/blade-teeny-icons.git",
-                "reference": "cb8ebebe42eb527ed875dbea94987186d355a235"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/codeat3/blade-teeny-icons/zipball/cb8ebebe42eb527ed875dbea94987186d355a235",
-                "reference": "cb8ebebe42eb527ed875dbea94987186d355a235",
-                "shasum": ""
-            },
-            "require": {
-                "blade-ui-kit/blade-icons": "^1.1",
-                "illuminate/support": "^8.0|^9.0|^10.0|^11.0",
-                "php": "^7.4|^8.0"
-            },
-            "require-dev": {
-                "codeat3/blade-icon-generation-helpers": "^0.8",
-                "codeat3/phpcs-styles": "^1.0",
-                "orchestra/testbench": "^6.0|^7.0|^8.0|^9.0",
-                "phpunit/phpunit": "^9.0|^10.5|^11.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Codeat3\\BladeTeenyIcons\\BladeTeenyIconsServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Codeat3\\BladeTeenyIcons\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Swapnil Sarwe",
-                    "homepage": "https://swapnilsarwe.com"
-                },
-                {
-                    "name": "Dries Vints",
-                    "homepage": "https://driesvints.com"
-                }
-            ],
-            "description": "A package to easily make use of \"Teeny Icons\" in your Laravel Blade views.",
-            "homepage": "https://github.com/codeat3/blade-teeny-icons",
-            "keywords": [
-                "blade",
-                "laravel",
-                "teeny-icons"
-            ],
-            "support": {
-                "issues": "https://github.com/codeat3/blade-teeny-icons/issues",
-                "source": "https://github.com/codeat3/blade-teeny-icons/tree/1.10.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/swapnilsarwe",
-                    "type": "github"
-                }
-            ],
-            "time": "2024-02-28T15:27:51+00:00"
+            "time": "2024-02-28T15:25:26+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
