@@ -11,7 +11,7 @@
                 [
                     'name' => 'Informasi',
                     'dropdown' => [
-                        ['name' => 'Tentang Kita', 'url' => '#tentang-kita'],
+                        ['name' => 'Tentang Kami', 'url' => '#tentang-kami'],
                         ['name' => 'FAQ', 'url' => '#faq'],
                     ],
                 ],
