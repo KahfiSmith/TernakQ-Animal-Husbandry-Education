@@ -2,7 +2,6 @@
     @foreach ($items as $item)
         @if (isset($item['dropdown']))
             <li class="relative group">
-                <!-- Add 'onclick' to trigger the dropdown toggle function -->
                 <a href="javascript:void(0);" onclick="toggleDropdown(this)" class="inline-flex items-center">
                     {{ $item['name'] }}
                     <x-heroicon-o-chevron-down
@@ -25,20 +24,49 @@
 </ul>
 
 <script>
+    let activeDropdown = null;
+
     function toggleDropdown(element) {
-        const dropdown = element.closest('li').querySelector('ul'); // Menemukan menu dropdown
-        const icon = element.querySelector('.chevron-icon'); // Menemukan ikon chevron
+        const dropdown = element.closest('li').querySelector('ul');
+        const icon = element.querySelector('.chevron-icon');
 
+        if (activeDropdown && activeDropdown !== dropdown) {
+            closeDropdown(activeDropdown);
+        }
+
+        dropdown.classList.toggle('hidden');
+        icon.classList.toggle('-rotate-180');
+
+        activeDropdown = dropdown.classList.contains('hidden') ? null : dropdown;
+
+        event.stopPropagation();
+    }
+
+    function closeDropdown(dropdown) {
         if (dropdown) {
-            // Menyembunyikan atau menampilkan dropdown dengan transisi
-            dropdown.classList.toggle('hidden'); // Menggunakan class 'hidden' untuk visibilitas
-
-            // Ganti ikon berdasarkan kondisi dropdown
-            if (dropdown.classList.contains('hidden')) {
-                icon.setAttribute('class', 'ml-2 w-4 h-4 text-gray-700 chevron-icon transition-transform duration-300 ease-in-out'); // Chevron-down
-            } else {
-                icon.setAttribute('class', 'ml-2 w-4 h-4 text-gray-700 chevron-icon -rotate-180 transition-transform duration-300 ease-in-out'); // Chevron-up
-            }
+            dropdown.classList.add('hidden');
+            const icon = dropdown.closest('li').querySelector('.chevron-icon');
+            if (icon) icon.classList.remove('-rotate-180');
         }
     }
+
+    document.addEventListener('click', (event) => {
+        if (activeDropdown && !event.target.closest('li.group')) {
+            closeDropdown(activeDropdown);
+            activeDropdown = null;
+        }
+    });
+
+    document.querySelectorAll('li.group ul li a').forEach(link => {
+        link.addEventListener('click', () => {
+            if (activeDropdown) {
+                closeDropdown(activeDropdown);
+                activeDropdown = null;
+            }
+        });
+    });
 </script>
+
+
+
+
