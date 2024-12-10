@@ -20,6 +20,7 @@ export default {
                 pewterBlue: "#8BBDB2",
                 vodka: "#C3BBFC",
                 congoPink: "#F98080",
+                polishedPine: "#56A795",
             },
         },
     },
