@@ -16,7 +16,5 @@ Route::view('profile', 'profile')
 Route::get('/all-artikels', [ArtikelController::class, 'showAllArtikel']);
 Route::get('/artikel/{id}', [ArtikelController::class, 'showArtikels']);
 Route::get('/sub-artikels/{id}', [ArtikelController::class, 'showSubArtikels']);
-Route::get('/test', function () {
-    return 'Tes berhasil!';
-});
+
 require __DIR__.'/auth.php';

@@ -1,5 +1,5 @@
 <div class="w-full fixed top-0 z-50 backdrop-blur-md">
-    <nav class="flex justify-between py-6 px-14 items-center">
+    <nav class="flex justify-between py-6 px-14 items-center border-b-2 border-gray-700">
         <div>
             <img src="{{ asset('images/logo.svg') }}" alt="logo" />
         </div>
