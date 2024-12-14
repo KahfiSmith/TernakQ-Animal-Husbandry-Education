@@ -6,12 +6,12 @@
         <ul class="flex flex-row space-x-7 text-base font-medium">
             <x-dropdown :items="[
                 ['name' => 'Beranda', 'url' => '#beranda'],
-                ['name' => 'Artikel', 'url' => '#artikel'],
+                ['name' => 'Artikel', 'url' => '#article'],
                 ['name' => 'Forum', 'url' => '#forum'],
                 [
                     'name' => 'Informasi',
                     'dropdown' => [
-                        ['name' => 'Tentang Kami', 'url' => '#tentang-kami'],
+                        ['name' => 'Tentang Kami', 'url' => '#about-us'],
                         ['name' => 'FAQ', 'url' => '#faq'],
                     ],
                 ],
