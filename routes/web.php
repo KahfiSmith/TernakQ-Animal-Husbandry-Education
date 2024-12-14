@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ArtikelController;
+use App\Http\Controllers\ArticleController;
 
-Route::get('/', [ArtikelController::class, 'index'])->name('home');
+Route::get('/', [ArticleController::class, 'index'])->name('home');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
@@ -13,8 +13,8 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-Route::get('/all-artikels', [ArtikelController::class, 'showAllArtikel']);
-Route::get('/artikel/{id}', [ArtikelController::class, 'showArtikels']);
-Route::get('/sub-artikels/{id}', [ArtikelController::class, 'showSubArtikels']);
+Route::get('/all-articles', [ArticleController::class, 'showAllArticle']);
+Route::get('/article/{id}', [ArticleController::class, 'showArticles']);
+Route::get('/sub-articles/{id}', [ArticleController::class, 'showSubArticle']);
 
 require __DIR__.'/auth.php';
