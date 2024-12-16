@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Sub_Article extends Model
+class SubArticle extends Model
 {
     protected $fillable = ['article_id', 'title', 'content', 'order_number'];
 

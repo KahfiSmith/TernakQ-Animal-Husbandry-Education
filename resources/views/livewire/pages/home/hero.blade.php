@@ -13,6 +13,6 @@
                 </x-primary-button>
             </a>
         </div>
-        <img src="{{ asset('images/hero.svg') }}" alt="icon">
+        <img src="{{ asset('images/hero.png') }}" alt="icon">
     </div>
 </section>

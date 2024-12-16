@@ -4,10 +4,11 @@
             <li class="relative group">
                 <a href="javascript:void(0);" onclick="toggleDropdown(this)" class="inline-flex items-center">
                     {{ $item['name'] }}
-                    <x-heroicon-o-chevron-down
-                        class="ml-2 w-4 h-4 text-gray-700 chevron-icon transition-transform duration-300 ease-in-out" />
+                    <i
+                        class="fa-solid fa-chevron-down ml-2 text-gray-700 chevron-icon transition-transform duration-300 ease-in-out"></i>
                 </a>
-                <ul class="absolute left-0 mt-2 bg-white shadow-lg rounded-md w-48 hidden ring-2 ring-gray-700 transition-all duration-300 ease-in-out">
+                <ul
+                    class="absolute left-0 mt-2 bg-white shadow-lg rounded-md w-48 hidden ring-2 ring-gray-700 transition-all duration-300 ease-in-out">
                     @foreach ($item['dropdown'] as $dropdownItem)
                         <li class="px-4 py-2 hover:bg-gray-200 rounded-md">
                             <a href="{{ $dropdownItem['url'] }}">{{ $dropdownItem['name'] }}</a>
@@ -66,7 +67,3 @@
         });
     });
 </script>
-
-
-
-

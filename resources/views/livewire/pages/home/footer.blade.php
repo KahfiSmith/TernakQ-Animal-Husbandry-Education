@@ -33,14 +33,14 @@
                 <li>
                     <a href="#tentang-kami"
                         class="flex space-x-2 font-medium text-gray-700 hover:font-semibold items-center">
-                        <x-feathericon-phone class="w-5 h-5" />
+                        <i class="fa-solid fa-phone"></i>
                         <span>+6281264385621</span>
                     </a>
                 </li>
                 <li>
                     <a href="#tentang-kami"
                         class="flex space-x-2 font-medium text-gray-700 hover:font-semibold items-center">
-                        <x-tabler-mail class="w-6 h-6" />
+                        <i class="fa-solid fa-envelope"></i>
                         <span>ternakq@gmail.com</span>
                     </a>
                 </li>
@@ -50,18 +50,22 @@
     <div class="border-b-2 border-gray-700"></div>
     <div class="flex justify-between items-start pt-4">
         <div class="flex space-x-4">
-            <a href="https://www.linkedin.com/in/mohamad-al-kahfi-b48107271/" target="_blank" class="bg-cosmicLatte p-2 rounded-full flex justify-center items-center">
-                <x-bi-linkedin class="w-6 h-6 text-polishedPine" />
-            </a>
-            <a href="https://www.facebook.com/groups/270376331661364" target="_blank" class="bg-cosmicLatte p-2 rounded-full flex justify-center items-center">
-                <x-bi-facebook class="w-6 h-6 text-polishedPine" />
-            </a>
-            <a href="https://www.instagram.com/alkaahfi__/" target="_blank" class="bg-cosmicLatte p-2 rounded-full flex justify-center items-center">
-                <x-bi-instagram class="w-6 h-6 text-polishedPine" />
-            </a>
-            <a href="https://github.com/KahfiSmith" target="_blank" class="bg-cosmicLatte p-2 rounded-full flex justify-center items-center">
-                <x-bi-github class="w-6 h-6 text-polishedPine" />
-            </a>
+            <a href="https://www.linkedin.com/in/mohamad-al-kahfi-b48107271/" target="_blank"
+            class="bg-cosmicLatte w-8 h-8 rounded-full flex justify-center items-center">
+             <i class="fa-brands fa-linkedin text-polishedPine text-lg"></i>
+         </a>
+         <a href="https://www.facebook.com/groups/270376331661364" target="_blank"
+            class="bg-cosmicLatte w-8 h-8 rounded-full flex justify-center items-center">
+             <i class="fa-brands fa-facebook text-polishedPine text-lg"></i>
+         </a>
+         <a href="https://www.instagram.com/alkaahfi__/" target="_blank"
+            class="bg-cosmicLatte w-8 h-8 rounded-full flex justify-center items-center">
+             <i class="fa-brands fa-instagram text-polishedPine text-lg"></i>
+         </a>
+         <a href="https://github.com/KahfiSmith" target="_blank"
+            class="bg-cosmicLatte w-8 h-8 rounded-full flex justify-center items-center">
+             <i class="fa-brands fa-github text-polishedPine text-lg"></i>
+         </a>
         </div>
         <span x-data="{ year: new Date().getFullYear() }" class="font-medium">
             &copy;<span x-text="year"></span> TernakQ

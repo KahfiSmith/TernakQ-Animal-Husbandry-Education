@@ -13,8 +13,9 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-Route::get('/all-articles', [ArticleController::class, 'showAllArticle']);
-Route::get('/article/{id}', [ArticleController::class, 'showArticles']);
-Route::get('/sub-articles/{id}', [ArticleController::class, 'showSubArticle']);
+Route::get('/all-articles', [ArticleController::class, 'showAllArticle'])->name('all-articles');
+Route::get('/article/{id}', [ArticleController::class, 'showArticles'])->name('articles.show');
+Route::get('/sub-articles/{id}', [ArticleController::class, 'showSubArticle'])->name('sub-article.show');
 
 require __DIR__.'/auth.php';
+ 

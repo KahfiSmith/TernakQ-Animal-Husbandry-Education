@@ -6,18 +6,17 @@
             persiapan kandang, semua informasi yang Anda butuhkan ada di sini.</p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-4">
-        <x-card-article />
-        <x-card-article />
-        <x-card-article />
-        <x-card-article />
-        <x-card-article />
-        <x-card-article />
-        <x-card-article />
-        <x-card-article />
+        @foreach($articles as $article)
+            <x-card-article :article="$article" />
+        @endforeach
     </div>
     <div class="flex justify-end">
-        <span class="cursor-pointer hover:border-b-2 hover:border-gray-700 font-semibold hover:text-orangeCrayola transition duration-200 ease-in-out">
+        <a 
+            wire:navigate 
+            href="{{ route('all-articles') }}" 
+            class="cursor-pointer hover:border-b-2 hover:border-gray-700 font-semibold hover:text-orangeCrayola transition duration-200 ease-in-out"
+        >
             Lihat semua artikel...
-        </span>
+        </a>
     </div>
 </section>

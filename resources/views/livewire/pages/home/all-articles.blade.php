@@ -12,14 +12,32 @@
 </head>
 
 <body class="antialiased">
-    <section class="flex flex-col min-h-screen">
-        <div class="w-full fixed top-0 z-50 backdrop-blur-md">
-            <nav class="flex justify-between py-6 px-14 items-center border-b-2 border-gray-700">
+    <section class="flex flex-col min-h-screen mb-12">
+        <div class="w-full fixed top-0 z-50 bg-cosmicLatte">
+            <nav class="flex justify-between py-4 px-14 items-center border-b-2 border-gray-700">
                 <div>
                     <img src="{{ asset('images/logo.svg') }}" alt="logo" />
                 </div>
                 <x-search-input placeholder="Cari artikel..." />
             </nav>
+        </div>
+        <div class="flex flex-col mb-7 px-14 pt-28">
+            <h2 class="text-3xl font-semibold mb-1">Semua yang Perlu Anda Tahu tentang Peternakan Ayam Broiler</h2>
+            <p class="font-medium text-lg">Jelajahi koleksi lengkap artikel edukasi kami yang mencakup berbagai aspek peternakan ayam broiler, mulai dari manajemen kandang hingga pencegahan penyakit. Tingkatkan pengetahuan dan keterampilan Anda di sini.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 px-14">
+            <x-card-article />
+            <x-card-article />
+            <x-card-article />
+            <x-card-article />
+            <x-card-article />
+            <x-card-article />
+            <x-card-article />
+            <x-card-article />
+            <x-card-article />
+            <x-card-article />
+            <x-card-article />
+            <x-card-article />
         </div>
     </section>
 </body>

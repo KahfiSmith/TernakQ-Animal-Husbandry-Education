@@ -11,13 +11,14 @@
                         class="w-12 h-12 ring-2 ring-gray-700 p-1.5 rounded-lg">
                     <span class="font-medium text-lg">Apa itu TernakQ?</span>
                 </div>
-                <x-heroicon-o-chevron-down :class="{'rotate-180': open}"
-                    class="ml-2 w-4 h-4 text-gray-700 transition-transform duration-300 ease-in-out" />
+                <i class="fa-solid fa-chevron-down ml-2 text-gray-700 transition-transform duration-300 ease-in-out"
+                    :class="{ '-rotate-180': open }"></i>
             </div>
             <div class="overflow-hidden transition-all duration-300 ease-in-out" x-ref="content"
                 x-bind:style="open ? 'max-height: ' + $refs.content.scrollHeight + 'px' : 'max-height: 0;'">
                 <p class="text-gray-700 text-base leading-relaxed">
-                    TernakQ adalah platform edukasi daring yang menyediakan informasi praktis untuk mendukung peternakan ayam broiler.
+                    TernakQ adalah platform edukasi daring yang menyediakan informasi praktis untuk mendukung peternakan
+                    ayam broiler.
                 </p>
             </div>
         </div>
@@ -28,8 +29,8 @@
                         class="w-12 h-12 ring-2 ring-gray-700 p-1.5 rounded-lg">
                     <span class="font-medium text-lg">Apakah website ini memberikan panduan lengkap untuk pemula?</span>
                 </div>
-                <x-heroicon-o-chevron-down :class="{'rotate-180': open}"
-                    class="ml-2 w-4 h-4 text-gray-700 transition-transform duration-300 ease-in-out" />
+                <i class="fa-solid fa-chevron-down ml-2 text-gray-700 transition-transform duration-300 ease-in-out"
+                    :class="{ '-rotate-180': open }"></i>
             </div>
             <div class="overflow-hidden transition-all duration-300 ease-in-out" x-ref="content"
                 x-bind:style="open ? 'max-height: ' + $refs.content.scrollHeight + 'px' : 'max-height: 0;'">
@@ -47,8 +48,8 @@
                     <span class="font-medium text-lg">Apakah ada informasi tentang cara mencegah penyakit pada
                         ayam?</span>
                 </div>
-                <x-heroicon-o-chevron-down :class="{'rotate-180': open}"
-                    class="ml-2 w-4 h-4 text-gray-700 transition-transform duration-300 ease-in-out" />
+                <i class="fa-solid fa-chevron-down ml-2 text-gray-700 transition-transform duration-300 ease-in-out"
+                    :class="{ '-rotate-180': open }"></i>
             </div>
             <div class="overflow-hidden transition-all duration-300 ease-in-out" x-ref="content"
                 x-bind:style="open ? 'max-height: ' + $refs.content.scrollHeight + 'px' : 'max-height: 0;'">
@@ -66,8 +67,8 @@
                     <span class="font-medium text-lg">Bisakah saya mendapatkan informasi tentang pemasaran hasil
                         ternak?</span>
                 </div>
-                <x-heroicon-o-chevron-down :class="{'rotate-180': open}"
-                    class="ml-2 w-4 h-4 text-gray-700 transition-transform duration-300 ease-in-out" />
+                <i class="fa-solid fa-chevron-down ml-2 text-gray-700 transition-transform duration-300 ease-in-out"
+                    :class="{ '-rotate-180': open }"></i>
             </div>
             <div class="overflow-hidden transition-all duration-300 ease-in-out" x-ref="content"
                 x-bind:style="open ? 'max-height: ' + $refs.content.scrollHeight + 'px' : 'max-height: 0;'">
@@ -84,8 +85,8 @@
                         class="w-12 h-12 ring-2 ring-gray-700 p-1.5 rounded-lg">
                     <span class="font-medium text-lg">Bagaimana cara bergabung di forum diskusi?</span>
                 </div>
-                <x-heroicon-o-chevron-down :class="{'rotate-180': open}"
-                    class="ml-2 w-4 h-4 text-gray-700 transition-transform duration-300 ease-in-out" />
+                <i class="fa-solid fa-chevron-down ml-2 text-gray-700 transition-transform duration-300 ease-in-out"
+                    :class="{ '-rotate-180': open }"></i>
             </div>
             <div class="overflow-hidden transition-all duration-300 ease-in-out" x-ref="content"
                 x-bind:style="open ? 'max-height: ' + $refs.content.scrollHeight + 'px' : 'max-height: 0;'">
@@ -102,8 +103,8 @@
                         class="w-12 h-12 ring-2 ring-gray-700 p-1.5 rounded-lg">
                     <span class="font-medium text-lg">Apakah ada biaya untuk menggunakan website ini?</span>
                 </div>
-                <x-heroicon-o-chevron-down :class="{'rotate-180': open}"
-                    class="ml-2 w-4 h-4 text-gray-700 transition-transform duration-300 ease-in-out" />
+                <i class="fa-solid fa-chevron-down ml-2 text-gray-700 transition-transform duration-300 ease-in-out"
+                    :class="{ '-rotate-180': open }"></i>
             </div>
             <div class="overflow-hidden transition-all duration-300 ease-in-out" x-ref="content"
                 x-bind:style="open ? 'max-height: ' + $refs.content.scrollHeight + 'px' : 'max-height: 0;'">

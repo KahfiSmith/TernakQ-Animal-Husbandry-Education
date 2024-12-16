@@ -1,5 +1,5 @@
-<section id="about-us" class="flex justify-between items-center px-14 mb-20">
-    <img src="{{ asset('images/about-us.svg') }}" alt="icon" class="w-[45%]">
+<section id="about-us" class="flex justify-between items-center px-14 mb-20 pt-20">
+    <img src="{{ asset('images/about-us.svg') }}" alt="icon" class="w-[45%]" loading="lazy" >
     <div class="flex flex-col space-y-5 w-[45%]">
         <h1 class="text-3xl font-bold tracking-wide leading-tight">Membangun Peternakan yang <span
                 class="text-orange-500">Lebih Baik</span>, Bersama Kami</h1>
@@ -21,8 +21,6 @@
                 </div>
                 <span class="font-medium">Pendaftar Baru</span>
             </div>
-
-
         </div>
     </div>
 </section>

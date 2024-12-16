@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Sub_Article;
+use App\Models\SubArticle;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
@@ -19,7 +19,7 @@ class SubArticlePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Sub_Article $subArticle): bool
+    public function view(User $user, SubArticle $subArticle): bool
     {
         //
     }
@@ -35,7 +35,7 @@ class SubArticlePolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Sub_Article $subArticle): bool
+    public function update(User $user, SubArticle $subArticle): bool
     {
         //
     }
@@ -43,7 +43,7 @@ class SubArticlePolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Sub_Article $subArticle): bool
+    public function delete(User $user, SubArticle $subArticle): bool
     {
         //
     }
@@ -51,7 +51,7 @@ class SubArticlePolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Sub_Article $subArticle): bool
+    public function restore(User $user, SubArticle $subArticle): bool
     {
         //
     }
@@ -59,7 +59,7 @@ class SubArticlePolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Sub_Article $subArticle): bool
+    public function forceDelete(User $user, SubArticle $subArticle): bool
     {
         //
     }

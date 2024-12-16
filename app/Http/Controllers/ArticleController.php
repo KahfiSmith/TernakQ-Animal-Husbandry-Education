@@ -3,15 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
-use App\Http\Requests\StoreArtikelRequest;
-use App\Http\Requests\UpdateArtikelRequest;
+use App\Http\Requests\StoreArticleRequest;
+use App\Http\Requests\UpdateArticleRequest;
 
 class ArticleController extends Controller
 {
     public function index()
     {
         $articles = Article::latest()->take(8)->get();
-
         return view('home', compact('articles'));
     }
 
@@ -23,7 +22,7 @@ class ArticleController extends Controller
 
     public function showArticles($id)
     {
-        $card = Card::findOrFail($id);
+        $card = CardArticle::findOrFail($id);
         $articles = $card->articles()->get();
         return view('livewire.pages.home.main-articles', compact('card', 'articles'));
     }

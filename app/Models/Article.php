@@ -9,13 +9,13 @@ class Article extends Model
 {
     protected $fillable = ['card_id', 'title', 'description'];
 
-    public function card(): BelongsTo
+    public function cardArticle(): BelongsTo
     {
-        return $this->belongsTo(Card::class, 'card_id');
+        return $this->belongsTo(CardArticle::class, 'card_id');
     }
 
-    public function subBabs(): HasMany
+    public function subArticles(): HasMany
     {
-        return $this->hasMany(SubBab::class, 'article_id');
+        return $this->hasMany(SubArticle::class, 'article_id');
     }
 }

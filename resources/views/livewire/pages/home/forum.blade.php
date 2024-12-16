@@ -1,5 +1,5 @@
-<section id="forum" class="flex flex-col mb-20 space-y-2 pt-20">
-    <div class="flex flex-col bg-pewterBlue px-14 py-11">
+<section id="forum" class="flex flex-col space-y-2 mb-20 pt-20">
+<div class="flex flex-col bg-pewterBlue px-14 py-11">
         <h2 class="text-3xl font-semibold mb-11 text-center">Memulai Peternakan Ayam Broiler</h2>
         <div class="flex justify-between space-x-20">
             <div
@@ -33,6 +33,6 @@
                 </x-primary-button>
             </a>
         </div>
-        <img src="{{ asset('images/forum.png') }}" alt="icon" class="w-[40%]">
+        <img src="{{ asset('images/forum.png') }}" alt="icon" class="w-[40%]" loading="lazy" >
     </div>
 </section>
