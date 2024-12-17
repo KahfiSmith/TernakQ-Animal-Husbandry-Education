@@ -26,13 +26,13 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-4">
-                @foreach ($articles as $article)
-                    <x-card-article :article="$article" />
+                @foreach ($cardArticles as $card)
+                    <x-card-article :card="$card" />
                 @endforeach
             </div>
 
             <div class="flex justify-end">
-                <a href="{{ route('all-articles') }}"
+                <a href="{{ route('all-cards') }}"
                     class="cursor-pointer hover:border-b-2 hover:border-gray-700 font-semibold hover:text-orangeCrayola transition duration-200 ease-in-out">
                     Lihat semua artikel...
                 </a>

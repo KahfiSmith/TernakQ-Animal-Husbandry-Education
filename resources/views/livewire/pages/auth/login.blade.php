@@ -60,7 +60,7 @@ new #[Layout('layouts.guest')] class extends Component
         </div>
 
         <div class="flex items-center">
-            <x-primary-button class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] text-white hover:shadow-[2px_2px_0px_2px_#374151] hover:translate-y-0.5 hover:translate-x-0.5 w-full text-center">
+            <x-primary-button class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] text-white hover:shadow-[2px_2px_0px_2px_#374151] hover:translate-y-0.5 hover:translate-x-0.5 w-full text-center bg-orangeCrayola">
                 {{ __('Masuk') }}
             </x-primary-button>
         </div>

@@ -13,7 +13,7 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-Route::get('/all-articles', [ArticleController::class, 'showAllArticle'])->name('all-articles');
+Route::get('/all-cards', [ArticleController::class, 'showAllArticle'])->name('all-cards');
 Route::get('/article/{id}', [ArticleController::class, 'showArticles'])->name('articles.show');
 Route::get('/sub-articles/{id}', [ArticleController::class, 'showSubArticle'])->name('sub-article.show');
 
