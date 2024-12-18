@@ -19,15 +19,8 @@ class Article extends Model
         return $this->hasMany(SubArticle::class, 'article_id');
     }
 
-    public function getReadingTimeAttribute()
+    public function tags()
     {
-        $totalWords = $this->subArticles->sum(function ($subArticle) {
-            return str_word_count(strip_tags($subArticle->content));
-        });
-
-        $wordsPerMinute = 200; 
-        $readingTime = ceil($totalWords / $wordsPerMinute);
-
-        return $readingTime;
+        return $this->belongsToMany(Tag::class, 'article_tag');
     }
 }

@@ -32,7 +32,7 @@
             </div>
 
             <div class="flex justify-end">
-                <a href="{{ route('all-cards') }}"
+                <a href="{{ route('cards') }}"
                     class="cursor-pointer hover:border-b-2 hover:border-gray-700 font-semibold hover:text-orangeCrayola transition duration-200 ease-in-out">
                     Lihat semua artikel...
                 </a>

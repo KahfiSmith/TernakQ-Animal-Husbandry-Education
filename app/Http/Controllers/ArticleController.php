@@ -24,15 +24,28 @@ class ArticleController extends Controller
 
     public function showArticles($id)
     {
-        $card = CardArticle::findOrFail($id);
-        $articles = $card->articles()->get();
-        return view('livewire.pages.home.main-articles', compact('card', 'articles'));
+        // Ambil card sesuai ID atau gagal jika tidak ditemukan
+        $card = CardArticle::with('articles')->findOrFail($id);
+
+        // Ambil semua artikel yang terkait dengan card
+        $articles = $card->articles()->latest()->get();
+
+        // Return ke view dengan data card dan articles
+        return view('livewire.pages.home.articles', compact('card', 'articles'));
     }
 
-    public function showSubArticle($id)
+    /**
+     * Menampilkan daftar sub-articles berdasarkan ID Artikel.
+     */
+    public function showSubArticles($id)
     {
-        $article = Article::findOrFail($id);
-        $subArticles = $article->subBabs()->orderBy('order_number')->get();
+        // Ambil artikel sesuai ID atau gagal jika tidak ditemukan
+        $article = Article::with('subArticles')->findOrFail($id);
+
+        // Ambil semua sub-articles yang terkait dengan artikel
+        $subArticles = $article->subArticles()->orderBy('order_number')->get();
+
+        // Return ke view dengan data artikel dan sub-articles
         return view('livewire.pages.home.detail-articles', compact('article', 'subArticles'));
     }
 }

@@ -15,6 +15,7 @@ class CardArticleSeeder extends Seeder
      */
     public function run(): void
     {
+        // Data CardArticle
         $cards = [
             [
                 'title' => 'Panduan Beternak Ayam',
@@ -27,77 +28,39 @@ class CardArticleSeeder extends Seeder
             [
                 'title' => 'Analisis Bisnis Ayam',
                 'description' => 'Strategi sukses dalam bisnis peternakan ayam, mulai dari perencanaan modal, manajemen operasional, hingga pemasaran hasil ternak untuk meraih keuntungan maksimal.'
-            ],
-            [
-                'title' => 'Jenis-Jenis Ayam Petelur',
-                'description' => 'Kenali berbagai jenis ayam petelur beserta produktivitas telur yang dihasilkan, serta tips dalam memilih ayam petelur berkualitas tinggi.'
-            ],
-            [
-                'title' => 'Manajemen Pakan Ayam',
-                'description' => 'Panduan lengkap mengenai jenis pakan ayam berdasarkan usia dan jenis ternak, serta cara menghitung kebutuhan pakan agar efisien dan hemat.'
-            ],
-            [
-                'title' => 'Desain Kandang Ayam Ideal',
-                'description' => 'Tips mendesain kandang ayam yang ideal, baik untuk skala kecil maupun besar, agar ayam tumbuh sehat dan produktif.'
-            ],
-            [
-                'title' => 'Pencegahan Penyakit pada Ayam',
-                'description' => 'Pelajari langkah-langkah mencegah berbagai penyakit ayam seperti flu burung, ND, dan gumboro melalui kebersihan kandang dan vaksinasi.'
-            ],
-            [
-                'title' => 'Panduan Vaksinasi Ayam',
-                'description' => 'Langkah-langkah pemberian vaksinasi ayam yang benar sesuai jadwal, serta pentingnya menjaga imunitas ternak dari berbagai penyakit.'
-            ],
-            [
-                'title' => 'Perhitungan Biaya Ternak Ayam',
-                'description' => 'Rincian lengkap mengenai estimasi biaya ternak ayam, mulai dari pembelian bibit, pakan, hingga pemeliharaan harian.'
-            ],
-            [
-                'title' => 'Cara Menjual Hasil Ternak Ayam',
-                'description' => 'Strategi efektif dalam memasarkan hasil ternak ayam, baik berupa daging, telur, atau ayam hidup, agar mendapatkan harga terbaik di pasar.'
-            ],
-            [
-                'title' => 'Teknologi Modern dalam Peternakan Ayam',
-                'description' => 'Manfaat teknologi modern seperti kandang otomatis, alat pakan otomatis, dan monitoring suhu kandang untuk meningkatkan produktivitas peternakan ayam.'
-            ],
-            [
-                'title' => 'Tips Mengatasi Ayam Stress',
-                'description' => 'Panduan mengenali tanda-tanda ayam yang mengalami stres dan langkah-langkah penanganannya agar ternak tetap sehat dan produktif.'
-            ],
-            [
-                'title' => 'Budidaya Ayam Kampung',
-                'description' => 'Panduan praktis budidaya ayam kampung, mencakup pemilihan bibit unggul, teknik pemeliharaan, dan strategi pemasaran daging ayam kampung.'
-            ],
-            [
-                'title' => 'Keuntungan Beternak Ayam Broiler',
-                'description' => 'Ulasan lengkap mengenai keuntungan beternak ayam broiler, termasuk perhitungan potensi pendapatan dari usaha ternak ayam skala kecil hingga besar.'
-            ],
-            [
-                'title' => 'Sistem Biosekuriti di Peternakan Ayam',
-                'description' => 'Pelajari pentingnya penerapan sistem biosekuriti dalam mencegah penyebaran penyakit dan menjaga kebersihan lingkungan kandang.'
-            ],
-        ];        
+            ]
+            // Tambahkan card lainnya sesuai kebutuhan...
+        ];
 
+        // Data Tag
         $tags = ['Pakan Ayam', 'Manajemen Kandang', 'Kesehatan Ayam', 'Panduan', 'Tips', 'Berita'];
 
+        // Simpan semua tag ke database terlebih dahulu dan ambil ID-nya
+        $tagIds = [];
+        foreach ($tags as $tagName) {
+            $tag = Tag::firstOrCreate(['name' => $tagName]); // Hindari duplikasi
+            $tagIds[] = $tag->id; // Simpan ID tag untuk digunakan nanti
+        }
+
+        // Proses pembuatan CardArticle, Artikel, dan SubArtikel
         foreach ($cards as $cardData) {
-            // Membuat CardArticle
+            // Buat CardArticle
             $card = CardArticle::create($cardData);
 
             for ($i = 1; $i <= 3; $i++) {
-                // Ambil tag secara acak untuk setiap artikel
-                $randomTag = $tags[array_rand($tags)];
-
-                // Membuat Artikel
+                // Buat Artikel terkait CardArticle
                 $article = Article::create([
                     'card_id' => $card->id,
                     'title' => "Artikel {$i} untuk {$cardData['title']}",
                     'description' => "Deskripsi artikel {$i} terkait {$cardData['title']}",
-                    'tag' => $randomTag, // Tambahkan tagclear
                 ]);
 
+                // Hubungkan Tag secara acak ke Artikel (2 Tag)
+                $randomTagIds = array_rand(array_flip($tagIds), 2); // Pilih 2 tag secara acak
+                $article->tags()->attach($randomTagIds);
+
                 for ($j = 1; $j <= 2; $j++) {
-                    // Membuat SubArtikel
+                    // Buat SubArtikel terkait Artikel
                     SubArticle::create([
                         'article_id' => $article->id,
                         'title' => "SubArtikel {$j} dari {$article->title}",
@@ -107,6 +70,5 @@ class CardArticleSeeder extends Seeder
                 }
             }
         }
-
     }
 }
