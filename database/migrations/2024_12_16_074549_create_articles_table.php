@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('card_id')->constrained('card_articles')->onDelete('cascade');
             $table->string('title');
             $table->text('description')->nullable();
-            $table->string('tag')->nullable();
             $table->timestamps();
         });
     }

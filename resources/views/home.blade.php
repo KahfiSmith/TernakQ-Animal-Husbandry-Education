@@ -27,7 +27,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-4">
                 @foreach ($cardArticles as $card)
-                    <x-card-article :card="$card" />
+                    <x-card-content :card="$card" />
                 @endforeach
             </div>
 

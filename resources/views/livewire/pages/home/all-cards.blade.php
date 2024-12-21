@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Semua Artikel</title>
+    <title>Semua Konten</title>
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -30,7 +30,7 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-4">
                 @foreach ($cardArticles as $card)
-                    <x-card-article :card="$card" />
+                    <x-card-content :card="$card" />
                 @endforeach
             </div>
         </div>
