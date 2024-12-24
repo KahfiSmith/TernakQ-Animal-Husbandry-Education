@@ -3,31 +3,29 @@
         <div>
             <img src="{{ asset('images/logo.svg') }}" alt="logo" />
         </div>
-
         <ul class="flex flex-row space-x-7 text-base font-medium">
             <li>
                 <a href="#beranda"
-                    class="nav-link text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">Beranda</a>
+                    class="text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">Beranda</a>
             </li>
             <li>
                 <a href="#article"
-                    class="nav-link text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">Artikel</a>
+                    class="text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">Artikel</a>
             </li>
             <li>
                 <a href="#forum"
-                    class="nav-link text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">Forum</a>
+                    class="text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">Forum</a>
             </li>
             <li>
                 <a href="#about-us"
-                    class="nav-link text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">Tentang
+                    class="text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">Tentang
                     Kami</a>
             </li>
             <li>
                 <a href="#faq"
-                    class="nav-link text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">FAQ</a>
+                    class="text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">FAQ</a>
             </li>
         </ul>
-
         <div class="flex items-center space-x-6">
             <a href="{{ route('login') }}" wire:navigate>
                 <x-primary-button class="ring-2 ring-gray-700 hover:bg-pewterBlue bg-transparent">Masuk
