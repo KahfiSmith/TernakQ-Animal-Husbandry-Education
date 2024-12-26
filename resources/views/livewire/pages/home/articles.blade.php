@@ -1,17 +1,8 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+@extends('layouts.app')
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+@section('title', 'Semua Artikel')
 
-    <title>Semua Artikel</title>
-
-    <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-
-<body class="antialiased">
+@section('content')
     <section class="flex flex-col min-h-screen mb-12">
         <div class="w-full fixed top-0 z-50 bg-cosmicLatte">
             <nav class="flex justify-between py-4 px-14 items-center border-b-2 border-gray-700">
@@ -26,13 +17,14 @@
             <nav class="text-sm text-gray-600 mb-4 font-medium" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-1 md:space-x-3">
                     <li class="inline-flex items-center">
-                        <a href="{{ route('cards') }}" 
+                        <a href="{{ route('cards') }}"
                             class="text-gray-500 hover:text-gray-700  inline-flex items-center ease-in-out duration-300">
                             Konten
                         </a>
                     </li>
                     <li>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                         </svg>
                     </li>
@@ -71,6 +63,4 @@
             </div>
         </div>
     </section>
-</body>
-
-</html>
+@endsection
