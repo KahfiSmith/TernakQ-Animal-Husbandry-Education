@@ -16,6 +16,9 @@ Route::view('profile', 'profile')
 Route::get('/content', [ArticleController::class, 'showAllCards'])->name('cards');
 Route::get('/content/{id}/articles', [ArticleController::class, 'showArticles'])->name('cards.articles');
 Route::get('/articles/{id}', [ArticleController::class, 'showArticleDetail'])->name('articles.detail');
+Route::get('sidebar', function () {
+    return view('sidebar');
+})->name('sidebar');
 
 require __DIR__.'/auth.php';
  
