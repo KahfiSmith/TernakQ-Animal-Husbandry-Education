@@ -12,12 +12,12 @@
         @foreach ($menus as $menu)
         <li class="mb-2">
             <x-sidebar.link :href="$menu['url']" :active="$menu['active']">
-                <img src="{{ $menu['icon'] }}" alt="{{ $menu['title'] }} Icon" class="w-6 h-6 mr-2 text-red-700">
+                <img src="{{ $menu['icon'] }}" alt="{{ $menu['title'] }} Icon" class="w-6 h-6 mr-2">
                 <span class="menu-text">{{ $menu['title'] }}</span>
             </x-sidebar.link>
         </li>
         @endforeach
-    </ul>
+    </ul>    
 
     <ul id="bottom-menu-list" class="border-t-2 pt-4 border-cosmicLatte duration-500">
         @foreach ($bottomMenus as $menu)
