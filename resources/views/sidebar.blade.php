@@ -68,21 +68,74 @@
     </div>
 
     <div id="content" class="min-h-screen w-full p-6 transition-all duration-500">
-        <main>
-            <div class="flex flex-wrap gap-4">
+        <main class="gap-4 flex flex-col">
+            <div class="flex gap-4 w-full justify-between">
+                <div class="flex flex-col justify-between w-full">
+                    <div class="bg-white px-6 py-6 rounded-lg shadow-md flex flex-col items-center w-full space-y-6">
+                        <div class="flex justify-between w-full items-center">
+                            <div class="flex flex-col space-y-1">
+                                <h3 class="text-md font-semibold text-gray-500 uppercase tracking-wide">Jumlah Kandang
+                                </h3>
+                                <span class="text-4xl font-bold text-gray-600">12</span>
+                            </div>
+                            <div>
+                                <img src="{{ asset('images/cage.svg') }}" alt="kandang Icon"
+                                    class="bg-pewterBlue w-14 h-14 p-3 rounded-full shadow-sm">
+                            </div>
+                        </div>
+                        <div class="flex flex-col w-full border-t pt-4">
+                            <div class="flex justify-between w-full items-center">
+                                <span class="text-sm text-gray-500 font-medium">Kapasitas Maksimum</span>
+                                <div class="flex items-center space-x-1">
+                                    <p class="text-gray-500 font-bold text-sm">3200</p>
+                                    <p class="text-xs text-gray-400">Ayam</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white px-6 py-7 rounded-lg shadow-md flex flex-col items-center w-full space-y-6">
+                        <div class="flex justify-between w-full items-center">
+                            <div class="flex flex-col space-y-1">
+                                <h3 class="text-md font-semibold text-gray-500 uppercase tracking-wide">Angka Kematian
+                                    Ayam</h3>
+                                <span class="text-4xl font-bold text-gray-600">126</span>
+                            </div>
+                            <div>
+                                <img src="{{ asset('images/chicken.svg') }}" alt="ayam Icon"
+                                    class="bg-pewterBlue w-14 h-14 p-3 rounded-full shadow-sm">
+                            </div>
+                        </div>
+                        <div class="flex flex-col w-full border-t pt-4">
+                            <div class="flex justify-between w-full items-center">
+                                <span class="text-sm text-gray-500 font-medium">Persentase ayam mati dalam
+                                    sebulan</span>
+                                <div class="flex items-center space-x-1">
+                                    <p class="text-red-500 font-bold text-sm">-2.33%</p>
+                                    <p class="text-xs text-gray-400">Dari bulan lalu</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <!-- Bar Chart -->
-                <div class="bg-white p-6 rounded-md shadow-sm basis-3/4 min-w-[300px]">
-                    <h2 class="text-lg font-semibold mb-2">Manajemen Ayam (Bar Chart)</h2>
+                <div class="bg-white p-6 rounded-md shadow-sm w-3/4">
+                    <h2 class="text-lg font-semibold mb-2">Manajemen Ayam Bulanan</h2>
                     <canvas id="myBarChart" class="w-full h-64"></canvas>
                 </div>
 
+
+
+            </div>
+            <div class="flex gap-4 w-full">
                 <!-- Pie Chart -->
-                <div class="bg-white p-6 rounded-md shadow-sm basis-1/4 min-w-[300px]">
-                    <h2 class="text-lg font-semibold mb-2">Manajemen Ayam (Pie Chart)</h2>
+                <div class="bg-white p-6 rounded-md shadow-sm w-1/4">
+                    <h2 class="text-lg font-semibold mb-2">Manajemen Ayam Harian</h2>
                     <canvas id="myPieChart" class="w-full h-64"></canvas>
                 </div>
             </div>
-
         </main>
     </div>
 

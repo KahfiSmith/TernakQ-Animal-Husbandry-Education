@@ -9,8 +9,8 @@ document.addEventListener("DOMContentLoaded", function () {
             {
                 label: "Jumlah Ayam",
                 data: [300, 50, 20], 
-                backgroundColor: ["#56A795", "#FFC942", "#F98080"], 
-                borderColor: ["#78C2AC", "#FFDA73", "#F99E9E"],
+                backgroundColor: ["#56A795", "#FFC942", "#F97930"], 
+                borderColor: ["#78C2AC", "#FFDA73", "#F9B37A"],
                 borderWidth: 2,
             },
         ],
