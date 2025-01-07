@@ -118,23 +118,105 @@
                         </div>
                     </div>
                 </div>
-
-
-                <!-- Bar Chart -->
                 <div class="bg-white p-6 rounded-md shadow-sm w-3/4">
                     <h2 class="text-lg font-semibold mb-2">Manajemen Ayam Bulanan</h2>
                     <canvas id="myBarChart" class="w-full h-64"></canvas>
                 </div>
-
-
-
             </div>
             <div class="flex gap-4 w-full">
-                <!-- Pie Chart -->
                 <div class="bg-white p-6 rounded-md shadow-sm w-1/4">
                     <h2 class="text-lg font-semibold mb-2">Manajemen Ayam Harian</h2>
                     <canvas id="myPieChart" class="w-full h-64"></canvas>
                 </div>
+                <div class="bg-white p-6 rounded-lg shadow-md w-full">
+                    <h2 class="text-lg font-semibold mb-4">Manajemen Ayam</h2>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-center border-collapse">
+                            <thead class="text-gray-600 uppercase text-sm tracking-wide">
+                                <tr class="border-b-2 border-gray-300">
+                                    <th class="px-4 py-3">No</th>
+                                    <th class="px-4 py-3">Kandang</th>
+                                    <th class="px-4 py-3">Jumlah Ayam</th>
+                                    <th class="px-4 py-3">Ayam Sakit</th>
+                                    <th class="px-4 py-3">Ayam Mati</th>
+                                    <th class="px-4 py-3">Kapasitas</th>
+                                    <th class="px-4 py-3">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-700 text-sm">
+                                <tr class="hover:bg-gray-50 border-b border-gray-200">
+                                    <td class="px-4 py-4">1</td>
+                                    <td class="px-4 py-4 font-medium">Kandang 1</td>
+                                    <td class="px-4 py-4">120</td>
+                                    <td class="px-4 py-4">4</td>
+                                    <td class="px-4 py-4">1</td>
+                                    <td class="px-4 py-4">150</td>
+                                    <td class="px-4 py-4">
+                                        <span class="px-3 py-1 rounded text-xs font-semibold bg-green-100 text-green-700">
+                                            Sehat
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 border-b border-gray-200">
+                                    <td class="px-4 py-4">2</td>
+                                    <td class="px-4 py-4 font-medium">Kandang 2</td>
+                                    <td class="px-4 py-4">100</td>
+                                    <td class="px-4 py-4">5</td>
+                                    <td class="px-4 py-4">2</td>
+                                    <td class="px-4 py-4">120</td>
+                                    <td class="px-4 py-4">
+                                        <span class="px-3 py-1 rounded text-xs font-semibold bg-yellow-100 text-yellow-700">
+                                            Perlu Perhatian
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 border-b border-gray-200">
+                                    <td class="px-4 py-4">3</td>
+                                    <td class="px-4 py-4 font-medium">Kandang 3</td>
+                                    <td class="px-4 py-4">140</td>
+                                    <td class="px-4 py-4">0</td>
+                                    <td class="px-4 py-4">0</td>
+                                    <td class="px-4 py-4">150</td>
+                                    <td class="px-4 py-4">
+                                        <span class="px-3 py-1 rounded text-xs font-semibold bg-green-100 text-green-700">
+                                            Sehat
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 border-b border-gray-200">
+                                    <td class="px-4 py-4">4</td>
+                                    <td class="px-4 py-4 font-medium">Kandang 3</td>
+                                    <td class="px-4 py-4">140</td>
+                                    <td class="px-4 py-4">23</td>
+                                    <td class="px-4 py-4">12</td>
+                                    <td class="px-4 py-4">150</td>
+                                    <td class="px-4 py-4">
+                                        <span class="px-3 py-1 rounded text-xs font-semibold bg-red-100 text-red-700">
+                                            Darurat
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr class="hover:bg-gray-50 border-b border-gray-200">
+                                    <td class="px-4 py-4">3</td>
+                                    <td class="px-4 py-4 font-medium">Kandang 3</td>
+                                    <td class="px-4 py-4">140</td>
+                                    <td class="px-4 py-4">0</td>
+                                    <td class="px-4 py-4">0</td>
+                                    <td class="px-4 py-4">150</td>
+                                    <td class="px-4 py-4">
+                                        <span class="px-3 py-1 rounded text-xs font-semibold bg-green-100 text-green-700">
+                                            Sehat
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                
+                
+                
             </div>
         </main>
     </div>
