@@ -21,30 +21,12 @@
 
     <ul id="bottom-menu-list" class="border-t-2 pt-4 border-gray-200">
         @foreach ($bottomMenus as $menu)
-            @if ($menu['title'] === 'Logout')
-                <li class="mb-2">
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit"
-                            class="flex items-center gap-x-4 px-3 py-2 rounded-md transition duration-150 ease-in-out 
-                            text-gray-200 hover:bg-pewterBlue hover:text-cosmicLatte font-semibold w-full">
-                            <img src="{{ $menu['icon'] }}" alt="Logout Icon" class="w-6 h-6">
-                            <span>{{ $menu['title'] }}</span>
-                        </button>
-                    </form>
-                </li>
-            @else
-                <li class="mb-2">
-                    <a href="{{ $menu['url'] }}"
-                       class="flex items-center gap-x-4 px-3 py-2 rounded-md transition duration-150 ease-in-out 
-                       {{ $menu['active'] 
-                           ? 'bg-pewterBlue text-white font-bold hover:bg-pewterBlue hover:text-white' 
-                           : 'text-gray-200 hover:bg-pewterBlue hover:text-cosmicLatte font-semibold' }}">
-                        <img src="{{ $menu['icon'] }}" alt="{{ $menu['title'] }} Icon" class="w-6 h-6">
-                        <span>{{ $menu['title'] }}</span>
-                    </a>
-                </li>
-            @endif
+        <li class="mb-2">
+            <x-sidebar.link :href="$menu['url']" :active="$menu['active']">
+                <img src="{{ $menu['icon'] }}" alt="{{ $menu['title'] }} Icon" class="w-6 h-6 mr-2">
+                <span class="menu-text">{{ $menu['title'] }}</span>
+            </x-sidebar.link>
+        </li>
         @endforeach
     </ul>
 </aside>

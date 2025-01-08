@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" href="/images/logo.svg" type="image/png">
 
     <title>{{ config('app.name', 'Laravel') }} - @yield('title')</title>
     @vite(['resources/css/app.css', 'resources/js/charts/barChart.js', 'resources/js/charts/pieChart.js', 'resources/js/sidebar.js'])
@@ -55,13 +56,14 @@
                     'icon' => asset('images/profile.svg'),
                     'active' => request()->routeIs('profile'),
                 ],
-                [
-                    'title' => 'Logout',
-                    'url' => null,
-                    'icon' => asset('images/logout.svg'),
-                    'active' => false,
-                ],
+                // [
+                //     'title' => 'Logout',
+                //     'url' => '#',
+                //     'icon' => asset('images/logout.svg'),
+                //     'active' => false,
+                // ],
             ];
+
         @endphp
 
         <x-sidebar.sidebar :menus="$menus" :bottomMenus="$bottomMenus" />
@@ -220,6 +222,7 @@
             </div>
         </main>
     </div>
+
 </body>
 
 </html>

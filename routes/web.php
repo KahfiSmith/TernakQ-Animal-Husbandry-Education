@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 Route::get('/', [ArticleController::class, 'index'])->name('home');
 
@@ -13,10 +14,7 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-    Route::post('/logout', function () {
-        Auth::logout();
-        return redirect('/'); 
-    })->name('logout');
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
 Route::get('/content', [ArticleController::class, 'showAllCards'])->name('cards');
 Route::get('/content/{id}/articles', [ArticleController::class, 'showArticles'])->name('cards.articles');
