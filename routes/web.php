@@ -9,6 +9,18 @@ Route::get('/', [ArticleController::class, 'index'])->name('home');
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+Route::view('chicken-management', 'chicken-management')
+    ->middleware(['auth', 'verified'])
+    ->name('chicken-management');
+Route::view('cage-management', 'cage-management')
+    ->middleware(['auth', 'verified'])
+    ->name('cage-management');
+Route::view('food-management', 'food-management')
+    ->middleware(['auth', 'verified'])
+    ->name('food-management');
+Route::view('finance', 'finance')
+    ->middleware(['auth', 'verified'])
+    ->name('finance');
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])
