@@ -1,4 +1,4 @@
-<aside class="fixed top-0 left-0 h-full w-64 bg-polishedPine text-gray-100 shadow-lg border-r-2 border-white">
+<aside class="fixed top-0 left-0 h-full w-64 bg-polishedPine text-gray-100 shadow-lg border-r-2 border-[#3e8e7d]">
     <!-- Sidebar Header -->
     <div class="flex items-center justify-center h-16 bg-polishedPine">
         <img id="logo" src="{{ asset('images/logo.svg') }}" class="w-24 duration-1000 transition-all ease-in-out">
@@ -34,9 +34,9 @@
                 ],
                 [
                     'title' => 'Keuangan',
-                    'url' => route('finance'),
+                    'url' => route('finance-management'),
                     'icon' => asset('images/money.svg'),
-                    'active' => request()->routeIs('finance*'),
+                    'active' => request()->routeIs('finance-management*'),
                 ],
             ];
         @endphp

@@ -18,9 +18,9 @@ Route::view('cage-management', 'cage-management')
 Route::view('food-management', 'food-management')
     ->middleware(['auth', 'verified'])
     ->name('food-management');
-Route::view('finance', 'finance')
+Route::view('finance-management', 'finance-management')
     ->middleware(['auth', 'verified'])
-    ->name('finance');
+    ->name('finance-management');
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])
