@@ -19,7 +19,7 @@
                 <livewire:layout.navigation />
 
                 <!-- Page Content -->
-                <main class="lg:p-6">
+                <main class="lg:p-6 mt-16">
                     {{ $slot }}
                 </main>
                 

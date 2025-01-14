@@ -1,3 +1,5 @@
+@section('title', 'Dashboard TernakQ')
+
 <x-app-layout>
     <main class="gap-4 flex flex-col">
         <div class="flex gap-4 w-full justify-between">

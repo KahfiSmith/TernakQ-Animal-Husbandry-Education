@@ -5,9 +5,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <link rel="icon" href="/images/logo.svg" type="image/png">
-        <title>{{ config('app.name', 'Laravel') }} - @yield('title')</title>
-
-        <!-- Scripts -->
+        <title>@yield('title', config('app.name', 'Laravel'))</title>
+        @livewireStyles
         @vite(['resources/css/app.css'])
     </head>
     <body class="font-sans antialiased">
@@ -21,10 +20,11 @@
                 <livewire:layout.navigation />
 
                 <!-- Page Content -->
-                <main class="lg:p-6 bg-red-500">
-                    {{ $slot }}
+                <main class="lg:p-6 mt-16">
+                    @yield('content')
+
+                    @livewireScripts
                 </main>
-                
             </div>
         </div>
     </body>

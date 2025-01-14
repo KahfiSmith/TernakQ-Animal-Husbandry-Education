@@ -3,13 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\ChickenManagementController;
+use App\Livewire\PopupFormJumlahAyam;
 
 Route::get('/', [ArticleController::class, 'index'])->name('home');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
-Route::view('chicken-management', 'chicken-management')
+Route::get('/chicken-management', [ChickenManagementController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('chicken-management');
 Route::view('cage-management', 'cage-management')
