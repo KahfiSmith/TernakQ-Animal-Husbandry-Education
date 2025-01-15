@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ChickenManagementController;
-use App\Livewire\PopupFormJumlahAyam;
 
 Route::get('/', [ArticleController::class, 'index'])->name('home');
 

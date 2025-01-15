@@ -4,9 +4,9 @@
 
 @section('content')
     <main class="flex flex-col">
-        <div class="flex space-x-8 mb-4">
-            <div class="flex flex-col p-6 border-2 border-orangeCrayola rounded-lg bg-orangeCrayola/5 w-full cursor-pointer"
-            wire:click="openModal">
+        <div x-data="{ openModal: null }" class="flex gap-8 mb-4">
+            <div class="flex flex-col p-6 border-2 border-orangeCrayola rounded-lg bg-orangeCrayola/5 hover:bg-orangeCrayola/15 hover:shadow-lg transition duration-300 w-full cursor-pointer"
+            @click="openModal = 'jumlahAyam'">
                 <div class="mb-4 text-orangeCrayola text-2xl">
                     <div
                         class="w-14 h-14 text-orangeCrayola flex items-center justify-center border-2 border-orangeCrayola rounded-lg bg-orangeCrayola/15">
@@ -20,22 +20,23 @@
                     </span>
                 </div>
             </div>
-            @livewire('popup-form-jumlah-ayam')
-            <div
-                class="flex flex-col p-6 border-2 border-orangeCrayola rounded-lg bg-orangeCrayola/5 w-full cursor-pointer">
+            <div class="flex flex-col p-6 border-2 border-orangeCrayola rounded-lg bg-orangeCrayola/5 hover:bg-orangeCrayola/15 hover:shadow-lg transition duration-300 w-full cursor-pointer"
+            @click="openModal = 'harianAyam'">
                 <div class="mb-4 text-orangeCrayola text-2xl">
                     <div
                         class="w-14 h-14 text-orangeCrayola flex items-center justify-center border-2 border-orangeCrayola rounded-lg bg-orangeCrayola/15">
                         <i class="fa-solid fa-drumstick-bite text-3xl"></i>
                     </div>
                 </div>
-                <h3 class="font-semibold text-2xl text-orangeCrayola">Form Input Data Harian Ayam</h3>
+                <h3 class="font-semibold text-2xl text-orangeCrayola">Form Input Data Jumlah Ayam</h3>
                 <div class="mt-4">
                     <span class="py-2 px-4 rounded-lg bg-orangeCrayola/25 text-orangeCrayola font-semibold">
-                        24 Ekor Ayam Sakit dan Mati
+                        29 Ekor Ayam Masuk
                     </span>
                 </div>
             </div>
+            <x-popup-form-jumlah-ayam/>
+            <x-popup-form-harian-ayam/>
         </div>
         <h2 class="text-xl font-semibold mb-2">Data Jumlah Ayam</h2>
         <div class="bg-white p-6 rounded-lg shadow-md w-full mb-4">

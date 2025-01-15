@@ -23,9 +23,10 @@
                 <main class="lg:p-6 mt-16">
                     @yield('content')
 
-                    @livewireScripts
+                    
                 </main>
             </div>
         </div>
+        @livewireScripts
     </body>
 </html>
