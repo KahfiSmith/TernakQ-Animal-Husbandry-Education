@@ -1,4 +1,4 @@
-<div x-show="openModal === 'jumlahAyam'" class="fixed inset-0 flex items-center justify-center z-50 bg-black/15"
+<div x-show="openModal === 'jumlahAyam'" x-cloak class="fixed inset-0 flex items-center justify-center z-50 bg-black/15"
     x-transition>
     <div class="bg-white w-1/2 p-6 rounded-lg shadow-lg relative">
         <button @click="openModal = null"

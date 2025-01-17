@@ -1,5 +1,5 @@
 <!-- Modal untuk Form Input Data Harian Ayam -->
-<div x-show="openModal === 'harianAyam'" class="fixed inset-0 flex items-center justify-center z-50 bg-black/15" x-transition>
+<div x-show="openModal === 'harianAyam'" x-cloak class="fixed inset-0 flex items-center justify-center z-50 bg-black/15" x-transition>
     <div class="bg-white w-1/2 p-6 rounded-lg shadow-lg relative">
         
         <!-- Tombol Close -->
@@ -24,7 +24,7 @@
 
                 <!-- Tanggal -->
                 <div>
-                    <x-input-label for="dailyDate" :value="__('Tanggal')" />
+                    <x-input-label for="dailyDate" :value="__('Tanggal Input')" />
                     <x-text-input id="dailyDate" name="dailyDate" type="date" class="block mt-1 w-full" required />
                 </div>
 
