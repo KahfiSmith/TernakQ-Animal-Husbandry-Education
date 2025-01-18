@@ -37,3 +37,7 @@ body::-webkit-scrollbar-track {
 .menu-text.hidden {
   @apply opacity-0 pointer-events-none; 
 }
+
+[x-cloak] {
+  @apply hidden;
+}
