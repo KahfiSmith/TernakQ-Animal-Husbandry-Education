@@ -6,26 +6,36 @@
         <ul class="flex flex-row space-x-7 text-base font-medium">
             <li>
                 <a href="#beranda"
-                    class="text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">Beranda</a>
+                   class="nav-link text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">
+                   Beranda
+                </a>
             </li>
             <li>
                 <a href="#article"
-                    class="text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">Artikel</a>
+                   class="nav-link text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">
+                   Artikel
+                </a>
             </li>
             <li>
                 <a href="#forum"
-                    class="text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">Forum</a>
+                   class="nav-link text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">
+                   Forum
+                </a>
             </li>
             <li>
                 <a href="#about-us"
-                    class="text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">Tentang
-                    Kami</a>
+                   class="nav-link text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">
+                   Tentang Kami
+                </a>
             </li>
             <li>
                 <a href="#faq"
-                    class="text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">FAQ</a>
+                   class="nav-link text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">
+                   FAQ
+                </a>
             </li>
         </ul>
+        
         <div class="flex items-center space-x-6">
             <a href="{{ route('login') }}" wire:navigate>
                 <x-primary-button class="ring-2 ring-gray-700 hover:bg-pewterBlue bg-transparent">Masuk
