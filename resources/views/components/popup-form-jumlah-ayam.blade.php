@@ -6,7 +6,7 @@
             <i class="fa-solid fa-xmark"></i>
         </button>
         <h2 class="text-2xl font-semibold mb-4">Form Input Data Populasi Ayam</h2>
-        <form method="POST" action="#">
+        <form method="POST" action="{{ route('populasi.store') }}">
             @csrf
             <div class="space-y-4 mb-8">
                 <div>

@@ -12,11 +12,8 @@ Route::view('dashboard', 'dashboard')
     ->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    // Route Populasi Ayam
     Route::get('/populasi', [PopulasiHarianController::class, 'indexPopulasi'])->name('populasi.index');
     Route::post('/populasi', [PopulasiHarianController::class, 'storePopulasi'])->name('populasi.store');
-
-    // Route Data Harian Ayam
     Route::get('/harian/{id}', [PopulasiHarianController::class, 'showHarian'])->name('harian.show');
     Route::post('/harian', [PopulasiHarianController::class, 'storeHarian'])->name('harian.store');
 });
