@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\ChickenManagementController;
+use App\Http\Controllers\PopulasiHarianController;
 
 Route::get('/', [ArticleController::class, 'index'])->name('home');
 
@@ -12,14 +12,11 @@ Route::view('dashboard', 'dashboard')
     ->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/populasi', [PopulasiHarianController::class, 'indexPopulasi'])->name('populasi.index');
+    Route::get('/chicken-management', [PopulasiHarianController::class, 'indexChickenManagement'])->name('chicken-management');
     Route::post('/populasi', [PopulasiHarianController::class, 'storePopulasi'])->name('populasi.store');
-    Route::get('/harian/{id}', [PopulasiHarianController::class, 'showHarian'])->name('harian.show');
     Route::post('/harian', [PopulasiHarianController::class, 'storeHarian'])->name('harian.store');
 });
-Route::view('chicken-management', 'chicken-management')
-    ->middleware(['auth', 'verified'])
-    ->name('chicken-management');
+
 Route::view('cage-management', 'cage-management')
     ->middleware(['auth', 'verified'])
     ->name('cage-management');
