@@ -17,7 +17,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/harian', [PopulasiHarianController::class, 'storeHarian'])->name('harian.store');
     Route::delete('/populasi/{id}', [PopulasiHarianController::class, 'destroyPopulasi'])->name('populasi.destroy');
     Route::delete('/harian/{id}', [PopulasiHarianController::class, 'destroyHarian'])->name('harian.destroy');
-    Route::put('/populasi/{id}', [PopulasiHarianController::class, 'update'])->name('populasi.update');
+    Route::put('/populasi/{id}', [PopulasiHarianController::class, 'updatePopulasi'])->name('populasi.update');
+    Route::put('/harian/{id}', [PopulasiHarianController::class, 'updateHarian'])->name('harian.update');
 });
 
 Route::view('cage-management', 'cage-management')
