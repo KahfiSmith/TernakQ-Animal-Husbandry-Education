@@ -106,12 +106,12 @@
                                         <button
                                             class="edit-btn-populasi px-3 py-3 rounded text-xs font-semibold bg-blue-100 text-blue-700 flex justify-center items-center w-12 h-12 cursor-pointer"
                                             @click="openModal = 'editJumlahAyam'; editData = { 
-                                            id: {{ $item->id }}, 
-                                            kode_batch: '{{ addslashes($item->kode_batch) }}', 
-                                            nama_batch: '{{ addslashes($item->nama_batch) }}', 
-                                            tanggal_doc: '{{ \Carbon\Carbon::parse($item->tanggal_doc)->format('Y-m-d') }}', 
-                                            jumlah_ayam_masuk: {{ $item->jumlah_ayam_masuk }} 
-                                        };">
+                                                id: {{ $item->id }}, 
+                                                batchCodeSuffix: '{{ substr($item->kode_batch, 6) }}', // Mengambil suffix
+                                                nama_batch: '{{ addslashes($item->nama_batch) }}', 
+                                                tanggal_doc: '{{ \Carbon\Carbon::parse($item->tanggal_doc)->format('Y-m-d') }}', 
+                                                jumlah_ayam_masuk: {{ $item->jumlah_ayam_masuk }} 
+                                            };">
                                             <i class="fa-solid fa-pen-to-square text-lg"></i>
                                         </button>
                                         <button type="button"
@@ -167,15 +167,15 @@
                                         <button
                                             class="edit-btn-harian px-3 py-3 rounded text-xs font-semibold bg-blue-100 text-blue-700 flex justify-center items-center w-12 h-12 cursor-pointer"
                                             @click="
-        openModal = 'editHarianAyam'; 
-        editData = { 
-            id: {{ $item->id }}, 
-            id_populasi: {{ $item->id_populasi }}, 
-            tanggal_input: '{{ \Carbon\Carbon::parse($item->tanggal_input)->format('Y-m-d') }}', 
-            jumlah_ayam_sakit: {{ $item->jumlah_ayam_sakit }}, 
-            jumlah_ayam_mati: {{ $item->jumlah_ayam_mati }} 
-        };
-        console.log('Edit Harian Ayam Data:', editData);">
+                                            openModal = 'editHarianAyam'; 
+                                            editData = { 
+                                                id: {{ $item->id }}, 
+                                                id_populasi: {{ $item->id_populasi }}, 
+                                                tanggal_input: '{{ \Carbon\Carbon::parse($item->tanggal_input)->format('Y-m-d') }}', 
+                                                jumlah_ayam_sakit: {{ $item->jumlah_ayam_sakit }}, 
+                                                jumlah_ayam_mati: {{ $item->jumlah_ayam_mati }} 
+                                            };
+                                            ">
                                             <i class="fa-solid fa-pen-to-square text-lg"></i>
                                         </button>
                                         <button type="button"
@@ -211,23 +211,20 @@
                 openModal: null,
                 editData: {},
 
-                submitEdit() {
-                    const actionUrl = `/populasi/${this.editData.id}`;
-                    const data = {
-                        kode_batch: this.editData.kode_batch,
-                        nama_batch: this.editData.nama_batch,
-                        tanggal_doc: this.editData.tanggal_doc,
-                        jumlah_ayam_masuk: this.editData.jumlah_ayam_masuk
-                    };
+                submitEdit(event) {
+                // Membuat form data
+                const formData = new FormData();
+                formData.append('_method', 'PUT');
+                formData.append('_token', '{{ csrf_token() }}');
+                formData.append('batchCodeSuffix', this.editData.batchCodeSuffix);
+                formData.append('nama_batch', this.editData.nama_batch);
+                formData.append('tanggal_doc', this.editData.tanggal_doc);
+                formData.append('jumlah_ayam_masuk', this.editData.jumlah_ayam_masuk);
 
-                    fetch(actionUrl, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            'Accept': 'application/json',
-                        },
-                        body: JSON.stringify(data)
+                // Mengirim data ke server menggunakan Fetch API
+                fetch(`/populasi/${this.editData.id}`, {
+                        method: 'POST', // Laravel menggunakan metode POST dengan _method override
+                        body: formData,
                     })
                     .then(response => {
                         if (response.status === 422) {
@@ -257,7 +254,7 @@
                         toastr.error(error.message || 'Terjadi kesalahan server.', "Error");
                         console.error('Error:', error);
                     });
-                },
+            },
 
                 submitEditHarian() {
                     const actionUrl = `/harian/${this.editData.id}`;
@@ -306,7 +303,15 @@
                             toastr.error(error.message || 'Terjadi kesalahan server.', "Error");
                             console.error('Error:', error);
                         });
-                }
+                },
+
+                init() {
+                    this.$watch('editData.batchCodeSuffix', value => {
+                        // Membatasi hanya 3 digit angka
+                        this.editData.batchCodeSuffix = value.replace(/[^0-9]/g, '').slice(0,
+                        3);
+                    });
+                },
 
             }));
         });

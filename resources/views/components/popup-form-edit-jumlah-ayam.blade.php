@@ -1,4 +1,6 @@
 <!-- resources/views/components/popup-form-edit-jumlah-ayam.blade.php -->
+@props(['editData']) <!-- Mendefinisikan props 'editData' -->
+
 <div
     x-show="openModal === 'editJumlahAyam'"
     x-cloak
@@ -19,24 +21,31 @@
         <form 
             id="editBatchForm" 
             method="POST" 
-            :action="`{{ url('/populasi') }}/${editData.id}`" 
             @submit.prevent="submitEdit"
         >
             @csrf
             @method('PUT') <!-- Menetapkan metode HTTP ke PUT untuk update -->
 
             <div class="space-y-4 mb-8">
-                <!-- Input Kode Batch -->
+                <!-- Input Kode Batch (Static "BATCH-" dan Editable Suffix) -->
                 <div>
-                    <x-input-label for="batchCode" :value="__('Kode Batch')" />
-                    <x-text-input 
-                        id="batchCode" 
-                        name="batchCode" 
-                        type="text"
-                        class="block mt-1 w-full cursor-text py-2.5" 
-                        required 
-                        x-model="editData.kode_batch" 
-                    />
+                    <x-input-label for="batchCodeSuffix" :value="__('Kode Batch')" />
+                    <div class="flex">
+                        <span class="flex items-center px-3 bg-gray-200 text-gray-700 border border-r-0 border-gray-300 rounded-l-md">
+                            BATCH-
+                        </span>
+                        <x-text-input 
+                            id="batchCodeSuffix" 
+                            name="batchCodeSuffix" 
+                            type="text"
+                            class="flex-1 block mt-1 w-full py-2.5 border border-gray-300 rounded-r-md"
+                            required 
+                            pattern="\d{3}" 
+                            title="Masukkan 3 digit angka"
+                            x-model="editData.batchCodeSuffix" 
+                            placeholder="001"
+                        />
+                    </div>
                 </div>
 
                 <!-- Input Nama Batch -->
@@ -91,53 +100,3 @@
         </form>
     </div>
 </div>
-
-<script>
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('harianHandler', () => ({
-            openModal: null,
-            editData: {},
-
-            submitEdit() {
-                const actionUrl = `/populasi/${this.editData.id}`;
-                const data = {
-                    kode_batch: this.editData.kode_batch,
-                    nama_batch: this.editData.nama_batch,
-                    tanggal_doc: this.editData.tanggal_doc,
-                    jumlah_ayam_masuk: this.editData.jumlah_ayam_masuk
-                };
-
-                fetch(actionUrl, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json',
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(response => {
-                    if (response.status === 422) {
-                        return response.json().then(data => {
-                            throw new Error(Object.values(data.errors).flat().join(' '));
-                        });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.success) {
-                        toastr.success(data.message, "Success");
-                        this.openModal = null;
-                        location.reload();
-                    } else {
-                        toastr.error(data.message, "Error");
-                    }
-                })
-                .catch(error => {
-                    toastr.error(error.message || 'Terjadi kesalahan server.', "Error");
-                    console.error('Error:', error);
-                });
-            }
-        }));
-    });
-</script>

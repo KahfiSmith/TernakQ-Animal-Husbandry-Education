@@ -133,50 +133,54 @@ class PopulasiHarianController extends Controller
     }
 
     public function updatePopulasi(Request $request, $id)
-    {
-        try {
-            // Validasi input
-            $validated = $request->validate([
-                'kode_batch' => 'required|string|max:255',
-                'nama_batch' => 'required|string|max:255',
-                'tanggal_doc' => 'required|date',
-                'jumlah_ayam_masuk' => 'required|integer|min:0',
-            ]);
+{
+    try {
+        // Validasi input, termasuk batchCodeSuffix
+        $validated = $request->validate([
+            'batchCodeSuffix' => 'required|digits:3', // Validasi untuk suffix
+            'nama_batch' => 'required|string|max:255',
+            'tanggal_doc' => 'required|date',
+            'jumlah_ayam_masuk' => 'required|integer|min:0',
+        ]);
 
-            // Cari Populasi Ayam berdasarkan ID
-            $populasi = PopulasiAyam::findOrFail($id);
+        // Cari Populasi Ayam berdasarkan ID
+        $populasi = PopulasiAyam::findOrFail($id);
 
-            // Update data
-            $populasi->update([
-                'kode_batch' => $validated['kode_batch'],
-                'nama_batch' => $validated['nama_batch'],
-                'tanggal_doc' => $validated['tanggal_doc'],
-                'jumlah_ayam_masuk' => $validated['jumlah_ayam_masuk'],
-            ]);
+        // Menggabungkan prefix dan suffix untuk batchCode
+        $batchCode = 'BATCH-' . $validated['batchCodeSuffix'];
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Data Populasi Ayam berhasil diperbarui.'
-            ]);
+        // Update data
+        $populasi->update([
+            'kode_batch' => $batchCode, // Menggunakan batchCode yang telah digabungkan
+            'nama_batch' => $validated['nama_batch'],
+            'tanggal_doc' => $validated['tanggal_doc'],
+            'jumlah_ayam_masuk' => $validated['jumlah_ayam_masuk'],
+        ]);
 
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            // Tangani kesalahan validasi
-            return response()->json([
-                'success' => false,
-                'message' => 'Validasi gagal.',
-                'errors' => $e->errors(),
-            ], 422);
-        } catch (\Exception $e) {
-            // Log error
-            Log::error('Gagal memperbarui Populasi Ayam: ' . $e->getMessage());
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Populasi Ayam berhasil diperbarui.'
+        ]);
 
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan saat memperbarui data.'
-            ], 500);
-        }
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        // Tangani kesalahan validasi
+        return response()->json([
+            'success' => false,
+            'message' => 'Validasi gagal.',
+            'errors' => $e->errors(),
+        ], 422);
+    } catch (\Exception $e) {
+        // Log error
+        Log::error('Gagal memperbarui Populasi Ayam: ' . $e->getMessage());
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Terjadi kesalahan saat memperbarui data.'
+        ], 500);
     }
+}
 
+    
     public function updateHarian(Request $request, $id)
     {
         try {
