@@ -7,6 +7,7 @@ use App\Models\HarianAyam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PopulasiHarianController extends Controller
 {      
@@ -39,14 +40,18 @@ class PopulasiHarianController extends Controller
     {
         try {
             $request->validate([
-                'batchCode' => 'required|unique:populasi_ayam,kode_batch',
+                // Ubah validasi menjadi alpha_num dan size:3 agar dapat menerima huruf dan angka, dengan panjang tepat 3 karakter
+                'batchCodeSuffix' => 'required|alpha_num|size:3|unique:populasi_ayam,kode_batch',
                 'batchName' => 'required|string|max:255',
                 'docDate' => 'required|date',
                 'chickenQuantity' => 'required|integer|min:1',
             ]);
 
+            // Gabungkan prefix "BATCH-" dengan suffix (ubah ke uppercase agar konsisten)
+            $batchCode = 'BATCH-' . strtoupper($request->batchCodeSuffix);
+
             PopulasiAyam::create([
-                'kode_batch' => $request->batchCode,
+                'kode_batch' => $batchCode,
                 'nama_batch' => $request->batchName,
                 'tanggal_doc' => $request->docDate,
                 'jumlah_ayam_masuk' => $request->chickenQuantity,
@@ -66,6 +71,7 @@ class PopulasiHarianController extends Controller
             ]);
         }
     }
+
 
     public function storeHarian(Request $request)
     {
@@ -133,53 +139,54 @@ class PopulasiHarianController extends Controller
     }
 
     public function updatePopulasi(Request $request, $id)
-{
-    try {
-        // Validasi input, termasuk batchCodeSuffix
-        $validated = $request->validate([
-            'batchCodeSuffix' => 'required|digits:3', // Validasi untuk suffix
-            'nama_batch' => 'required|string|max:255',
-            'tanggal_doc' => 'required|date',
-            'jumlah_ayam_masuk' => 'required|integer|min:0',
-        ]);
-
-        // Cari Populasi Ayam berdasarkan ID
-        $populasi = PopulasiAyam::findOrFail($id);
-
-        // Menggabungkan prefix dan suffix untuk batchCode
-        $batchCode = 'BATCH-' . $validated['batchCodeSuffix'];
-
-        // Update data
-        $populasi->update([
-            'kode_batch' => $batchCode, // Menggunakan batchCode yang telah digabungkan
-            'nama_batch' => $validated['nama_batch'],
-            'tanggal_doc' => $validated['tanggal_doc'],
-            'jumlah_ayam_masuk' => $validated['jumlah_ayam_masuk'],
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Data Populasi Ayam berhasil diperbarui.'
-        ]);
-
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        // Tangani kesalahan validasi
-        return response()->json([
-            'success' => false,
-            'message' => 'Validasi gagal.',
-            'errors' => $e->errors(),
-        ], 422);
-    } catch (\Exception $e) {
-        // Log error
-        Log::error('Gagal memperbarui Populasi Ayam: ' . $e->getMessage());
-
-        return response()->json([
-            'success' => false,
-            'message' => 'Terjadi kesalahan saat memperbarui data.'
-        ], 500);
+    {
+        try {
+            // Validasi input, termasuk batchCodeSuffix (alfanumerik, tepat 3 karakter)
+            $validated = $request->validate([
+                'batchCodeSuffix' => 'required|alpha_num|size:3', // Mengizinkan huruf dan angka, tepat 3 karakter
+                'nama_batch' => 'required|string|max:255',
+                'tanggal_doc' => 'required|date',
+                'jumlah_ayam_masuk' => 'required|integer|min:0',
+                'status_ayam' => 'required|in:Proses,Siap Panen,Sudah Panen',
+            ]);
+    
+            // Cari Populasi Ayam berdasarkan ID
+            $populasi = PopulasiAyam::findOrFail($id);
+    
+            // Menggabungkan prefix dan suffix untuk batchCode, ubah suffix ke uppercase agar konsisten
+            $batchCode = 'BATCH-' . strtoupper($validated['batchCodeSuffix']);
+    
+            // Update data
+            $populasi->update([
+                'kode_batch' => $batchCode, // Menggunakan batchCode yang telah digabungkan
+                'nama_batch' => $validated['nama_batch'],
+                'tanggal_doc' => $validated['tanggal_doc'],
+                'jumlah_ayam_masuk' => $validated['jumlah_ayam_masuk'],
+                'status_ayam' => $validated['status_ayam'],
+            ]);
+    
+            return response()->json([
+                'success' => true,
+                'message' => 'Data Populasi Ayam berhasil diperbarui.'
+            ]);
+    
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Tangani kesalahan validasi
+            return response()->json([
+                'success' => false,
+                'message' => 'Validasi gagal.',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Exception $e) {
+            // Log error
+            Log::error('Gagal memperbarui Populasi Ayam: ' . $e->getMessage());
+    
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan saat memperbarui data.'
+            ], 500);
+        }
     }
-}
-
     
     public function updateHarian(Request $request, $id)
     {
@@ -230,4 +237,21 @@ class PopulasiHarianController extends Controller
         }
     }
 
-}
+    public function cetak($id)
+    {
+        try {
+            // Ambil data populasi ayam dan data harian ayam terkait
+            $populasi = PopulasiAyam::with('harianAyam')->findOrFail($id);
+
+            // Load tampilan untuk PDF
+            $pdf = Pdf::loadView('cetak.laporan-populasi', compact('populasi'));
+
+            // Unduh PDF dengan nama file yang sesuai
+            return $pdf->download("Laporan_Manajemen_Ayam_{$populasi->kode_batch}.pdf");
+
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal mencetak laporan.');
+        }
+    }
+
+}   
