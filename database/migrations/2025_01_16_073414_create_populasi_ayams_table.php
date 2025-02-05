@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('populasi_ayam', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->foreignId('kandang_id')->nullable()->constrained('kandang_ayam')->onDelete('cascade');
             $table->string('kode_batch')->unique();
             $table->string('nama_batch');
             $table->date('tanggal_doc');
@@ -22,12 +23,8 @@ return new class extends Migration
         });
     }
 
-
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('populasi_ayams');
+        Schema::dropIfExists('populasi_ayam');
     }
 };

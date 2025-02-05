@@ -102,5 +102,3 @@ body::-webkit-scrollbar-track {
 .toast-warning .toast-icon {
   @apply text-yellow-500 !important; /* Ikon kuning untuk warning */
 }
-
-

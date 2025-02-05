@@ -20,15 +20,12 @@ return new class extends Migration
             $table->integer('jumlah_ayam_sakit');
             $table->timestamps();
 
-            $table->foreign('id_populasi')->references('id')->on('populasi_ayam')->onDelete('cascade');
+            $table->foreignId('id_populasi')->constrained('populasi_ayam')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::dropIfExists('harian_ayams');
+        Schema::dropIfExists('harian_ayam');
     }
 };
