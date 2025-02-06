@@ -14,8 +14,8 @@
 
 <body class="antialiased">
     <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-cosmicLatte">
-        <div class="w-full sm:max-w-md mt-6 px-6 py-12 bg-white overflow-hidden sm:rounded-lg ring-2 ring-gray-700">
-            <div class="flex flex-col justify-center items-center mb-10 space-y-2">
+        <div class="w-full sm:max-w-md mt-6 px-6 py-8 bg-white overflow-hidden sm:rounded-lg ring-2 ring-gray-700">
+            <div class="flex flex-col justify-center items-center mb-6 space-y-2">
                 <a href="/" wire:navigate>
                     <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
                 </a>

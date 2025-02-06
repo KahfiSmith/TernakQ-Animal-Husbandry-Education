@@ -15,16 +15,16 @@
                     'active' => request()->routeIs('dashboard*'),
                 ],
                 [
-                    'title' => 'Manajemen Ayam',
-                    'url' => route('chicken-management'),
-                    'icon' => asset('images/chicken.svg'),
-                    'active' => request()->routeIs('chicken-management*'),
-                ],
-                [
                     'title' => 'Manajemen Kandang',
                     'url' => route('cage-management'),
                     'icon' => asset('images/cage.svg'),
                     'active' => request()->routeIs('cage-management*'),
+                ],
+                [
+                    'title' => 'Manajemen Ayam',
+                    'url' => route('chicken-management'),
+                    'icon' => asset('images/chicken.svg'),
+                    'active' => request()->routeIs('chicken-management*'),
                 ],
                 [
                     'title' => 'Manajemen Pakan',

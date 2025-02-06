@@ -6,7 +6,7 @@
     </x-slot>
 
     <div>
-        <div class="max-w-7xl mx-auto6 space-y-7">
+        <div class="w-full mx-auto space-y-7">
             <div class="p-4 sm:p-6 bg-white shadow sm:rounded-lg ring-2 ring-gray-700">
                 <div class="max-w-xl">
                     <livewire:profile.update-profile-information-form />
