@@ -4,12 +4,20 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\PopulasiHarianController;
+use App\Http\Controllers\KandangAyamController;
 
 Route::get('/', [ArticleController::class, 'index'])->name('home');
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/cage-management', [KandangAyamController::class, 'indexKandangManagement'])->name('cage-management');
+    Route::post('/kandang', [KandangAyamController::class, 'storeKandang'])->name('kandang.store');
+    Route::put('/kandang/{id}', [KandangAyamController::class, 'updateKandang'])->name('kandang.update');
+    Route::delete('/kandang/{id}', [KandangAyamController::class, 'destroyKandang'])->name('kandang.destroy');
+});
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/chicken-management', [PopulasiHarianController::class, 'indexChickenManagement'])->name('chicken-management');
@@ -22,9 +30,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/populasi/{id}/cetak', [PopulasiHarianController::class, 'cetak'])->name('populasi.cetak');
 });
 
-Route::view('cage-management', 'cage-management')
-    ->middleware(['auth', 'verified'])
-    ->name('cage-management');
 Route::view('food-management', 'food-management')
     ->middleware(['auth', 'verified'])
     ->name('food-management');

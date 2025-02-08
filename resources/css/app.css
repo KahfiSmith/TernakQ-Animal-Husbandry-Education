@@ -55,14 +55,6 @@ body::-webkit-scrollbar-track {
   @apply bg-white text-red-700 border-l-4 border-red-500 !important; /* Styling untuk error */
 }
 
-.toast-info {
-  @apply bg-white text-blue-700 border-l-4 border-blue-500 !important; /* Styling untuk info */
-}
-
-.toast-warning {
-  @apply bg-white text-yellow-700 border-l-4 border-yellow-500 !important; /* Styling untuk warning */
-}
-
 .progress-bar-custom {
   @apply h-1 absolute bottom-0 left-0 w-full !important; /* Styling progress bar */
 }
@@ -75,14 +67,6 @@ body::-webkit-scrollbar-track {
   @apply bg-red-500 !important; /* Progress bar merah untuk error */
 }
 
-.toast-info .progress-bar-custom {
-  @apply bg-blue-500 !important; /* Progress bar biru untuk info */
-}
-
-.toast-warning .progress-bar-custom {
-  @apply bg-yellow-500 !important; /* Progress bar kuning untuk warning */
-}
-
 .toast-custom .toast-icon {
   @apply text-xl !important; /* Styling default ikon */
 }
@@ -93,12 +77,4 @@ body::-webkit-scrollbar-track {
 
 .toast-error .toast-icon {
   @apply text-red-500 !important;
-}
-
-.toast-info .toast-icon {
-  @apply text-blue-500 !important; /* Ikon biru untuk info */
-}
-
-.toast-warning .toast-icon {
-  @apply text-yellow-500 !important; /* Ikon kuning untuk warning */
 }

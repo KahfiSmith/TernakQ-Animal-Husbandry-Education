@@ -4,7 +4,7 @@
     <main class="gap-4 flex flex-col">
         <div class="flex gap-4 w-full justify-between">
             <div class="flex flex-col justify-between w-full space-y-4">
-                <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center w-full space-y-6">
+                <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center w-full space-y-6 ring-2 ring-gray-700">
                     <div class="flex justify-between w-full items-center">
                         <div class="flex flex-col space-y-1">
                             <h3 class="text-md font-semibold text-gray-500 uppercase tracking-wide">Jumlah Kandang
@@ -27,7 +27,7 @@
                     </div>
                 </div>
 
-                <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center w-full space-y-6">
+                <div class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center w-full space-y-6 ring-2 ring-gray-700">
                     <div class="flex justify-between w-full items-center">
                         <div class="flex flex-col space-y-1">
                             <h3 class="text-md font-semibold text-gray-500 uppercase tracking-wide">Angka Kematian
@@ -51,17 +51,17 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-white p-6 rounded-md shadow-sm w-3/4">
+            <div class="bg-white p-6 rounded-md shadow-sm w-3/4 ring-2 ring-gray-700">
                 <h2 class="text-lg font-semibold mb-2">Manajemen Ayam Bulanan</h2>
                 <canvas id="myBarChart" class="w-full h-64"></canvas>
             </div>
         </div>
         <div class="flex gap-4 w-full">
-            <div class="bg-white p-6 rounded-md shadow-sm w-1/3">
+            <div class="bg-white p-6 rounded-md shadow-sm w-1/3 ring-2 ring-gray-700">
                 <h2 class="text-lg font-semibold mb-2">Manajemen Ayam Harian</h2>
                 <canvas id="myPieChart" class="w-full h-64"></canvas>
             </div>
-            <div class="bg-white p-6 rounded-lg shadow-md w-full">
+            <div class="bg-white p-6 rounded-lg shadow-md w-full ring-2 ring-gray-700">
                 <h2 class="text-lg font-semibold mb-4">Manajemen Ayam</h2>
                 <div class="overflow-x-auto">
                     <table class="w-full text-center border-collapse">
