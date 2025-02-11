@@ -97,7 +97,7 @@ new #[Layout('layouts.guest')] class extends Component
         </div>
 
         <div class="flex items-center justify-end mt-4 py-2.5">
-            <x-primary-button>
+            <x-primary-button class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] text-white hover:shadow-[2px_2px_0px_2px_#374151] hover:translate-y-0.5 hover:translate-x-0.5 w-full text-center bg-orangeCrayola py-2.5">
                 {{ __('Reset Password') }}
             </x-primary-button>
         </div>
