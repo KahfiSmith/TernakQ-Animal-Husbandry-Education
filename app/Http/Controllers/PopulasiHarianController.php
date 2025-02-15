@@ -4,29 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Models\PopulasiAyam;
 use App\Models\HarianAyam;
+use App\Models\KandangAyam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
+
 
 class PopulasiHarianController extends Controller
 {      
     public function indexChickenManagement(Request $request)
     {
         try {
-            // Tangkap parameter query string untuk paginasi
             $populasiPage = $request->get('populasi_page', 1);
             $harianPage = $request->get('harian_page', 1);
-
-            // Paginasi dengan appends
-            $populasi = PopulasiAyam::latest()->paginate(5, ['*'], 'populasi_page', $populasiPage);
+    
+            $populasi = PopulasiAyam::with('kandang')  
+                ->latest()
+                ->paginate(5, ['*'], 'populasi_page', $populasiPage);
+    
             $harian = HarianAyam::latest()->paginate(5, ['*'], 'harian_page', $harianPage);
-
-            // Data untuk dropdown
+    
             $batches = PopulasiAyam::all();
-
-            // Return view dengan data
-            return view('chicken-management', compact('populasi', 'harian', 'batches'));
+            $kandang = KandangAyam::where('status_kandang', 'Aktif')->get(); 
+    
+            return view('chicken-management', compact('populasi', 'harian', 'batches', 'kandang'));
         } catch (\Exception $e) {
             Log::error('Gagal memuat data: ' . $e->getMessage());
             return redirect()->back()->with([
@@ -45,7 +47,21 @@ class PopulasiHarianController extends Controller
                 'batchName' => 'required|string|max:255',
                 'docDate' => 'required|date',
                 'chickenQuantity' => 'required|integer|min:1',
+                'kandang_id' => 'required|exists:kandang_ayam,id'
             ]);
+
+            $kandang = KandangAyam::findOrFail($request->kandang_id);
+
+            // Hitung jumlah ayam yang sudah ada di kandang
+            $totalAyamDiKandang = PopulasiAyam::where('kandang_id', $kandang->id)->sum('jumlah_ayam_masuk');
+
+            // Validasi agar jumlah ayam yang akan ditambahkan tidak melebihi kapasitas kandang
+            if ($totalAyamDiKandang + $request->chickenQuantity > $kandang->kapasitas) {
+                return redirect()->back()->with(
+                    'error',
+                    'Jumlah ayam yang ingin ditambahkan melebihi kapasitas kandang.'
+                );
+            }
 
             // Gabungkan prefix "BATCH-" dengan suffix (ubah ke uppercase agar konsisten)
             $batchCode = 'BATCH-' . strtoupper($request->batchCodeSuffix);
@@ -56,22 +72,16 @@ class PopulasiHarianController extends Controller
                 'tanggal_doc' => $request->docDate,
                 'jumlah_ayam_masuk' => $request->chickenQuantity,
                 'status_ayam' => 'Proses',
+                'kandang_id' => $kandang->id, 
             ]);
 
-            return redirect()->route('chicken-management')->with([
-                'status' => 'success',
-                'message' => 'Data Populasi Ayam berhasil disimpan.',
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Gagal menyimpan data populasi ayam: ' . $e->getMessage());
+            return redirect()->back()->with('success', 'Data Populasi Ayam berhasil disimpan.');
+    } catch (\Exception $e) {
+        Log::error('Gagal menyimpan data populasi ayam: ' . $e->getMessage());
 
-            return redirect()->route('chicken-management')->with([
-                'status' => 'error',
-                'message' => 'Terjadi kesalahan saat menyimpan data populasi ayam.',
-            ]);
-        }
+        return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui data.');
     }
-
+    }
 
     public function storeHarian(Request $request)
     {
@@ -83,26 +93,49 @@ class PopulasiHarianController extends Controller
                 'deadChicken' => 'required|integer|min:0',
             ]);
 
+            $populasi = PopulasiAyam::findOrFail($request->dailyBatchName);
+
+                // Hitung total ayam sakit & mati yang sudah tercatat di batch ini
+            $totalMatiSebelumnya = HarianAyam::where('id_populasi', $populasi->id)->sum('jumlah_ayam_mati');
+            $totalSakitSebelumnya = HarianAyam::where('id_populasi', $populasi->id)->sum('jumlah_ayam_sakit');
+
+            // Hitung total ayam mati & sakit setelah input baru
+            $totalMatiBaru = $totalMatiSebelumnya + $request->deadChicken;
+            $totalSakitBaru = $totalSakitSebelumnya + $request->sickChicken;
+            $totalKeseluruhan = $totalMatiBaru + $totalSakitBaru;
+
+            // **Validasi jumlah ayam sakit + mati tidak boleh melebihi jumlah ayam dalam batch**
+            if ($totalKeseluruhan > $populasi->jumlah_ayam_masuk) {
+                return redirect()->back()->with(
+                    'error',
+                    'Jumlah ayam sakit dan mati melebihi jumlah ayam dalam batch ini.',
+                );
+            }
+
+            // Simpan data harian ayam
             HarianAyam::create([
-                'id_populasi' => $request->dailyBatchName,
-                'nama_batch' => PopulasiAyam::find($request->dailyBatchName)->nama_batch,
+                'id_populasi' => $populasi->id,
+                'nama_batch' => $populasi->nama_batch,
                 'tanggal_input' => $request->dailyDate,
                 'jumlah_ayam_sakit' => $request->sickChicken,
                 'jumlah_ayam_mati' => $request->deadChicken,
             ]);
 
-            return redirect()->route('chicken-management')->with([
-                'status' => 'success',
-                'message' => 'Data Harian Ayam berhasil disimpan.',
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Gagal menyimpan data harian ayam: ' . $e->getMessage());
+            // Jika semua ayam mati, ubah status batch ke `Sudah Panen`
+            if ($totalMatiBaru == $populasi->jumlah_ayam_masuk) {
+                $populasi->update(['status_ayam' => 'Sudah Panen']);
+            }
 
-            return redirect()->route('chicken-management')->with([
-                'status' => 'error',
-                'message' => 'Terjadi kesalahan saat menyimpan data harian ayam.',
-            ]);
-        }
+            return redirect()->back()->with('success', 'Data Harian Ayam berhasil disimpan.');
+
+        
+
+    } catch (\Exception $e) {
+        Log::error('Gagal menyimpan data harian ayam: ' . $e->getMessage());
+
+        return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui data.');
+    }
+        
     }
 
     public function destroyPopulasi($id)
@@ -139,54 +172,50 @@ class PopulasiHarianController extends Controller
     }
 
     public function updatePopulasi(Request $request, $id)
-    {
-        try {
-            // Validasi input, termasuk batchCodeSuffix (alfanumerik, tepat 3 karakter)
-            $validated = $request->validate([
-                'batchCodeSuffix' => 'required|alpha_num|size:3', // Mengizinkan huruf dan angka, tepat 3 karakter
-                'nama_batch' => 'required|string|max:255',
-                'tanggal_doc' => 'required|date',
-                'jumlah_ayam_masuk' => 'required|integer|min:0',
-                'status_ayam' => 'required|in:Proses,Siap Panen,Sudah Panen',
-            ]);
-    
-            // Cari Populasi Ayam berdasarkan ID
-            $populasi = PopulasiAyam::findOrFail($id);
-    
-            // Menggabungkan prefix dan suffix untuk batchCode, ubah suffix ke uppercase agar konsisten
-            $batchCode = 'BATCH-' . strtoupper($validated['batchCodeSuffix']);
-    
-            // Update data
-            $populasi->update([
-                'kode_batch' => $batchCode, // Menggunakan batchCode yang telah digabungkan
-                'nama_batch' => $validated['nama_batch'],
-                'tanggal_doc' => $validated['tanggal_doc'],
-                'jumlah_ayam_masuk' => $validated['jumlah_ayam_masuk'],
-                'status_ayam' => $validated['status_ayam'],
-            ]);
-    
-            return response()->json([
-                'success' => true,
-                'message' => 'Data Populasi Ayam berhasil diperbarui.'
-            ]);
-    
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            // Tangani kesalahan validasi
-            return response()->json([
-                'success' => false,
-                'message' => 'Validasi gagal.',
-                'errors' => $e->errors(),
-            ], 422);
-        } catch (\Exception $e) {
-            // Log error
-            Log::error('Gagal memperbarui Populasi Ayam: ' . $e->getMessage());
-    
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan saat memperbarui data.'
-            ], 500);
+{
+    try {
+        // Validasi input
+        $validated = $request->validate([
+            'batchCodeSuffix' => 'required|alpha_num|size:3',
+            'nama_batch' => 'required|string|max:255',
+            'tanggal_doc' => 'required|date',
+            'jumlah_ayam_masuk' => 'required|integer|min:0',
+            'status_ayam' => 'required|in:Proses,Siap Panen,Sudah Panen',
+            'kandang_id' => 'required|exists:kandang_ayam,id',
+        ]);
+
+        // Cari Populasi Ayam berdasarkan ID
+        $populasi = PopulasiAyam::findOrFail($id);
+
+        // Menggabungkan kode batch
+        $batchCode = 'BATCH-' . strtoupper($validated['batchCodeSuffix']);
+
+        // Validasi kapasitas kandang
+        $kandang = KandangAyam::findOrFail($validated['kandang_id']);
+        $totalAyamDiKandang = PopulasiAyam::where('kandang_id', $kandang->id)->sum('jumlah_ayam_masuk');
+
+        if ($totalAyamDiKandang + $validated['jumlah_ayam_masuk'] > $kandang->kapasitas) {
+            return redirect()->back()->with('error', 'Jumlah ayam melebihi kapasitas kandang.');
         }
+
+        // Update data
+        $populasi->update([
+            'kode_batch' => $batchCode,
+            'nama_batch' => $validated['nama_batch'],
+            'tanggal_doc' => $validated['tanggal_doc'],
+            'jumlah_ayam_masuk' => $validated['jumlah_ayam_masuk'],
+            'status_ayam' => $validated['status_ayam'],
+            'kandang_id' => $validated['kandang_id'],
+        ]);
+
+        return redirect()->back()->with('success', 'Data Populasi Ayam berhasil diperbarui.');
+
+    } catch (\Exception $e) {
+        Log::error('Gagal memperbarui Populasi Ayam: ' . $e->getMessage());
+        return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui data.');
     }
+}
+
     
     public function updateHarian(Request $request, $id)
     {
@@ -199,41 +228,37 @@ class PopulasiHarianController extends Controller
                 'jumlah_ayam_mati' => 'required|integer|min:0',
             ]);
 
-            // Cari Harian Ayam berdasarkan ID
+            // Cari data Harian Ayam berdasarkan ID
             $harian = HarianAyam::findOrFail($id);
 
-            // Dapatkan nama_batch berdasarkan id_populasi
-            $namaBatch = PopulasiAyam::find($validated['dailyBatchName'])->nama_batch;
+            // Cari Populasi Ayam berdasarkan batch yang dipilih
+            $populasi = PopulasiAyam::findOrFail($validated['dailyBatchName']);
 
-            // Update data
+            // Validasi jumlah total ayam sakit + mati tidak boleh melebihi jumlah ayam masuk
+            $totalAyamDipantau = HarianAyam::where('id_populasi', $populasi->id)->sum('jumlah_ayam_mati')
+                                + HarianAyam::where('id_populasi', $populasi->id)->sum('jumlah_ayam_sakit')
+                                - $harian->jumlah_ayam_sakit - $harian->jumlah_ayam_mati
+                                + $validated['jumlah_ayam_sakit'] + $validated['jumlah_ayam_mati'];
+
+            if ($totalAyamDipantau > $populasi->jumlah_ayam_masuk) {
+                return redirect()->back()->with('error', 'Jumlah ayam sakit + mati melebihi jumlah ayam dalam batch ini.');
+            }
+
+            // Update data Harian Ayam
             $harian->update([
                 'id_populasi' => $validated['dailyBatchName'],
-                'nama_batch' => $namaBatch,
+                'nama_batch' => $populasi->nama_batch,
                 'tanggal_input' => $validated['tanggal_input'],
                 'jumlah_ayam_sakit' => $validated['jumlah_ayam_sakit'],
                 'jumlah_ayam_mati' => $validated['jumlah_ayam_mati'],
             ]);
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Data Harian Ayam berhasil diperbarui.'
-            ]);
+            return redirect()->back()->with('success', 'Data Harian Ayam berhasil diperbarui.');
 
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            // Tangani kesalahan validasi
-            return response()->json([
-                'success' => false,
-                'message' => 'Validasi gagal.',
-                'errors' => $e->errors(),
-            ], 422);
         } catch (\Exception $e) {
-            // Log error
             Log::error('Gagal memperbarui Harian Ayam: ' . $e->getMessage());
 
-            return response()->json([
-                'success' => false,
-                'message' => 'Terjadi kesalahan saat memperbarui data.'
-            ], 500);
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui data.');
         }
     }
 
