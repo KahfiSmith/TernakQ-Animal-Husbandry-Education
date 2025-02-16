@@ -1,154 +1,126 @@
-<h2 class="text-2xl font-semibold mb-2">Form Input Data Populasi Ayam</h2>
-<div class="bg-white border-2 border-gray-700 rounded-lg mb-4">
-    <form action="#" method="POST" class="p-6">
-        @csrf
-        <div class="grid grid-cols-2 gap-8 mb-10">
-            <!-- Kolom Kiri -->
-            <div class="space-y-6">
+<!-- resources/views/components/popup-form-edit-harian-ayam.blade.php -->
+@props(['batches']) <!-- Mendefinisikan props 'batches' -->
+
+<div x-show="openModal === 'editHarianAyam'" x-cloak
+    class="fixed inset-0 flex items-center justify-center z-50 bg-black/15" x-transition>
+    <div class="bg-white w-1/3 p-6 rounded-lg shadow-lg relative">
+        <!-- Tombol Close -->
+        <button @click="openModal = null"
+            class="absolute top-6 right-6 text-gray-500 hover:text-red-500 text-xl font-bold">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <!-- Judul Modal -->
+        <h2 class="text-2xl font-semibold mb-4">Edit Data Harian Ayam</h2>
+
+        <!-- Form Edit Harian Ayam -->
+        <form method="POST" id="editHarianForm" :action="`/harian/${editData.id}`" @submit.prevent="submitEditHarian">
+            @csrf
+            @method('PUT')
+
+            <div class="space-y-4 mb-8">
+                <!-- Nama Batch -->
                 <div>
-                    <x-input-label for="batch-code" :value="__('Kode Batch')" />
-                    <x-text-input id="batch-code" name="batch-code" type="text" class="block mt-1 w-full"
-                        required autofocus />
-                    <x-input-error :messages="$errors->get('batch-code')" class="mt-2" />
-                </div>
-
-                <div>
-                    <x-input-label for="batch-name" :value="__('Nama Batch')" />
-                    <x-text-input id="batch-name" name="batch-name" type="text" class="block mt-1 w-full"
-                        required />
-                    <x-input-error :messages="$errors->get('batch-name')" class="mt-2" />
-                </div>
-
-                <div x-data="{ open: false, selected: 'Proses' }" class="relative w-full">
-                    <button @click="open = !open" type="button"
-                        class="w-full bg-white ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] text-gray-700 px-4 py-2 rounded-md flex justify-between items-center">
-                        <span x-text="selected"></span>
-                        <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
-
-                    <div x-show="open" @click.away="open = false"
-                        class="absolute z-10 mt-2 w-full bg-white border border-gray-300 rounded-md shadow-lg">
-                        <ul>
-                            <li @click="selected = 'Proses'; open = false"
-                                class="px-4 py-2 hover:bg-orangeCrayola hover:text-white cursor-pointer">Proses
-                            </li>
-                            <li @click="selected = 'Siap Panen'; open = false"
-                                class="px-4 py-2 hover:bg-orangeCrayola hover:text-white cursor-pointer">Siap Panen
-                            </li>
-                            <li @click="selected = 'Sudah Panen'; open = false"
-                                class="px-4 py-2 hover:bg-orangeCrayola hover:text-white cursor-pointer">Sudah
-                                Panen
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-
-            </div>
-
-            <!-- Kolom Kanan -->
-            <div class="space-y-6">
-                <div>
-                    <x-input-label for="doc-date" :value="__('Tanggal DOC')" />
-                    <x-text-input id="doc-date" name="doc-date" type="date" class="block mt-1 w-full"
-                        required />
-                    <x-input-error :messages="$errors->get('doc-date')" class="mt-2" />
-                </div>
-
-                <div>
-                    <x-input-label for="chicken-quantity" :value="__('Jumlah Ayam Masuk')" />
-                    <x-text-input id="chicken-quantity" name="chicken-quantity" type="number"
-                        class="block mt-1 w-full" required />
-                    <x-input-error :messages="$errors->get('chicken-quantity')" class="mt-2" />
-                </div>
-            </div>
-        </div>
-
-        <!-- Tombol Submit -->
-        <div class="flex items-center justify-end">
-            <x-primary-button
-                class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] text-white hover:shadow-[2px_2px_0px_2px_#374151] hover:translate-y-0.5 hover:translate-x-0.5 w-1/3 text-center bg-orangeCrayola">
-                {{ __('Simpan Data') }}
-            </x-primary-button>
-        </div>
-    </form>
-</div>
-<h2 class="text-2xl font-semibold mb-2">Form Input Data Harian Ayam</h2>
-<div class="bg-white border-2 border-gray-700 rounded-lg">
-    <form action="#" method="POST" class="p-6">
-        @csrf
-        <div class="grid grid-cols-2 gap-8 mb-10">
-            <!-- Kolom Kiri -->
-            <div class="space-y-6">
-                <!-- ID Populasi -->
-                {{-- <div>
-                    <x-input-label for="population-id" :value="__('ID Populasi')" />
-                    <select id="population-id" name="population-id"
-                        class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-orange-500 text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full"
-                        required>
-                        <option value="">-- Pilih ID Populasi --</option>
-                        @foreach ($populations as $population)
-                            <option value="{{ $population->id }}">{{ $population->id }} -
-                                {{ $population->batch_name }}</option>
+                    <x-input-label for="dailyBatchName" :value="__('Nama Batch')" />
+                    <select id="editDailyBatchName" name="dailyBatchName"
+                        class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5"
+                        required x-model="editData.id_populasi" @change="updateBatchInfoEdit()" x-init="updateBatchInfoEdit()">
+                        <option value="" disabled>Pilih Batch</option>
+                        @foreach ($batches as $batch)
+                            <option value="{{ $batch->id }}" data-jumlah="{{ $batch->jumlah_ayam_masuk }}">
+                                {{ $batch->nama_batch }} ({{ $batch->jumlah_ayam_masuk }} Ayam)
+                            </option>
                         @endforeach
                     </select>
-                    <x-input-error :messages="$errors->get('population-id')" class="mt-2" />
-                </div> --}}
+                    <span class="text-sm text-gray-600" id="editJumlahAyamText">Jumlah ayam dalam batch: -</span>
 
-                <!-- Nama Batch (Auto) -->
-                <div>
-                    <x-input-label for="batch-name" :value="__('Nama Batch')" />
-                    <x-text-input id="batch-name" name="batch-name" type="text" class="block mt-1 w-full"
-                        readonly />
-                    <x-input-error :messages="$errors->get('batch-name')" class="mt-2" />
                 </div>
 
                 <!-- Tanggal Input -->
                 <div>
-                    <x-input-label for="input-date" :value="__('Tanggal Input')" />
-                    <x-text-input id="input-date" name="input-date" type="date" class="block mt-1 w-full"
-                        required />
-                    <x-input-error :messages="$errors->get('input-date')" class="mt-2" />
+                    <x-input-label for="tanggal_input" :value="__('Tanggal Input')" />
+                    <x-text-input id="editTanggalInput" name="tanggal_input" type="date"
+                        class="block mt-1 w-full py-2.5" x-model="editData.tanggal_input" required />
                 </div>
-            </div>
 
-            <!-- Kolom Kanan -->
-            <div class="space-y-6">
                 <!-- Jumlah Ayam Sakit -->
                 <div>
-                    <x-input-label for="sick-chickens" :value="__('Jumlah Ayam Sakit')" />
-                    <x-text-input id="sick-chickens" name="sick-chickens" type="number" min="0"
-                        class="block mt-1 w-full" required />
-                    <x-input-error :messages="$errors->get('sick-chickens')" class="mt-2" />
+                    <x-input-label for="jumlah_ayam_sakit" :value="__('Jumlah Ayam Sakit')" />
+                    <x-text-input id="editJumlahAyamSakit" name="jumlah_ayam_sakit" type="number"
+                        class="block mt-1 w-full py-2.5" x-model="editData.jumlah_ayam_sakit" required
+                        oninput="validateEditChickenCounts()" />
+                    <span class="text-red-500 text-sm" id="editErrorSick"></span>
                 </div>
 
                 <!-- Jumlah Ayam Mati -->
                 <div>
-                    <x-input-label for="dead-chickens" :value="__('Jumlah Ayam Mati')" />
-                    <x-text-input id="dead-chickens" name="dead-chickens" type="number" min="0"
-                        class="block mt-1 w-full" required />
-                    <x-input-error :messages="$errors->get('dead-chickens')" class="mt-2" />
-                </div>
-
-                <!-- Penyebab -->
-                <div>
-                    <x-input-label for="cause" :value="__('Penyebab Kematian')" />
-                    <x-text-input id="cause" name="cause" type="text" class="block mt-1 w-full"
-                        placeholder="Contoh: Penyakit, Cedera, Lainnya" required />
-                    <x-input-error :messages="$errors->get('cause')" class="mt-2" />
+                    <x-input-label for="jumlah_ayam_mati" :value="__('Jumlah Ayam Mati')" />
+                    <x-text-input id="editJumlahAyamMati" name="jumlah_ayam_mati" type="number"
+                        class="block mt-1 w-full py-2.5" x-model="editData.jumlah_ayam_mati" required
+                        oninput="validateEditChickenCounts()" />
+                    <span class="text-red-500 text-sm" id="editErrorDead"></span>
                 </div>
             </div>
-        </div>
 
-        <!-- Tombol Submit -->
-        <div class="flex items-center justify-end">
-            <x-primary-button
-                class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] text-white hover:shadow-[2px_2px_0px_2px_#374151] hover:translate-y-0.5 hover:translate-x-0.5 w-1/3 text-center bg-orangeCrayola">
-                {{ __('Simpan Data Harian') }}
-            </x-primary-button>
-        </div>
-    </form>
+            <!-- Tombol Update -->
+            <div class="flex items-center justify-end">
+                <x-primary-button id="editSubmitButton"
+                    class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] text-white hover:shadow-[2px_2px_0px_2px_#374151] hover:translate-y-0.5 hover:translate-x-0.5 w-1/2 text-center bg-orangeCrayola py-2.5">
+                    {{ __('Perbarui Data') }}
+                </x-primary-button>
+            </div>
+        </form>
+    </div>
 </div>
+
+<script>
+    let editJumlahAyam = 0;
+
+    function updateBatchInfoEdit() {
+        let select = document.getElementById("editDailyBatchName");
+        let selectedOption = select.options[select.selectedIndex];
+
+        if (selectedOption) {
+            console.log("Selected Option:", selectedOption);
+            console.log("Jumlah Ayam (data-jumlah):", selectedOption.dataset.jumlah);
+
+            editJumlahAyam = selectedOption.dataset.jumlah ? parseInt(selectedOption.dataset.jumlah) : 0;
+            document.getElementById("editJumlahAyamText").innerText = `Jumlah ayam dalam batch: ${editJumlahAyam}`;
+        }
+        validateEditChickenCounts();
+    }
+
+    function validateEditChickenCounts() {
+        let sickChicken = parseInt(document.getElementById("editJumlahAyamSakit").value) || 0;
+        let deadChicken = parseInt(document.getElementById("editJumlahAyamMati").value) || 0;
+        let totalInput = sickChicken + deadChicken;
+
+        let errorSick = document.getElementById("editErrorSick");
+        let errorDead = document.getElementById("editErrorDead");
+        let submitButton = document.getElementById("editSubmitButton");
+
+        // Reset error messages
+        errorSick.innerText = "";
+        errorDead.innerText = "";
+
+        if (sickChicken < 0) {
+            errorSick.innerText = "Jumlah ayam sakit tidak boleh negatif.";
+        }
+        if (deadChicken < 0) {
+            errorDead.innerText = "Jumlah ayam mati tidak boleh negatif.";
+        }
+        if (totalInput > editJumlahAyam) {
+            errorSick.innerText = "Total ayam sakit dan mati tidak boleh lebih dari " + editJumlahAyam;
+            errorDead.innerText = "Total ayam sakit dan mati tidak boleh lebih dari " + editJumlahAyam;
+        }
+
+        // Nonaktifkan tombol submit jika ada error
+        submitButton.disabled = errorSick.innerText !== "" || errorDead.innerText !== "";
+    }
+
+    function validateEditHarian() {
+        validateEditChickenCounts();
+        return !(document.getElementById("editErrorSick").innerText || document.getElementById("editErrorDead")
+            .innerText);
+    }
+</script>

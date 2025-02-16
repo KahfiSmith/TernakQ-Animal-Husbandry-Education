@@ -5,6 +5,8 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\PopulasiHarianController;
 use App\Http\Controllers\KandangAyamController;
+use App\Http\Controllers\PakanController;
+use App\Http\Controllers\PenggunaanPakanController;
 
 Route::get('/', [ArticleController::class, 'index'])->name('home');
 
@@ -13,13 +15,13 @@ Route::view('dashboard', 'dashboard')
     ->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    // MANAJEMEN KANDANG
     Route::get('/cage-management', [KandangAyamController::class, 'indexKandangManagement'])->name('cage-management');
-    Route::post('/kandang', [KandangAyamController::class, 'storeKandang'])->name('kandang.store');
-    Route::put('/kandang/{id}', [KandangAyamController::class, 'updateKandang'])->name('kandang.update');
-    Route::delete('/kandang/{id}', [KandangAyamController::class, 'destroyKandang'])->name('kandang.destroy');
-});
+    Route::post('/cage-management', [KandangAyamController::class, 'storeKandang'])->name('kandang.store');
+    Route::put('/cage-management/{id}', [KandangAyamController::class, 'updateKandang'])->name('kandang.update');
+    Route::delete('/cage-management/{id}', [KandangAyamController::class, 'destroyKandang'])->name('kandang.destroy');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+    // MANAJEMEN AYAM
     Route::get('/chicken-management', [PopulasiHarianController::class, 'indexChickenManagement'])->name('chicken-management');
     Route::post('/populasi', [PopulasiHarianController::class, 'storePopulasi'])->name('populasi.store');
     Route::post('/harian', [PopulasiHarianController::class, 'storeHarian'])->name('harian.store');
@@ -28,14 +30,28 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/populasi/{id}', [PopulasiHarianController::class, 'updatePopulasi'])->name('populasi.update');
     Route::put('/harian/{id}', [PopulasiHarianController::class, 'updateHarian'])->name('harian.update');
     Route::get('/populasi/{id}/cetak', [PopulasiHarianController::class, 'cetak'])->name('populasi.cetak');
+
+    // MANAJEMEN PAKAN
+    Route::get('/food-management', [PakanController::class, 'indexPakan'])->name('food-management');
+    Route::post('/food-management', [PakanController::class, 'storePakan'])->name('pakan.store');
+    Route::put('/food-management/{id}', [PakanController::class, 'updatePakan'])->name('pakan.update');
+    Route::delete('/food-management/{id}', [PakanController::class, 'destroyPakan'])->name('pakan.destroy');
+    Route::post('/food-usage', [PenggunaanPakanController::class, 'storePenggunaanPakan'])->name('food-usage.store');
+    Route::delete('/food-usage/{id}', [PenggunaanPakanController::class, 'destroyPenggunaanPakan'])->name('food-usage.destroy');
+
 });
 
-Route::view('food-management', 'food-management')
-    ->middleware(['auth', 'verified'])
-    ->name('food-management');
 Route::view('finance-management', 'finance-management')
     ->middleware(['auth', 'verified'])
     ->name('finance-management');
+
+Route::view('/income-finance-management', 'income-finance-management')
+    ->middleware(['auth', 'verified'])
+    ->name('income-finance-management');
+
+Route::view('/outcome-finance-management', 'outcome-finance-management')
+    ->middleware(['auth', 'verified'])
+    ->name('outcome-finance-management');
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])

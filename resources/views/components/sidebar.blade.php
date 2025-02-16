@@ -33,7 +33,7 @@
                     'active' => request()->routeIs('food-management*'),
                 ],
                 [
-                    'title' => 'Keuangan',
+                    'title' => 'Manajemen Keuangan',
                     'url' => route('finance-management'),
                     'icon' => asset('images/money.svg'),
                     'active' => request()->routeIs('finance-management*'),
