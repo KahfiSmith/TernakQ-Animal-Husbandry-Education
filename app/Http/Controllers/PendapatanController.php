@@ -38,7 +38,6 @@ class PendapatanController extends Controller
     public function storePendapatan(Request $request)
     {
         try {
-            // dd($request->all());
             $request->validate([
                 'kategori' => 'required|in:Penjualan Ayam,Penjualan Kotoran,Pendapatan Kemitraan',
                 'jumlah' => 'required|numeric|min:1',
