@@ -9,6 +9,7 @@ use App\Http\Controllers\PakanController;
 use App\Http\Controllers\PenggunaanPakanController;
 use App\Http\Controllers\PendapatanController;
 use App\Http\Controllers\PengeluaranController;
+use App\Http\Controllers\KeuanganController;
 
 Route::get('/', [ArticleController::class, 'index'])->name('home');
 
@@ -41,6 +42,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/food-usage', [PenggunaanPakanController::class, 'storePenggunaanPakan'])->name('food-usage.store');
     Route::delete('/food-usage/{id}', [PenggunaanPakanController::class, 'destroyPenggunaanPakan'])->name('food-usage.destroy');
 
+    // MANAJEMEN KEUANGAN
+    Route::get('/finance-management', [KeuanganController::class, 'indexKeuangan'])->name('finance-management');
+
     Route::get('/finance-management-income', [PendapatanController::class, 'indexPendapatan'])->name('finance-management-income');
     Route::post('/finance-management-income', [PendapatanController::class, 'storePendapatan'])->name('pendapatan.store');
     Route::put('/finance-management-income/{id}', [PendapatanController::class, 'updatePendapatan'])->name('pendapatan.update');
@@ -50,12 +54,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/finance-management-outcome', [PengeluaranController::class, 'storePengeluaran'])->name('pengeluaran.store');
     Route::put('/finance-management-outcome/{id}', [PengeluaranController::class, 'updatePengeluaran'])->name('pengeluaran.update');
     Route::delete('/finance-management-outcome/{id}', [PengeluaranController::class, 'destroyPengeluaran'])->name('pengeluaran.destroy');
-
 });
-
-Route::view('finance-management', 'finance-management')
-    ->middleware(['auth', 'verified'])
-    ->name('finance-management');
 
 Route::view('add-article', 'add-article')
     ->middleware(['auth', 'verified'])
