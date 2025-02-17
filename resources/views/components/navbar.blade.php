@@ -5,40 +5,39 @@
         </div>
         <ul class="flex flex-row space-x-7 text-base font-medium">
             <li>
-                <a href="#beranda"
-                   class="nav-link text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">
-                   Beranda
+                <a href="#beranda" class="nav-link text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">
+                    Beranda
                 </a>
             </li>
             <li>
-                <a href="#article"
-                   class="nav-link text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">
-                   Artikel
+                <a href="#article" class="nav-link text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">
+                    Artikel
                 </a>
             </li>
             <li>
-                <a href="#forum"
-                   class="nav-link text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">
-                   Forum
+                <a href="#forum" class="nav-link text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">
+                    Forum
                 </a>
             </li>
             <li>
                 <a href="#about-us"
-                   class="nav-link text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">
-                   Tentang Kami
+                    class="nav-link text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">
+                    Tentang Kami
                 </a>
             </li>
             <li>
                 <a href="#faq"
-                   class="nav-link text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">
-                   FAQ
+                    class="nav-link text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">
+                    FAQ
                 </a>
             </li>
         </ul>
-        
+
         <div class="flex items-center space-x-6">
             <a href="{{ route('login') }}" wire:navigate>
-                <x-primary-button class="ring-2 ring-gray-700 hover:bg-pewterBlue bg-transparent">Masuk
+                <x-primary-button
+                    class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] hover:shadow-[2px_2px_0px_2px_#374151] hover:translate-y-0.5 hover:translate-x-0.5 bg-pewterBlue text-gray-700">
+                    Masuk
                 </x-primary-button>
             </a>
             <div class="h-7 border-l-2 border-gray-700"></div>

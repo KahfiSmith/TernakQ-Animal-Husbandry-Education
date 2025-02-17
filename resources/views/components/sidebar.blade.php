@@ -38,6 +38,12 @@
                     'icon' => asset('images/money.svg'),
                     'active' => request()->routeIs('finance-management*'),
                 ],
+                [
+                    'title' => 'Tambah Article',
+                    'url' => route('add-article'),
+                    'icon' => asset('images/article.svg'),
+                    'active' => request()->routeIs('add-article*'),
+                ],
             ];
         @endphp
 

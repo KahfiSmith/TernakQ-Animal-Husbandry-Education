@@ -19,13 +19,12 @@ class PakanController extends Controller
     } catch (\Exception $e) {
         Log::error('Gagal memuat data pakan: ' . $e->getMessage());
 
-        return redirect()->back()->with([
+        return redirect()->route('food-management')->with([
             'status' => 'error',
             'message' => 'Terjadi kesalahan saat memuat data pakan.',
         ]);
     }
 }
-
 
 public function storePakan(Request $request)
 {

@@ -7,6 +7,8 @@ use App\Http\Controllers\PopulasiHarianController;
 use App\Http\Controllers\KandangAyamController;
 use App\Http\Controllers\PakanController;
 use App\Http\Controllers\PenggunaanPakanController;
+use App\Http\Controllers\PendapatanController;
+use App\Http\Controllers\PengeluaranController;
 
 Route::get('/', [ArticleController::class, 'index'])->name('home');
 
@@ -39,19 +41,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/food-usage', [PenggunaanPakanController::class, 'storePenggunaanPakan'])->name('food-usage.store');
     Route::delete('/food-usage/{id}', [PenggunaanPakanController::class, 'destroyPenggunaanPakan'])->name('food-usage.destroy');
 
+    Route::get('/finance-management-income', [PendapatanController::class, 'indexPendapatan'])->name('finance-management-income');
+    Route::post('/finance-management-income', [PendapatanController::class, 'storePendapatan'])->name('pendapatan.store');
+    Route::put('/finance-management-income/{id}', [PendapatanController::class, 'updatePendapatan'])->name('pendapatan.update');
+    Route::delete('/finance-management-income/{id}', [PendapatanController::class, 'destroyPendapatan'])->name('pendapatan.destroy');
+
+    Route::get('/finance-management-outcome', [PengeluaranController::class, 'indexPengeluaran'])->name('finance-management-outcome');
+    Route::post('/finance-management-outcome', [PengeluaranController::class, 'storePengeluaran'])->name('pengeluaran.store');
+    Route::put('/finance-management-outcome/{id}', [PengeluaranController::class, 'updatePengeluaran'])->name('pengeluaran.update');
+    Route::delete('/finance-management-outcome/{id}', [PengeluaranController::class, 'destroyPengeluaran'])->name('pengeluaran.destroy');
+
 });
 
 Route::view('finance-management', 'finance-management')
     ->middleware(['auth', 'verified'])
     ->name('finance-management');
 
-Route::view('/income-finance-management', 'income-finance-management')
+Route::view('add-article', 'add-article')
     ->middleware(['auth', 'verified'])
-    ->name('income-finance-management');
-
-Route::view('/outcome-finance-management', 'outcome-finance-management')
-    ->middleware(['auth', 'verified'])
-    ->name('outcome-finance-management');
+    ->name('add-article');
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])

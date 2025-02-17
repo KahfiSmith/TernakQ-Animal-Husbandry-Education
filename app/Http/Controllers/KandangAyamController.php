@@ -24,7 +24,7 @@ class KandangAyamController extends Controller
         } catch (\Exception $e) {
             Log::error('Gagal memuat data kandang: ' . $e->getMessage());
 
-            return redirect()->back()->with([
+            return redirect()->route('cage-management')->with([
                 'status' => 'error',
                 'message' => 'Terjadi kesalahan saat memuat data kandang.',
             ]);

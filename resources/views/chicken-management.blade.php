@@ -34,7 +34,7 @@
         <div x-data="harianHandler()" class="flex flex-col">
             <div class="flex gap-8 mb-6">
                 <!-- Card Tambah Data Populasi Ayam -->
-                <div class="flex flex-col p-6 border-2 border-orangeCrayola rounded-lg bg-white hover:bg-orangeCrayola/10 hover:shadow-lg transition duration-300 w-full cursor-pointer"
+                <div class="flex flex-col p-6 ring-2 ring-gray-700 rounded-lg bg-white hover:bg-orangeCrayola/10 hover:shadow-lg transition duration-300 w-full cursor-pointer"
                     @click="openModal = 'jumlahAyam'; console.log('Opened jumlahAyam modal')">
                     <div class="mb-4 text-orangeCrayola text-2xl">
                         <div
@@ -44,14 +44,14 @@
                     </div>
                     <h3 class="font-semibold text-2xl text-orangeCrayola">Form Input Data Populasi Ayam</h3>
                     <div class="mt-4">
-                        <span class="py-2 px-4 rounded-lg bg-orangeCrayola/25 text-orangeCrayola font-semibold">
+                        <span class="py-2 px-4 rounded-lg bg-orangeCrayola/25 text-orangeCrayola font-semibold border-2 border-orangeCrayola">
                             Jumlah ayam dalam kandang saat ini {{ $populasi->sum('jumlah_ayam_masuk') }} ekor
                         </span>
                     </div>
                 </div>
 
                 <!-- Card Tambah Data Harian Ayam -->
-                <div class="flex flex-col p-6 border-2 border-orangeCrayola rounded-lg bg-white hover:bg-orangeCrayola/10 hover:shadow-lg transition duration-300 w-full cursor-pointer"
+                <div class="flex flex-col p-6 ring-2 ring-gray-700 rounded-lg bg-white hover:bg-orangeCrayola/10 hover:shadow-lg transition duration-300 w-full cursor-pointer"
                     @click="openModal = 'harianAyam'; console.log('Opened harianAyam modal')">
                     <div class="mb-4 text-orangeCrayola text-2xl">
                         <div
@@ -61,7 +61,7 @@
                     </div>
                     <h3 class="font-semibold text-2xl text-orangeCrayola">Form Input Data Harian Ayam</h3>
                     <div class="mt-4">
-                        <span class="py-2 px-4 rounded-lg bg-orangeCrayola/25 text-orangeCrayola font-semibold">
+                        <span class="py-2 px-4 rounded-lg bg-orangeCrayola/25 text-orangeCrayola font-semibold border-2 border-orangeCrayola">
                             {{ $harian->sum('jumlah_ayam_sakit') }} Ekor Ayam Sakit,
                             {{ $harian->sum('jumlah_ayam_mati') }} Ekor Ayam Mati
                         </span>
