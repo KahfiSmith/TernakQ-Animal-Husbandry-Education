@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
 
-
 class PopulasiHarianController extends Controller
 {      
     public function indexChickenManagement(Request $request)

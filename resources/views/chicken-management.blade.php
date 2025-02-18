@@ -122,7 +122,6 @@
                                             <i class="fa-solid fa-pen-to-square text-lg"></i>
                                         </button>
 
-
                                         <button type="button"
                                             class="swal-delete-btn px-3 py-3 rounded bg-red-100 text-red-700 flex justify-center items-center w-12 h-12 cursor-pointer"
                                             data-id="{{ $item->id }}"

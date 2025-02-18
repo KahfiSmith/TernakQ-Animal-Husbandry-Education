@@ -63,7 +63,7 @@
                                 x-model="category">
                                 <option value="Pembelian Ayam">Pembelian Ayam DOC</option>
                                 <option value="Pakan Ayam">Pembelian Pakan Ayam</option>
-                                <option value="Vaksin">Obat, Vitamin, Vaksin</option>
+                                <option value="Obat, Vitamin, Vaksin">Obat, Vitamin, Vaksin</option>
                             </select>
                         </div>
 
@@ -150,6 +150,7 @@
                         <th class="px-4 py-3">Deskripsi</th>
                         <th class="px-4 py-3">Jumlah</th>
                         <th class="px-4 py-3">Satuan</th>
+                        <th class="px-4 py-3">Harga</th>
                         <th class="px-4 py-3">Total Biaya</th>
                         <th class="px-4 py-3">Tanggal</th>
                         <th class="px-4 py-3">Supplier</th>
@@ -165,6 +166,7 @@
                             <td>{{ $item->jumlah }}</td>
                             <td>{{ $item->category === 'Listrik, Air, Peralatan' ? $item->custom_satuan : $item->satuan }}
                             </td>
+                            <td>Rp {{ number_format($item->harga_per_satuan, 0, ',', '.') }}</td>
                             <td>Rp {{ number_format($item->total_biaya, 0, ',', '.') }}</td>
                             <td>{{ date('d M Y', strtotime($item->tanggal_pembelian)) }}</td>
                             <td>{{ $item->supplier }}</td>

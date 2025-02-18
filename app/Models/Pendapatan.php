@@ -10,8 +10,14 @@ class Pendapatan extends Model
     use HasFactory;
     protected $table = 'pendapatan';
     protected $fillable = [
-        'kategori', 'jumlah', 'satuan', 'harga_per_satuan',
-        'total_pendapatan', 'tanggal_transaksi', 'nama_pembeli', 'nama_perusahaan'
+        'kategori', 
+        'jumlah', 
+        'satuan', 
+        'harga_per_satuan',
+        'total_pendapatan', 
+        'tanggal_transaksi', 
+        'nama_pembeli', 
+        'nama_perusahaan'
     ];
 
     public static function boot()

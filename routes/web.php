@@ -44,6 +44,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // MANAJEMEN KEUANGAN
     Route::get('/finance-management', [KeuanganController::class, 'indexKeuangan'])->name('finance-management');
+    Route::get('/finance-management/pdf', [KeuanganController::class, 'exportPDF'])->name('finance-management.pdf');
 
     Route::get('/finance-management-income', [PendapatanController::class, 'indexPendapatan'])->name('finance-management-income');
     Route::post('/finance-management-income', [PendapatanController::class, 'storePendapatan'])->name('pendapatan.store');

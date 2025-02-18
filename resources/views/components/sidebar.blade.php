@@ -39,7 +39,7 @@
                     'active' => request()->routeIs('finance-management*'),
                 ],
                 [
-                    'title' => 'Tambah Article',
+                    'title' => 'Tambah Artikel',
                     'url' => route('add-article'),
                     'icon' => asset('images/article.svg'),
                     'active' => request()->routeIs('add-article*'),

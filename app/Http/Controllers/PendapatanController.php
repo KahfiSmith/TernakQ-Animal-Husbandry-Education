@@ -73,7 +73,7 @@ class PendapatanController extends Controller
             $pendapatan = Pendapatan::findOrFail($id);
 
             $request->validate([
-                'kategori' => 'required|in:penjualan_ayam,penjualan_kotoran,kemitraan',
+                'kategori' => 'required|in:Penjualan Ayam,Penjualan Kotoran,Pendapatan Kemitraan',
                 'jumlah' => 'required|numeric|min:1',
                 'satuan' => 'required|in:ekor,kg,karung',
                 'harga_per_satuan' => 'required|numeric|min:0',

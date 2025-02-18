@@ -39,9 +39,9 @@ class PengeluaranController extends Controller
     {
         try {
             $request->validate([
-                'category' => 'required|in:Pembelian Ayam,Pakan Ayam,Obat, Vitamin, Vaksin',
+                'category' => 'required|in:Pembelian Ayam,Pakan Ayam,"Obat, Vitamin, Vaksin"',
                 'description' => 'required|string|max:255',
-                'jumlah' => 'nullable|numeric|min:0',
+                'jumlah' => 'required|numeric|min:1',
                 'satuan' => 'nullable|string|max:50',
                 'harga_per_satuan' => 'nullable|numeric|min:0',
                 'tanggal_pembelian' => 'required|date',
@@ -73,7 +73,7 @@ class PengeluaranController extends Controller
             $pengeluaran = Pengeluaran::findOrFail($id);
 
             $request->validate([
-                'category' => 'required|in:Pembelian Ayam,Pakan Ayam,Obat, Vitamin, Vaksin',
+                'category' => 'required|in:Pembelian Ayam,Pakan Ayam,"Obat, Vitamin, Vaksin"',
                 'description' => 'required|string|max:255',
                 'jumlah' => 'nullable|numeric|min:0',
                 'satuan' => 'nullable|string|max:50',
