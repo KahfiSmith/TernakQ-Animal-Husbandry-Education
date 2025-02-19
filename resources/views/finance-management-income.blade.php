@@ -192,6 +192,9 @@
                     </tbody>
                 </table>
             </div>
+            <div class="mt-4">
+                {{ $pendapatan->links('pagination::tailwind') }}
+            </div>
         </div>
     </main>
 

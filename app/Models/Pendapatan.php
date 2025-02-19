@@ -20,6 +20,7 @@ class Pendapatan extends Model
         'nama_perusahaan'
     ];
 
+
     public static function boot()
     {
         parent::boot();

@@ -10,6 +10,7 @@ use App\Http\Controllers\PenggunaanPakanController;
 use App\Http\Controllers\PendapatanController;
 use App\Http\Controllers\PengeluaranController;
 use App\Http\Controllers\KeuanganController;
+use App\Http\Controllers\UserCardArticleController;
 
 Route::get('/', [ArticleController::class, 'index'])->name('home');
 
@@ -55,18 +56,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/finance-management-outcome', [PengeluaranController::class, 'storePengeluaran'])->name('pengeluaran.store');
     Route::put('/finance-management-outcome/{id}', [PengeluaranController::class, 'updatePengeluaran'])->name('pengeluaran.update');
     Route::delete('/finance-management-outcome/{id}', [PengeluaranController::class, 'destroyPengeluaran'])->name('pengeluaran.destroy');
+
+    Route::get('/add-article', [UserCardArticleController::class, 'indexUserArtikel'])->name('add-article');
+    Route::post('/add-article', [UserCardArticleController::class, 'storeUserArtikel'])->name('user-article.store');
+    Route::put('/add-article/{id}', [UserCardArticleController::class, 'updateUserArtikel'])->name('user-article.update');
+    Route::delete('/add-article/{id}', [UserCardArticleController::class, 'deleteUserArtikel'])->name('user-article.destroy');
 });
 
-Route::view('add-article', 'add-article')
-    ->middleware(['auth', 'verified'])
-    ->name('add-article');
+// Route::middleware(['auth', 'verified', 'admin'])->group(function () {
+//     Route::get('/admin/articles', [AdminArticleController::class, 'index'])->name('admin.articles.index');
+//     Route::get('/admin/articles/{id}/edit', [AdminArticleController::class, 'edit'])->name('admin.articles.edit');
+//     Route::put('/admin/articles/{id}', [AdminArticleController::class, 'update'])->name('admin.articles.update');
+//     Route::delete('/admin/articles/{id}', [AdminArticleController::class, 'destroy'])->name('admin.articles.destroy');
+// });
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
-
 Route::get('/content', [ArticleController::class, 'showAllCards'])->name('cards');
 Route::get('/content/{id}/articles', [ArticleController::class, 'showArticles'])->name('cards.articles');
 Route::get('/articles/{id}', [ArticleController::class, 'showArticleDetail'])->name('articles.detail');
@@ -75,4 +83,3 @@ Route::get('sidebar', function () {
 })->name('sidebar');
 
 require __DIR__.'/auth.php';
- 

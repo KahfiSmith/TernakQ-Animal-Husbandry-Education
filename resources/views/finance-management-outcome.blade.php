@@ -142,64 +142,69 @@
         <!-- Tabel Data Pengeluaran -->
         <div class="bg-white p-6 rounded-lg shadow-md w-full ring-2 ring-gray-700">
             <h2 class="text-xl font-bold mb-2 text-orangeCrayola">Data Pengeluaran</h2>
-            <table class="w-full text-center border-collapse">
-                <thead class="text-gray-600 uppercase text-sm tracking-wide">
-                    <tr class="border-b-2 border-gray-700">
-                        <th class="px-4 py-3">No</th>
-                        <th class="px-4 py-3">Kategori</th>
-                        <th class="px-4 py-3">Deskripsi</th>
-                        <th class="px-4 py-3">Jumlah</th>
-                        <th class="px-4 py-3">Satuan</th>
-                        <th class="px-4 py-3">Harga</th>
-                        <th class="px-4 py-3">Total Biaya</th>
-                        <th class="px-4 py-3">Tanggal</th>
-                        <th class="px-4 py-3">Supplier</th>
-                        <th class="px-4 py-3">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($pengeluaran as $item)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $item->category }}</td>
-                            <td>{{ $item->description }}</td>
-                            <td>{{ $item->jumlah }}</td>
-                            <td>{{ $item->category === 'Listrik, Air, Peralatan' ? $item->custom_satuan : $item->satuan }}
-                            </td>
-                            <td>Rp {{ number_format($item->harga_per_satuan, 0, ',', '.') }}</td>
-                            <td>Rp {{ number_format($item->total_biaya, 0, ',', '.') }}</td>
-                            <td>{{ date('d M Y', strtotime($item->tanggal_pembelian)) }}</td>
-                            <td>{{ $item->supplier }}</td>
-                            <td class="px-4 py-3 flex gap-3 justify-center items-center">
-                                <button type="button"
-                                    class="px-3 py-3 rounded text-xs font-semibold bg-blue-100 text-blue-700 w-12 h-12"
-                                    @click="
-                                    editMode = true;
-                                    pengeluaranId = '{{ $item->id }}';
-                                    category = '{{ $item->category }}';
-                                    description = '{{ $item->description }}';
-                                    jumlah = '{{ $item->jumlah }}';
-                                    satuan = '{{ $item->satuan }}';
-                                    hargaPerSatuan = '{{ $item->harga_per_satuan }}';
-                                    totalBiaya = '{{ $item->total_biaya }}';
-                                    supplier = '{{ $item->supplier }}';
-                                    tanggalPembelian = '{{ $item->tanggal_pembelian }}';
-                                    ">      
-                                    <i class="fa-solid fa-pen-to-square text-lg"></i>
-                                </button>
-
-                                <!-- Tombol Hapus -->
-                                <button type="button"
-                                    class="swal-delete-pengeluaran px-3 py-3 bg-red-100 text-red-700 rounded w-12 h-12 cursor-pointer"
-                                    data-id="{{ $item->id }}"
-                                    data-url="{{ route('pengeluaran.destroy', $item->id) }}">
-                                    <i class="fa-solid fa-trash text-lg"></i>
-                                </button>
-                            </td>
+            <div class="overflow-x-auto">
+                <table class="w-full text-center border-collapse">
+                    <thead class="text-gray-600 uppercase text-sm tracking-wide">
+                        <tr class="border-b-2 border-gray-700">
+                            <th class="px-4 py-3">No</th>
+                            <th class="px-4 py-3">Kategori</th>
+                            <th class="px-4 py-3">Deskripsi</th>
+                            <th class="px-4 py-3">Jumlah</th>
+                            <th class="px-4 py-3">Satuan</th>
+                            <th class="px-4 py-3">Harga</th>
+                            <th class="px-4 py-3">Total Biaya</th>
+                            <th class="px-4 py-3">Tanggal</th>
+                            <th class="px-4 py-3">Supplier</th>
+                            <th class="px-4 py-3">Aksi</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach ($pengeluaran as $item)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $item->category }}</td>
+                                <td>{{ $item->description }}</td>
+                                <td>{{ $item->jumlah }}</td>
+                                <td>{{ $item->category === 'Listrik, Air, Peralatan' ? $item->custom_satuan : $item->satuan }}
+                                </td>
+                                <td>Rp {{ number_format($item->harga_per_satuan, 0, ',', '.') }}</td>
+                                <td>Rp {{ number_format($item->total_biaya, 0, ',', '.') }}</td>
+                                <td>{{ date('d M Y', strtotime($item->tanggal_pembelian)) }}</td>
+                                <td>{{ $item->supplier }}</td>
+                                <td class="px-4 py-3 flex gap-3 justify-center items-center">
+                                    <button type="button"
+                                        class="px-3 py-3 rounded text-xs font-semibold bg-blue-100 text-blue-700 w-12 h-12"
+                                        @click="
+                                        editMode = true;
+                                        pengeluaranId = '{{ $item->id }}';
+                                        category = '{{ $item->category }}';
+                                        description = '{{ $item->description }}';
+                                        jumlah = '{{ $item->jumlah }}';
+                                        satuan = '{{ $item->satuan }}';
+                                        hargaPerSatuan = '{{ $item->harga_per_satuan }}';
+                                        totalBiaya = '{{ $item->total_biaya }}';
+                                        supplier = '{{ $item->supplier }}';
+                                        tanggalPembelian = '{{ $item->tanggal_pembelian }}';
+                                        ">
+                                        <i class="fa-solid fa-pen-to-square text-lg"></i>
+                                    </button>
+
+                                    <!-- Tombol Hapus -->
+                                    <button type="button"
+                                        class="swal-delete-pengeluaran px-3 py-3 bg-red-100 text-red-700 rounded w-12 h-12 cursor-pointer"
+                                        data-id="{{ $item->id }}"
+                                        data-url="{{ route('pengeluaran.destroy', $item->id) }}">
+                                        <i class="fa-solid fa-trash text-lg"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-4">
+                {{ $pengeluaran->links('pagination::tailwind') }}
+            </div>
         </div>
     </main>
     <script>
