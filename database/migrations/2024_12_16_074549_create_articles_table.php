@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('card_id')->constrained('card_articles')->onDelete('cascade');
             $table->string('title');
             $table->text('description')->nullable();
+            $table->string('image');
+            $table->enum('status', ['Tertunda', 'Disetujui', 'Ditolak'])->default('pending');
             $table->timestamps();
         });
     }
