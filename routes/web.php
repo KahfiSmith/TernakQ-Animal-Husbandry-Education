@@ -57,10 +57,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/finance-management-outcome/{id}', [PengeluaranController::class, 'updatePengeluaran'])->name('pengeluaran.update');
     Route::delete('/finance-management-outcome/{id}', [PengeluaranController::class, 'destroyPengeluaran'])->name('pengeluaran.destroy');
 
+    // TAMBAH ARTIKEL
     Route::get('/add-article', [UserCardArticleController::class, 'indexUserArtikel'])->name('add-article');
     Route::post('/add-article', [UserCardArticleController::class, 'storeUserArtikel'])->name('user-article.store');
     Route::put('/add-article/{id}', [UserCardArticleController::class, 'updateUserArtikel'])->name('user-article.update');
     Route::delete('/add-article/{id}', [UserCardArticleController::class, 'deleteUserArtikel'])->name('user-article.destroy');
+
+    // Route::get('/add-article-detail', [UserArticleController::class, 'indexUserArtikel'])->name('add-article-detail');
+    // Route::post('/add-articledetail', [UserArticleController::class, 'storeUserArtikel'])->name('user-article-detail.store');
+    // Route::put('/add-article-detail/{id}', [UserArticleController::class, 'updateUserArtikel'])->name('user-article-detail.update');
+    // Route::delete('/add-article-detail/{id}', [UserArticleController::class, 'deleteUserArtikel'])->name('user-article-detail.destroy');
 });
 
 // Route::middleware(['auth', 'verified', 'admin'])->group(function () {
@@ -69,6 +75,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 //     Route::put('/admin/articles/{id}', [AdminArticleController::class, 'update'])->name('admin.articles.update');
 //     Route::delete('/admin/articles/{id}', [AdminArticleController::class, 'destroy'])->name('admin.articles.destroy');
 // });
+
+Route::view('add-article-detail', 'add-article-detail')
+    ->middleware(['auth'])
+    ->name('add-article-detail');
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])

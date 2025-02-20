@@ -1,6 +1,6 @@
 @extends('layouts.dashboard-layout')
 
-@section('title', 'Dashboard - Tambah Artikel')
+@section('title', 'Dashboard - Tambah Artikel Grup')
 
 @section('content')
     <main class="flex flex-col gap-7 w-full" x-data="{
@@ -30,9 +30,43 @@
             </script>
         @endif
 
+        <div class="flex space-x-6 items-center justify-between">
+            <div>
+                <a href="{{ route('add-article-detail') }}" wire:navigate class="inline-flex justify-center items-center text-center font-medium text-base tracking-widest focus:outline-none focus-visible:outline-none transition ease-in-out duration-150 bg-orangeCrayola ring-2
+                ring-gray-700 shadow-[4px_4px_0px_2px_#374151] text-white hover:shadow-[2px_2px_0px_2px_#374151]
+                hover:translate-y-0.5 hover:translate-x-0.5 py-2.5 px-4 rounded">Tambah Artikel</a>
+            </div>
+            <div class="flex gap-20 items-center">
+                <!-- Artikel Tertunda -->
+                <div class="flex flex-col justify-center items-center space-y-1">
+                    <h3 class="font-medium text-base">Artikel Tertunda</h3>
+                    <span class="font-semibold text-3xl">3</span>
+                </div>
+            
+                <!-- Garis Vertikal -->
+                <div class="border-l-2 border-gray-600 h-12"></div>
+            
+                <!-- Artikel Disetujui -->
+                <div class="flex flex-col justify-center items-center space-y-1">
+                    <h3 class="font-medium text-base">Artikel Disetujui</h3>
+                    <span class="font-semibold text-3xl">10</span>
+                </div>
+            
+                <!-- Garis Vertikal -->
+                <div class="border-l-2 border-gray-600 h-12"></div>
+            
+                <!-- Artikel Ditolak -->
+                <div class="flex flex-col justify-center items-center space-y-1">
+                    <h3 class="font-medium text-base">Artikel Ditolak</h3>
+                    <span class="font-semibold text-3xl">4</span>
+                </div>
+            </div>
+            
+        </div>
+
         <div class="flex flex-col p-4 sm:p-6 bg-white shadow sm:rounded-lg ring-2 ring-gray-700 border-b-gray-200">
             <h2 class="text-xl font-bold mb-2 text-orangeCrayola">
-                <span x-text="editMode ? 'Edit Artikel' : 'Tambah Artikel'"></span>
+                <span x-text="editMode ? 'Edit Artikel Grup' : 'Tambah Artikel Grup'"></span>
             </h2>
             <form method="POST"
                 :action="editMode ? '{{ url('add-article') }}/' + articleId : '{{ route('user-article.store') }}'"
@@ -108,7 +142,7 @@
                         class="bg-orangeCrayola ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] 
                         text-white hover:shadow-[2px_2px_0px_2px_#374151] hover:translate-y-0.5 
                         hover:translate-x-0.5 py-2.5 px-4 rounded"
-                        x-text="editMode ? 'Update Artikel' : 'Tambah Artikel'">
+                        x-text="editMode ? 'Update Artikel Grup' : 'Tambah Artikel Grup'">
                     </x-primary-button>
                     <x-primary-button type="button" x-show="editMode"
                         @click="editMode = false; title = ''; description = ''; artikelId = '';"
@@ -121,7 +155,7 @@
             </form>
         </div>
         <div class="bg-white p-6 rounded-lg shadow-md w-full ring-2 ring-gray-700">
-            <h2 class="text-xl font-bold mb-2 text-orangeCrayola">Data Kandang Ayam</h2>
+            <h2 class="text-xl font-bold mb-2 text-orangeCrayola">Data Artikel Grup</h2>
             <div class="overflow-x-auto">
                 <table class="w-full text-center border-collapse">
                     <thead class="text-gray-600 uppercase text-sm tracking-wide">
@@ -151,11 +185,11 @@
                                     <button type="button"
                                         class="px-3 py-3 rounded text-xs font-semibold bg-blue-100 text-blue-700 flex justify-center items-center w-12 h-12 cursor-pointer"
                                         @click="editMode = true; 
-            articleId = '{{ $article->id }}';  <!-- gunakan articleId -->
-            title = '{{ $article->title }}';
-            description = '{{ $article->description }}';
-            image = '{{ asset('storage/' . $article->image) }}';
-            console.log('Artikel ID:', articleId);">
+                                        articleId = '{{ $article->id }}';  <!-- gunakan articleId -->
+                                        title = '{{ $article->title }}';
+                                        description = '{{ $article->description }}';
+                                        image = '{{ asset('storage/' . $article->image) }}';
+                                        console.log('Artikel ID:', articleId);">
                                         <i class="fa-solid fa-pen-to-square text-lg"></i>
                                     </button>
 
