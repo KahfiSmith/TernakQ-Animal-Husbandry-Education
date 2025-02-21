@@ -12,7 +12,7 @@ class UserCardArticleController extends Controller
     {
         try {
             $artikelPage = $request->get('artikel_page', 1);
-            $articles = CardArticle::latest()->paginate(4, ['*'], 'artikel_page', $artikelPage);
+            $articles = CardArticle::latest()->paginate(5, ['*'], 'artikel_page', $artikelPage);
             return view('add-card-article', compact('articles'));
         } catch (\Exception $e) {
             Log::error('Gagal memuat data artikel: ' . $e->getMessage());
@@ -47,15 +47,15 @@ class UserCardArticleController extends Controller
         ]);
 
         // Simpan artikel terkait
-        $cardArticle->articles()->create([ // Menambahkan artikel terkait pada card_article
-            'title' => $validated['title'],
-            'description' => $validated['description'],
-            'image' => $imagePath,
-        ]);
+        // $cardArticle->articles()->create([ // Menambahkan artikel terkait pada card_article
+        //     'title' => $validated['title'],
+        //     'description' => $validated['description'],
+        //     'image' => $imagePath,
+        // ]);
 
         return redirect()->route('add-article')->with([
             'status' => 'success',
-            'message' => 'Artikel berhasil dikirim dan menunggu persetujuan admin!',
+            'message' => 'Artikel grup berhasil ditambahkan!',
         ]);
     } catch (\Exception $e) {
         Log::error('Gagal menyimpan artikel: ' . $e->getMessage());
@@ -110,7 +110,7 @@ public function updateUserArtikel(Request $request, $id)
 
         return redirect()->route('add-article')->with([
             'status' => 'success',
-            'message' => 'Artikel berhasil diperbarui!',
+            'message' => 'Artikel grup berhasil diperbarui!',
         ]);
     } catch (\Exception $e) {
         // Tangkap pesan error yang lebih detail
