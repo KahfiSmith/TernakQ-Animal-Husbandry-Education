@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Article extends Model
 {
-    protected $fillable = ['card_id', 'title', 'description', 'image', 'status'];
+    protected $fillable = ['card_id', 'title', 'catatan', 'description', 'image', 'status'];
 
     public function cardArticle(): BelongsTo
     {

@@ -48,8 +48,14 @@ class UserArticleController extends Controller
                 'description' => 'nullable|string',
                 'status' => 'required|string|in:Tertunda,Disetujui,Ditolak',
                 'tags' => 'nullable|array', // Untuk multiple tags
-                'tags.*' => 'exists:tags,id', // Validasi tag yang dipilih ada di tabel tags
+                'tags.*' => 'exists:tags,id', 
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
+
+            $imagePath = null;
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('articles', 'public');
+            }
 
             // Simpan artikel
             $article = Article::create([
@@ -57,6 +63,7 @@ class UserArticleController extends Controller
                 'title' => $validated['title'],
                 'description' => $validated['description'],
                 'status' => $validated['status'],
+                'image' => $imagePath,
             ]);
 
             // Jika ada tag yang dipilih, simpan relasi antara artikel dan tag
@@ -78,24 +85,10 @@ class UserArticleController extends Controller
         }
     }
 
-    // Menampilkan halaman form untuk mengedit artikel
-    public function editUserArtikel($id)
-    {
-        // Ambil artikel yang akan diedit
-        $article = Article::findOrFail($id);
-
-        // Ambil semua grup artikel dan tags untuk dipilih pada form edit
-        $cardArticles = CardArticle::all();
-        $tags = Tag::all();
-
-        return view('articles.edit', compact('article', 'cardArticles', 'tags'));
-    }
-
     // Mengupdate artikel dan tag terkait
     public function updateUserArtikel(Request $request, $id)
     {
         try {
-            // Validasi inputan
             $validated = $request->validate([
                 'card_id' => 'required|exists:card_articles,id',
                 'title' => 'required|string|max:255',
@@ -103,22 +96,25 @@ class UserArticleController extends Controller
                 'status' => 'required|string|in:Tertunda,Disetujui,Ditolak',
                 'tags' => 'nullable|array',
                 'tags.*' => 'exists:tags,id',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
-            // Cari artikel yang akan diupdate
             $article = Article::findOrFail($id);
+            $imagePath = $article->image;
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('articles', 'public');
+            }
 
-            // Update artikel   
             $article->update([
                 'card_id' => $validated['card_id'],
                 'title' => $validated['title'],
                 'description' => $validated['description'],
                 'status' => $validated['status'],
+                'image' => $imagePath,
             ]);
 
-            // Update tags, jika ada
-            if ($validated['tags']) {
-                $article->tags()->sync($validated['tags']); // Mengganti tag yang ada dengan yang baru
+            if (!empty($validated['tags'])) {
+                $article->tags()->sync($validated['tags']);
             }
 
             return redirect()->route('add-article-detail')->with([
@@ -127,7 +123,6 @@ class UserArticleController extends Controller
             ]);
         } catch (\Exception $e) {
             Log::error('Gagal memperbarui artikel: ' . $e->getMessage());
-
             return redirect()->route('add-article-detail')->with([
                 'status' => 'error',
                 'message' => 'Terjadi kesalahan saat memperbarui artikel.',
