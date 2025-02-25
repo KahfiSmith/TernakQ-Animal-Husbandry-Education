@@ -11,6 +11,8 @@ use App\Http\Controllers\PendapatanController;
 use App\Http\Controllers\PengeluaranController;
 use App\Http\Controllers\KeuanganController;
 use App\Http\Controllers\UserCardArticleController;
+use App\Http\Controllers\UserArticleController;
+use App\Http\Controllers\UserSubArticleController;
 
 Route::get('/', [ArticleController::class, 'index'])->name('home');
 
@@ -63,10 +65,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/add-article/{id}', [UserCardArticleController::class, 'updateUserArtikel'])->name('user-article.update');
     Route::delete('/add-article/{id}', [UserCardArticleController::class, 'deleteUserArtikel'])->name('user-article.destroy');
 
-    // Route::get('/add-article-detail', [UserArticleController::class, 'indexUserArtikel'])->name('add-article-detail');
-    // Route::post('/add-articledetail', [UserArticleController::class, 'storeUserArtikel'])->name('user-article-detail.store');
-    // Route::put('/add-article-detail/{id}', [UserArticleController::class, 'updateUserArtikel'])->name('user-article-detail.update');
-    // Route::delete('/add-article-detail/{id}', [UserArticleController::class, 'deleteUserArtikel'])->name('user-article-detail.destroy');
+    Route::get('/add-article-detail', [UserArticleController::class, 'indexUserArtikel'])->name('add-article-detail');
+    Route::post('/add-article-detail', [UserArticleController::class, 'storeUserArtikel'])->name('user-article-detail.store');
+    Route::put('/add-article-detail/{id}', [UserArticleController::class, 'updateUserArtikel'])->name('user-article-detail.update');
+    Route::delete('/add-article-detail/{id}', [UserArticleController::class, 'deleteUserArtikel'])->name('user-article-detail.destroy');
+
+    Route::get('/add-article-sub', [UserSubArticleController::class, 'indexUserArtikel'])->name('add-article-sub');
+    Route::post('/add-article-sub-multiple', [UserSubArticleController::class, 'storeMultipleSubArticles'])
+    ->name('user-article-sub.store-multiple');
+    Route::put('/add-article-sub/{id}', [UserSubArticleController::class, 'updateUserArtikel'])->name('user-article-sub.update');
+    Route::delete('/add-article-sub/{id}', [UserSubArticleController::class, 'deleteUserArtikel'])->name('user-article-sub.destroy');
+
 });
 
 // Route::middleware(['auth', 'verified', 'admin'])->group(function () {
@@ -75,10 +84,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 //     Route::put('/admin/articles/{id}', [AdminArticleController::class, 'update'])->name('admin.articles.update');
 //     Route::delete('/admin/articles/{id}', [AdminArticleController::class, 'destroy'])->name('admin.articles.destroy');
 // });
-
-Route::view('add-article-detail', 'add-article-detail')
-    ->middleware(['auth'])
-    ->name('add-article-detail');
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])

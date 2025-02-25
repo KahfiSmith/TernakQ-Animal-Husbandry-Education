@@ -46,13 +46,6 @@ class UserCardArticleController extends Controller
             'image' => $imagePath,
         ]);
 
-        // Simpan artikel terkait
-        // $cardArticle->articles()->create([ // Menambahkan artikel terkait pada card_article
-        //     'title' => $validated['title'],
-        //     'description' => $validated['description'],
-        //     'image' => $imagePath,
-        // ]);
-
         return redirect()->route('add-article')->with([
             'status' => 'success',
             'message' => 'Artikel grup berhasil ditambahkan!',
@@ -70,55 +63,29 @@ class UserCardArticleController extends Controller
 public function updateUserArtikel(Request $request, $id)
 {
     try {
-        $cardArticle = CardArticle::findOrFail($id); // Mengambil data CardArticle berdasarkan ID
-
-        // Validasi data yang diinput
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // Simpan gambar jika ada, jika tidak menggunakan gambar lama
-        $imagePath = $cardArticle->image;
-        if ($request->hasFile('image')) {
-            // Pastikan direktori storage ada
-            $imagePath = $request->file('image')->store('card_articles', 'public');
-        }
-
-        // Update data pada CardArticle
-        $cardArticle->update([
+        $card = CardArticle::findOrFail($id);
+        $card->update([
             'title' => $validated['title'],
             'description' => $validated['description'],
-            'image' => $imagePath,
         ]);
 
-        // Jika artikel terkait ada, update juga artikel terkait
-        if ($cardArticle->articles->isNotEmpty()) {
-            // Update artikel terkait satu per satu jika ada
-            foreach ($cardArticle->articles as $article) {
-                $article->update([
-                    'title' => $validated['title'],
-                    'description' => $validated['description'],
-                    'image' => $imagePath,
-                ]);
-            }
-        }
-
-        // Jika tidak ada artikel terkait, maka hanya update cardArticle
-        // Jika ada artikel terkait, update semuanya
+        // Tidak mengubah judul artikel kecuali diinginkan, update artikel secara terpisah jika perlu
 
         return redirect()->route('add-article')->with([
             'status' => 'success',
-            'message' => 'Artikel grup berhasil diperbarui!',
+            'message' => 'Card berhasil diperbarui!',
         ]);
     } catch (\Exception $e) {
-        // Tangkap pesan error yang lebih detail
-        Log::error('Gagal memperbarui artikel: ' . $e->getMessage());
+        Log::error('Gagal memperbarui Card: ' . $e->getMessage());
 
         return redirect()->route('add-article')->with([
             'status' => 'error',
-            'message' => 'Terjadi kesalahan saat memperbarui artikel. Error: ' . $e->getMessage(),
+            'message' => 'Terjadi kesalahan saat memperbarui Card.',
         ]);
     }
 }

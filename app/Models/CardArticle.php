@@ -15,4 +15,17 @@ class CardArticle extends Model
     {
         return $this->hasMany(Article::class, 'card_id');
     }
+
+    protected static function booted()
+    {
+        static::deleting(function ($card) {
+            // Hapus semua Articles terkait
+            $card->articles()->each(function ($article) {
+                // Hapus semua SubArticles terkait dengan Article
+                $article->subArticles()->delete();
+                // Hapus Article
+                $article->delete();
+            });
+        });
+    }
 }

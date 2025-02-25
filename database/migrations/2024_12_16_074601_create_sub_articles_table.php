@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('article_id')->constrained('articles')->onDelete('cascade');
             $table->string('title');
             $table->text('content');
+            $table->string('image')->nullable();
             $table->integer('order_number');
             $table->timestamps();
         });

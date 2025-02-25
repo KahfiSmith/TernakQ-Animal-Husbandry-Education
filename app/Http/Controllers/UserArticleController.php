@@ -87,48 +87,51 @@ class UserArticleController extends Controller
 
     // Mengupdate artikel dan tag terkait
     public function updateUserArtikel(Request $request, $id)
-    {
-        try {
-            $validated = $request->validate([
-                'card_id' => 'required|exists:card_articles,id',
-                'title' => 'required|string|max:255',
-                'description' => 'nullable|string',
-                'status' => 'required|string|in:Tertunda,Disetujui,Ditolak',
-                'tags' => 'nullable|array',
-                'tags.*' => 'exists:tags,id',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            ]);
+{
+    try {
+        $validated = $request->validate([
+            'card_id' => 'required|exists:card_articles,id',
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'status' => 'required|string|in:Tertunda,Disetujui,Ditolak',
+            'tags' => 'nullable|array',
+            'tags.*' => 'exists:tags,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-            $article = Article::findOrFail($id);
-            $imagePath = $article->image;
-            if ($request->hasFile('image')) {
-                $imagePath = $request->file('image')->store('articles', 'public');
-            }
+        $article = Article::findOrFail($id);
 
-            $article->update([
-                'card_id' => $validated['card_id'],
-                'title' => $validated['title'],
-                'description' => $validated['description'],
-                'status' => $validated['status'],
-                'image' => $imagePath,
-            ]);
-
-            if (!empty($validated['tags'])) {
-                $article->tags()->sync($validated['tags']);
-            }
-
-            return redirect()->route('add-article-detail')->with([
-                'status' => 'success',
-                'message' => 'Artikel berhasil diperbarui!',
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Gagal memperbarui artikel: ' . $e->getMessage());
-            return redirect()->route('add-article-detail')->with([
-                'status' => 'error',
-                'message' => 'Terjadi kesalahan saat memperbarui artikel.',
-            ]);
+        // Pastikan hanya update artikel tanpa merubah card title
+        $imagePath = $article->image;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('articles', 'public');
         }
+
+        $article->update([
+            'card_id' => $validated['card_id'],  // Hanya merubah card_id
+            'title' => $validated['title'],  // Mengubah title artikel
+            'description' => $validated['description'],
+            'status' => $validated['status'],
+            'image' => $imagePath,
+        ]);
+
+        // Update tags
+        if (!empty($validated['tags'])) {
+            $article->tags()->sync($validated['tags']);
+        }
+
+        return redirect()->route('add-article-detail')->with([
+            'status' => 'success',
+            'message' => 'Artikel berhasil diperbarui!',
+        ]);
+    } catch (\Exception $e) {
+        Log::error('Gagal memperbarui artikel: ' . $e->getMessage());
+        return redirect()->route('add-article-detail')->with([
+            'status' => 'error',
+            'message' => 'Terjadi kesalahan saat memperbarui artikel.',
+        ]);
     }
+}
 
     /**
      * Menghapus artikel dan relasi terkait.

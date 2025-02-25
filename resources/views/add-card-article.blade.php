@@ -61,7 +61,6 @@
                     <span class="font-semibold text-3xl">4</span>
                 </div>
             </div>
-            
         </div>
 
         <div class="flex flex-col p-4 sm:p-6 bg-white shadow sm:rounded-lg ring-2 ring-gray-700 border-b-gray-200">
