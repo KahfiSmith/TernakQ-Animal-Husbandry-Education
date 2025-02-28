@@ -9,7 +9,9 @@
         <nav class="flex justify-between py-4 px-14 items-center border-b-2 border-gray-700">
             <!-- Logo -->
             <div>
-                <img src="{{ asset('images/logo.svg') }}" alt="logo" />
+                <a href="{{ url('/') }}" wire:navigate>
+                    <img src="{{ asset('images/logo.svg') }}" alt="logo" />
+                </a>
             </div>
             <!-- Search Input -->
             <x-search-input placeholder="Cari konten..." />

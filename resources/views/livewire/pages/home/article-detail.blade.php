@@ -57,8 +57,12 @@
         </h1>
 
         <!-- Gambar Artikel -->
-        <img src="{{ asset('images/ayam.jpg') }}" alt="gambar ayam"
-            class="w-full h-full object-cover rounded-lg shadow-md mb-6">
+        @if ($article->image)
+            <img src="{{ asset('storage/' . $article->image) }}" alt="Image"
+                class="object-cover rounded-lg shadow-md mb-2 mx-auto max-h-[400px] min-h-[380px] w-full">
+        @else
+        No Image
+        @endif
 
         <!-- Tanggal Publikasi -->
         <div class="flex items-center text-sm text-gray-500 mb-6 space-x-2">
@@ -87,6 +91,11 @@
                                 nesciunt perferendis maxime quasi error in molestias aliquam, cumque rem quis
                                 architecto! Vitae, harum quod. Odio, dignissimos necessitatibus!
                             </p>
+                            @if ($subArticle->image)
+                                <img src="{{ asset('storage/' . $subArticle->image) }}" alt="Image"
+                                    class="object-cover rounded mx-auto max-h-[400px] min-h-[380px] w-full">
+                            @else
+                            @endif
                         </div>
                     @endforeach
                 </div>

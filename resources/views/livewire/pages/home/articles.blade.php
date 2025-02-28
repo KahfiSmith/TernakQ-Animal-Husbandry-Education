@@ -7,7 +7,9 @@
         <div class="w-full fixed top-0 z-50 bg-cosmicLatte">
             <nav class="flex justify-between py-4 px-14 items-center border-b-2 border-gray-700">
                 <div>
-                    <img src="{{ asset('images/logo.svg') }}" alt="logo" />
+                    <a href="{{ url('/') }}" wire:navigate>
+                        <img src="{{ asset('images/logo.svg') }}" alt="logo" />
+                    </a>
                 </div>
                 <x-search-input placeholder="Cari artikel..." />
             </nav>
@@ -35,7 +37,7 @@
             </nav>
 
             <div class="flex space-x-8 mb-9">
-                <img src="{{ asset('images/ayam.jpg') }}" alt="gambar ayam"
+                <img src="{{ asset('storage/' . $card->image) }}" alt="Image"
                     class="w-[450px] h-[300px] rounded-md ring-2 ring-gray-300 object-cover">
                 <div class="flex flex-col mb-7">
                     <h2 class="text-4xl font-semibold mb-3">{{ $card->title }}</h2>
