@@ -14,26 +14,40 @@ class UserSubArticleController extends Controller
      * Selain itu, mengirimkan daftar artikel induk untuk dropdown.
      */
     public function indexUserArtikel(Request $request)
-    {
-        try {
-            // Ambil parameter halaman untuk pagination sub-artikel
-            $page = $request->get('sub_article_page', 1);
-            $subArticles = SubArticle::latest()->paginate(5, ['*'], 'sub_article_page', $page);
-            $subArticles->appends(['sub_article_page' => $page]);
+{
+    try {
+        // Ambil daftar artikel induk untuk dropdown
+        $articles = Article::all();
+        $selectedArticle = null;
+        $subArticles = collect(); // Default kosong jika belum ada artikel dipilih
 
-            // Ambil daftar artikel induk untuk dropdown (untuk input sub-artikel)
-            $articles = Article::all();
+        if ($request->has('article_id')) {
+            // Jika artikel dipilih, ambil sub-artikelnya
+            $selectedArticle = Article::with(['subArticles' => function ($query) {
+                $query->orderBy('order_number', 'asc'); // ✅ Urutkan berdasarkan order_number
+            }])->find($request->article_id);
 
-            return view('add-article-sub', compact('subArticles', 'articles'));
-        } catch (\Exception $e) {
-            Log::error('Gagal memuat sub-artikel: ' . $e->getMessage());
-
-            return redirect()->route('add-article-sub')->with([
-                'status'  => 'error',
-                'message' => 'Terjadi kesalahan saat memuat data sub-artikel.',
-            ]);
+            // Jika artikel ditemukan, ambil sub-artikelnya tanpa pagination
+            if ($selectedArticle) {
+                $subArticles = $selectedArticle->subArticles()->orderBy('order_number', 'asc')->get();
+            }
+        } else {
+            // Jika tidak ada artikel yang dipilih, tampilkan semua sub-artikel tanpa pagination
+            $subArticles = SubArticle::orderBy('order_number', 'asc')->get();
         }
+
+        return view('add-article-sub', compact('subArticles', 'articles', 'selectedArticle'));
+    } catch (\Exception $e) {
+        Log::error('Gagal memuat sub-artikel: ' . $e->getMessage());
+
+        return redirect()->route('add-article-sub')->with([
+            'status'  => 'error',
+            'message' => 'Terjadi kesalahan saat memuat data sub-artikel.',
+        ]);
     }
+}
+
+
 
     /**
      * Menyimpan sub-artikel baru.
@@ -70,7 +84,7 @@ class UserSubArticleController extends Controller
             ];
         }
 
-        \App\Models\SubArticle::insert($subArticlesData);
+        SubArticle::insert($subArticlesData);
 
         return redirect()->route('add-article-sub')->with([
             'status'  => 'success',
@@ -104,6 +118,11 @@ class UserSubArticleController extends Controller
 
             $imagePath = $subArticle->image;
             if ($request->hasFile('image')) {
+                // Hapus gambar lama jika ada
+                if ($subArticle->image) {
+                    Storage::disk('public')->delete($subArticle->image);
+                }
+
                 $imagePath = $request->file('image')->store('sub_articles', 'public');
             }
 
@@ -135,6 +154,9 @@ class UserSubArticleController extends Controller
     {
         try {
             $subArticle = SubArticle::findOrFail($id);
+            if ($subArticle->image) {
+                Storage::disk('public')->delete($subArticle->image);
+            }
             $subArticle->delete();
 
             return response()->json(['success' => true, 'message' => 'Sub-artikel berhasil dihapus.']);

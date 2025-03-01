@@ -6,6 +6,7 @@ use App\Models\CardArticle;  // Model untuk grup artikel
 use App\Models\Article;      // Model untuk artikel
 use App\Models\Tag;          // Model untuk tag
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class UserArticleController extends Controller
 {
@@ -143,6 +144,9 @@ class UserArticleController extends Controller
 
             // Hapus artikel dan relasi dengan tags
             $article->tags()->detach();
+            if ($article->image) {
+                Storage::disk('public')->delete($article->image);
+            }   
             $article->delete();
 
             return response()->json(['success' => true, 'message' => 'Artikel berhasil dihapus.']);

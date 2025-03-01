@@ -31,10 +31,12 @@ class ArticleController extends Controller
     }
 
     public function showArticleDetail($id)
-    {
-        $article = Article::with('subArticles')->findOrFail($id);
-        $subArticles = $article->subArticles()->orderBy('order_number')->get();
+{
+    $article = Article::with(['subArticles' => function ($query) {
+        $query->orderBy('order_number', 'asc'); // Mengurutkan dari terkecil ke terbesar
+    }])->findOrFail($id);
 
-        return view('livewire.pages.home.article-detail', compact('article', 'subArticles'));
-    }
+    return view('livewire.pages.home.article-detail', compact('article'));
+}
+
 }

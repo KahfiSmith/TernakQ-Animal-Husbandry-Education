@@ -1,9 +1,9 @@
 @extends('layouts.dashboard-layout')
 
-@section('title', 'Dashboard - Manajemen Sub Artikel')
+@section('title', 'Dashboard - Tambah Sub Artikel')
 
 @section('content')
-    <main class="flex flex-col space-y-6 w-full" x-data="{
+    <main class="flex justify-between w-full gap-4" x-data="{
         subArticles: [{
             title: '',
             content: '',
@@ -36,7 +36,7 @@
                 });
             </script>
         @endif
-        <div class="flex flex-col p-4 sm:p-6 bg-white shadow sm:rounded-lg ring-2 ring-gray-700">
+        <div class="flex flex-col p-4 sm:p-6 bg-white shadow sm:rounded-lg ring-2 ring-gray-700 w-full">
             <h2 class="text-xl font-bold mb-6 text-orangeCrayola">Tambah Banyak Sub Artikel Sekaligus</h2>
             <form method="POST" action="{{ route('user-article-sub.store-multiple') }}" enctype="multipart/form-data">
                 @csrf
@@ -144,6 +144,29 @@
                 </div>
             </form>
         </div>
+        <div class="bg-white p-6 rounded-lg shadow-md ring-2 ring-gray-700 w-full">
+            <h2 class="text-xl font-bold mb-4 text-orangeCrayola">Preview Sub Artikel</h2>
+        
+            @if ($subArticles->isNotEmpty())
+                @foreach ($subArticles as $sub)
+                    <div class="border-b border-gray-300 py-4">
+                        <h3 class="text-lg font-semibold text-gray-800">{{ $sub->title }}</h3>
+                        <p class="text-gray-700 mt-2">{{ $sub->content }}</p>
+                        <p class="text-sm text-gray-500">Urutan: {{ $sub->order_number }}</p>
+        
+                        @if ($sub->image)
+                            <div class="mt-2">
+                                <img src="{{ asset('storage/' . $sub->image) }}" alt="Gambar Sub Artikel"
+                                    class="w-40 h-40 object-cover rounded-md shadow-md">
+                            </div>
+                        @endif
+                    </div>
+                @endforeach
+            @else
+                <p class="text-gray-500">Belum ada sub-artikel untuk artikel ini.</p>
+            @endif
+        </div>
+        
     </main>
 
     <script>

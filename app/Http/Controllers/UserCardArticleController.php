@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CardArticle;
+use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -13,7 +14,12 @@ class UserCardArticleController extends Controller
         try {
             $artikelPage = $request->get('artikel_page', 1);
             $articles = CardArticle::latest()->paginate(5, ['*'], 'artikel_page', $artikelPage);
-            return view('add-card-article', compact('articles'));
+
+            $pendingCount = Article::where('status', 'Tertunda')->count();
+            $approvedCount = Article::where('status', 'Disetujui')->count();
+            $rejectedCount = Article::where('status', 'Ditolak')->count();
+            
+            return view('add-card-article', compact('articles', 'pendingCount', 'approvedCount', 'rejectedCount'));
         } catch (\Exception $e) {
             Log::error('Gagal memuat data artikel: ' . $e->getMessage());
             return redirect()->route('add-article')->with([
@@ -66,15 +72,21 @@ public function updateUserArtikel(Request $request, $id)
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Gambar opsional
         ]);
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('card_articles', 'public');
+            Log::info('Gambar berhasil disimpan di: ' . $imagePath); 
+        }
 
         $card = CardArticle::findOrFail($id);
         $card->update([
             'title' => $validated['title'],
             'description' => $validated['description'],
+            'image' => $imagePath,
         ]);
-
-        // Tidak mengubah judul artikel kecuali diinginkan, update artikel secara terpisah jika perlu
 
         return redirect()->route('add-article')->with([
             'status' => 'success',
@@ -94,6 +106,9 @@ public function updateUserArtikel(Request $request, $id)
     {
         try {
             $cardArticle = CardArticle::findOrFail($id);
+            if ($cardArticle->image) {
+                Storage::disk('public')->delete($cardArticle->image);
+            }
             $cardArticle->delete();
 
             return response()->json(['success' => true, 'message' => 'Artikel berhasil dihapus.']);

@@ -1,6 +1,6 @@
 @extends('layouts.dashboard-layout')
 
-@section('title', 'Dashboard - Manajemen Artikel')
+@section('title', 'Dashboard - Tambah Artikel')
 
 @section('content')
 <main class="flex flex-col space-y-6 w-full" x-data="{
@@ -33,14 +33,6 @@
         </script>
     @endif
 
-    <div class="flex justify-start space-x-6">
-        <div>
-            <a href="{{ route('add-article-sub') }}" wire:navigate class="inline-flex justify-center items-center text-center font-medium text-base tracking-widest focus:outline-none focus-visible:outline-none transition ease-in-out duration-150 bg-orangeCrayola ring-2
-            ring-gray-700 shadow-[4px_4px_0px_2px_#374151] text-white hover:shadow-[2px_2px_0px_2px_#374151]
-            hover:translate-y-0.5 hover:translate-x-0.5 py-2.5 px-4 rounded">Tambah Sub Artikel</a>
-        </div>
-    </div>
-
     <!-- Form Input Artikel (Tambah & Edit) -->
     <div class="flex flex-col p-4 sm:p-6 bg-white shadow sm:rounded-lg ring-2 ring-gray-700 border-b-gray-200">
         <h2 class="text-xl font-bold mb-2 text-orangeCrayola">
@@ -72,7 +64,7 @@
 
             <!-- Input untuk Deskripsi Artikel -->
             <div class="flex flex-col space-y-1">
-                <x-input-label for="description" :value="__('Deskripsi')" />
+                <x-input-label for="description" :value="__('Deskripsi Artikel')" />
                 <textarea id="description" name="description"
                 class="block mt-1 w-full h-[100px] resize-none py-2.5 ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151]
                 focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5
@@ -82,7 +74,7 @@
             </div>
 
             <div class="flex flex-col space-y-1">
-                <x-input-label for="image" :value="__('Gambar')" />
+                <x-input-label for="image" :value="__('Gambar Artikel')" />
                 <div x-data="{ imagePreview: null }" class="relative w-full">
                     <label for="image"
                            class="cursor-pointer flex flex-col items-center justify-center border-2 border-gray-700 shadow-[4px_4px_0px_2px_#374151] rounded-md p-6 hover:bg-gray-100 transition duration-150 ease-in-out">
@@ -123,7 +115,7 @@
 
             <!-- Dropdown untuk memilih Tag -->
             <div class="flex flex-col space-y-1">
-                <x-input-label for="tags" :value="__('Pilih Tag')" />
+                <x-input-label for="tags" :value="__('Pilih Tag Artikel')" />
                 <div class="relative">
                     <button type="button"
                             class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5"
@@ -155,6 +147,14 @@
                 </x-primary-button>
             </div>
         </form>
+    </div>
+
+    <div class="flex justify-end space-x-6">
+        <div>
+            <a href="{{ route('add-article-sub') }}" wire:navigate class="inline-flex justify-center items-center text-center font-medium text-base tracking-widest focus:outline-none focus-visible:outline-none transition ease-in-out duration-150 bg-pewterBlue ring-2
+            ring-gray-700 shadow-[4px_4px_0px_2px_#374151] text-white hover:shadow-[2px_2px_0px_2px_#374151]
+            hover:translate-y-0.5 hover:translate-x-0.5 py-2.5 px-4 rounded">Tambah Sub Artikel</a>
+        </div>
     </div>
 
     <!-- Tabel Artikel -->
