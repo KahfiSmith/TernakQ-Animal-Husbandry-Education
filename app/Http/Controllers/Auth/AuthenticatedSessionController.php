@@ -33,7 +33,7 @@ class AuthenticatedSessionController extends Controller
     if (Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME); // 🔥 Redirect otomatis sesuai role
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 
     return back()->withErrors([

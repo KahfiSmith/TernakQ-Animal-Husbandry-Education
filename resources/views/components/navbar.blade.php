@@ -1,7 +1,9 @@
 <div class="w-full fixed top-0 z-50 bg-cosmicLatte shadow-md">
     <nav class="flex justify-between py-5 px-14 items-center border-b-2 border-gray-700">
         <div>
-            <img src="{{ asset('images/logo.svg') }}" alt="logo" />
+            <a href="#beranda">
+                <img src="{{ asset('images/logo.svg') }}" alt="logo" />
+            </a>
         </div>
         <ul class="flex flex-row space-x-7 text-base font-medium">
             <li>
@@ -15,7 +17,8 @@
                 </a>
             </li>
             <li>
-                <a href="#forum" class="nav-link text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">
+                <a href="#forum"
+                    class="nav-link text-gray-500 hover:text-gray-700 transition duration-150 ease-in-out">
                     Forum
                 </a>
             </li>

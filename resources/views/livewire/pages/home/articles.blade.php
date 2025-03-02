@@ -19,9 +19,9 @@
             <nav class="text-sm text-gray-600 mb-4 font-medium" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-1 md:space-x-3">
                     <li class="inline-flex items-center">
-                        <a href="{{ route('cards') }}"
-                            class="text-gray-500 hover:text-gray-700  inline-flex items-center ease-in-out duration-300">
-                            Konten
+                        <a href="{{ route('cards') }}" wire:navigate
+                            class="text-gray-500 hover:text-gray-700  inline-flex items-center ease-in-out duration-300 hover:underline">
+                            Grup Artikel
                         </a>
                     </li>
                     <li>
@@ -64,5 +64,11 @@
                 </div>
             </div>
         </div>
+        <a href="{{ url('/') }}" wire:navigate>
+            <x-primary-button
+                class="fixed bottom-6 right-6 ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] text-white hover:shadow-[2px_2px_0px_2px_#374151] hover:translate-y-0.5 hover:translate-x-0.5 text-center bg-orangeCrayola py-2.5">
+                Kembali ke Home
+            </x-primary-button>
+        </a>
     </section>
 @endsection
