@@ -21,19 +21,15 @@ class UserSubArticleController extends Controller
         $selectedArticle = null;
         $subArticles = collect(); // Default kosong jika belum ada artikel dipilih
 
-        if ($request->has('article_id')) {
-            // Jika artikel dipilih, ambil sub-artikelnya
+        $articleId = $request->query('article_id'); // Ambil dari query string
+        if ($articleId) {
             $selectedArticle = Article::with(['subArticles' => function ($query) {
-                $query->orderBy('order_number', 'asc'); // ✅ Urutkan berdasarkan order_number
-            }])->find($request->article_id);
+                $query->orderBy('order_number', 'asc');
+            }])->find($articleId);
 
-            // Jika artikel ditemukan, ambil sub-artikelnya tanpa pagination
             if ($selectedArticle) {
-                $subArticles = $selectedArticle->subArticles()->orderBy('order_number', 'asc')->get();
+                $subArticles = $selectedArticle->subArticles;
             }
-        } else {
-            // Jika tidak ada artikel yang dipilih, tampilkan semua sub-artikel tanpa pagination
-            $subArticles = SubArticle::orderBy('order_number', 'asc')->get();
         }
 
         return view('add-article-sub', compact('subArticles', 'articles', 'selectedArticle'));

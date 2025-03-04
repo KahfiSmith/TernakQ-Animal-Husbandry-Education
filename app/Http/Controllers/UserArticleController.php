@@ -27,7 +27,7 @@ class UserArticleController extends Controller
             // Menambahkan parameter yang sama dengan query untuk pagination
             $articles->appends(['article_page' => $articlePage]);
 
-            return view('add-article-detail', compact('articles', 'cardArticles', 'tags'));
+            return view('add-article-detail', compact('articles', 'cardArticles', 'tags',));
         } catch (\Exception $e) {
             Log::error('Gagal memuat data artikel: ' . $e->getMessage());
 
