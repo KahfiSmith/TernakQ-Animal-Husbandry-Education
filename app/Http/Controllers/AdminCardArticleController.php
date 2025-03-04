@@ -1,73 +1,112 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use App\Models\CardArticle;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 class AdminCardArticleController extends Controller
 {
-    // Admin melihat daftar artikel yang menunggu persetujuan
-    public function pendingArticles()
+    public function indexAdminArtikel(Request $request)
     {
-        $articles = Article::where('status', 'tertunda')->latest()->get();
+        try {
+            $artikelPage = $request->get('artikel_page', 1);
+            $articles = CardArticle::latest()->paginate(5, ['*'], 'artikel_page', $artikelPage);
 
-        return response()->json([
-            'message' => 'Daftar artikel yang menunggu persetujuan',
-            'data' => $articles
-        ]);
+            $pendingCount = Article::where('status', 'Tertunda')->count();
+            $approvedCount = Article::where('status', 'Disetujui')->count();
+            $rejectedCount = Article::where('status', 'Ditolak')->count();
+            
+            return view('admin.add-card-article', compact('articles', 'pendingCount', 'approvedCount', 'rejectedCount'));
+        } catch (\Exception $e) {
+            Log::error('Gagal memuat data artikel: ' . $e->getMessage());
+            return redirect()->route('add-article')->with([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan saat memuat data artikel.',
+            ]);
+        }
     }
 
-    // Admin menyetujui artikel
-    public function approve($id)
-    {
-        $article = Article::findOrFail($id);
-        $article->update(['status' => 'disetujui']);
-
-        return response()->json([
-            'message' => 'Artikel telah disetujui!',
-            'data' => $article
-        ]);
-    }
-
-    // Admin menolak artikel
-    public function reject($id)
-    {
-        $article = Article::findOrFail($id);
-        $article->update(['status' => 'ditolak']);
-
-        return response()->json([
-            'message' => 'Artikel telah ditolak!',
-            'data' => $article
-        ]);
-    }
-
-    // Admin bisa menambahkan artikel sendiri (langsung disetujui)
-    public function store(Request $request, $card_id)
-    {
+    public function storeAdminArtikel(Request $request)
+{
+    try {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Gambar opsional
         ]);
 
+        // Simpan gambar jika ada
+        $imagePath = null;
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')->store('articles', 'public');
+            $imagePath = $request->file('image')->store('card_articles', 'public');
+            Log::info('Gambar berhasil disimpan di: ' . $imagePath); 
         }
 
-        $article = Article::create([
-            'card_id' => $card_id,
+        // Simpan artikel ke dalam 'card_articles'
+        $cardArticle = CardArticle::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
-            'image' => $validated['image'] ?? null,
-            'status' => 'disetujui', // Admin submit, langsung disetujui
+            'image' => $imagePath,
         ]);
 
-        return response()->json([
-            'message' => 'Artikel berhasil dibuat!',
-            'data' => $article
+        return redirect()->route('add-article')->with([
+            'status' => 'success',
+            'message' => 'Artikel grup berhasil ditambahkan!',
         ]);
+    } catch (\Exception $e) {
+        Log::error('Gagal menyimpan artikel: ' . $e->getMessage());
+
+        return redirect()->route('add-article')->with([
+            'status' => 'error',
+            'message' => 'Terjadi kesalahan saat menyimpan artikel.',
+        ]);
+    }
+}
+
+public function updateAdminArtikel(Request $request, $id)
+{
+    try {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        $card = CardArticle::findOrFail($id);
+        $card->update([
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+        ]);
+
+        return redirect()->route('add-article')->with([
+            'status' => 'success',
+            'message' => 'Card berhasil diperbarui!',
+        ]);
+    } catch (\Exception $e) {
+        Log::error('Gagal memperbarui Card: ' . $e->getMessage());
+
+        return redirect()->route('add-article')->with([
+            'status' => 'error',
+            'message' => 'Terjadi kesalahan saat memperbarui Card.',
+        ]);
+    }
+}
+
+    public function deleteAdminArtikel($id)
+    {
+        try {
+            $cardArticle = CardArticle::findOrFail($id);
+            if ($cardArticle->image) {
+                Storage::disk('public')->delete($cardArticle->image);
+            }
+            $cardArticle->delete();
+
+            return response()->json(['success' => true, 'message' => 'Artikel berhasil dihapus.']);
+        } catch (\Exception $e) {
+            Log::error('Gagal menghapus artikel: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Gagal menghapus artikel.'], 500);
+        }
     }
 }
