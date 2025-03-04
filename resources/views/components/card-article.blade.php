@@ -3,7 +3,7 @@
 <a href="{{ route('articles.detail', ['id' => $article->id]) }}"
     class="flex flex-col ring-2 ring-gray-700 overflow-hidden group relative rounded-md shadow-[0px_4px_0px_2px_#374151] hover:shadow-[0px_2px_0px_2px_#374151] hover:translate-y-1 transition ease-in-out duration-200 p-4 bg-cosmicLatte cursor-pointer">
     <div class="flex mb-8">
-        <img src="{{ asset('images/ayam.jpg') }}" alt="{{ $article->title }}" class="w-[135px] rounded-md mr-4 object-cover">
+        <img src="{{ asset('storage/' . $article->image) }}" alt="Image" class="w-[135px] rounded-md mr-4 object-cover ring-2 ring-gray-300">
         <div class="flex flex-col w-full">
             <div class="mb-4 flex flex-wrap gap-3">
                 @forelse ($article->tags as $tag)

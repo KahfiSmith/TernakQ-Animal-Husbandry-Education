@@ -3,7 +3,7 @@
 <a href="{{ route('cards.articles', ['id' => $card->id]) }}"
     class="flex flex-col ring-2 ring-gray-700 shadow-md overflow-hidden group relative rounded-md
             h-full min-h-[420px] cursor-pointer">
-    <img src="{{ asset('images/ayam.jpg') }}" alt="{{ $card->title }}" loading="lazy"
+            <img src="{{ asset('storage/' . $card->image) }}" alt="Image" loading="lazy"
         class="rounded-t-md w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110">
     <div class="flex flex-col flex-grow px-4 space-y-1 pb-5 pt-4">
         <h3 class="font-semibold text-xl line-clamp-2">{{ $card->title }}</h3>
