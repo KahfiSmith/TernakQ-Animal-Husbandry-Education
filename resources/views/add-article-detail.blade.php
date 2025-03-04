@@ -33,6 +33,26 @@
         </script>
     @endif
 
+    <nav class="text-sm text-gray-600 font-medium" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3">
+            <li class="inline-flex items-center">
+                <a href="{{ route('add-article') }}" wire:navigate
+                    class="text-gray-500 hover:text-gray-700  inline-flex items-center ease-in-out duration-300 hover:underline">
+                    Grup Artikel
+                </a>
+            </li>
+            <li>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </li>
+            <li aria-current="page" class="text-gray-500 font-normal">
+                Artikel
+            </li>
+        </ol>
+    </nav>
+
     <!-- Form Input Artikel (Tambah & Edit) -->
     <div class="flex flex-col p-4 sm:p-6 bg-white shadow sm:rounded-lg ring-2 ring-gray-700 border-b-gray-200">
         <h2 class="text-xl font-bold mb-2 text-orangeCrayola">
