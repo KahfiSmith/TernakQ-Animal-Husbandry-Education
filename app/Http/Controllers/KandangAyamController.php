@@ -18,7 +18,9 @@ class KandangAyamController extends Controller
             $kandangPage = $request->get('kandang_page', 1);
 
             // Paginasi dengan appends
-            $kandang = KandangAyam::latest()->paginate(4, ['*'], 'kandang_page', $kandangPage);
+            $kandang = KandangAyam::where('user_id', auth()->id())
+             ->latest()
+             ->paginate(4, ['*'], 'kandang_page', $kandangPage);
 
             return view('cage-management', compact('kandang'));
         } catch (\Exception $e) {
@@ -43,6 +45,7 @@ class KandangAyamController extends Controller
                 'status_kandang'  => 'required|in:Aktif,Tidak Aktif',
             ]);
 
+            $validated['user_id'] = auth()->id();
             KandangAyam::create($validated);
 
             return redirect()->route('cage-management')->with([
@@ -71,8 +74,8 @@ class KandangAyamController extends Controller
                 'status_kandang' => 'required|in:Aktif,Tidak Aktif',
             ]);
 
-            $kandang = KandangAyam::findOrFail($id);
-            $kandang->update($validated);
+            $kandang = KandangAyam::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
+            $kandang->update($validated);   
 
             return redirect()->route('cage-management')->with([
                 'status' => 'success',
@@ -94,8 +97,8 @@ class KandangAyamController extends Controller
     public function destroyKandang($id)
     {
         try {
-            $kandang = KandangAyam::findOrFail($id);
-            $kandang->delete();
+            $kandang = KandangAyam::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
+            $kandang->delete(); 
 
             return response()->json(['success' => true, 'message' => 'Kandang berhasil dihapus.']);
         } catch (\Exception $e) {

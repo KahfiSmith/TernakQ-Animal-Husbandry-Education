@@ -15,6 +15,7 @@ class KandangAyam extends Model
         'nama_kandang',
         'kapasitas',
         'status_kandang',
+        'user_id',
     ];
 
     const STATUS_AKTIF = 'Aktif';
@@ -28,5 +29,10 @@ class KandangAyam extends Model
     public function populasiAyam()
     {
         return $this->hasMany(PopulasiAyam::class, 'kandang_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
