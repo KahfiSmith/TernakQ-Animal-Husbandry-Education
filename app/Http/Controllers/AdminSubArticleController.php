@@ -6,6 +6,8 @@ use App\Models\SubArticle;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class AdminSubArticleController extends Controller
 {
@@ -16,18 +18,27 @@ class AdminSubArticleController extends Controller
     public function indexAdminArtikel(Request $request)
     {
         try {
-            // Ambil parameter halaman untuk pagination sub-artikel
-            $page = $request->get('sub_article_page', 1);
-            $subArticles = SubArticle::latest()->paginate(5, ['*'], 'sub_article_page', $page);
-            $subArticles->appends(['sub_article_page' => $page]);
-
-            // Ambil daftar artikel induk untuk dropdown (untuk input sub-artikel)
-            $articles = Article::all();
-
-            return view('admin.add-article-sub', compact('subArticles', 'articles'));
+            // Ambil daftar artikel induk untuk dropdown
+            $articles = Article::where('user_id', Auth::id())->get();
+            $selectedArticle = null;
+            $subArticles = collect(); // Default kosong jika belum ada artikel dipilih
+    
+            $articleId = $request->query('article_id'); // Ambil dari query string
+            if ($articleId) {
+                // Pastikan artikel yang dipilih milik user
+                $selectedArticle = Article::with(['subArticles' => function ($query) {
+                    $query->orderBy('order_number', 'asc');
+                }])->where('user_id', Auth::id())->find($articleId);
+    
+                if ($selectedArticle) {
+                    $subArticles = $selectedArticle->subArticles;
+                }
+            }
+    
+            return view('admin.add-article-sub', compact('subArticles', 'articles', 'selectedArticle'));
         } catch (\Exception $e) {
             Log::error('Gagal memuat sub-artikel: ' . $e->getMessage());
-
+    
             return redirect()->route('admin.add-article-sub')->with([
                 'status'  => 'error',
                 'message' => 'Terjadi kesalahan saat memuat data sub-artikel.',
@@ -52,6 +63,10 @@ class AdminSubArticleController extends Controller
             'sub_articles.*.image'        => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        $article = Article::where('id', $validated['article_id'])
+                ->where('user_id', Auth::id())
+                ->firstOrFail();
+
         $subArticlesData = [];
         foreach ($validated['sub_articles'] as $subArticle) {
             $imagePath = null;
@@ -65,12 +80,13 @@ class AdminSubArticleController extends Controller
                 'content'      => $subArticle['content'],
                 'order_number' => $subArticle['order_number'],
                 'image'        => $imagePath,
+                'user_id'      => Auth::id(),
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ];
         }
 
-        \App\Models\SubArticle::insert($subArticlesData);
+        SubArticle::insert($subArticlesData);
 
         return redirect()->route('admin.add-article-sub')->with([
             'status'  => 'success',
@@ -92,7 +108,11 @@ class AdminSubArticleController extends Controller
     public function updateAdminArtikel(Request $request, $id)
     {
         try {
-            $subArticle = SubArticle::findOrFail($id);
+            $subArticle = SubArticle::where('id', $id)
+                ->whereHas('article', function ($query) {
+                    $query->where('user_id', Auth::id());
+                })
+                ->firstOrFail();
 
             $validated = $request->validate([
                 'article_id'   => 'required|exists:articles,id',
@@ -104,6 +124,11 @@ class AdminSubArticleController extends Controller
 
             $imagePath = $subArticle->image;
             if ($request->hasFile('image')) {
+                // Hapus gambar lama jika ada
+                if ($subArticle->image) {
+                    Storage::disk('public')->delete($subArticle->image);
+                }
+
                 $imagePath = $request->file('image')->store('sub_articles', 'public');
             }
 
@@ -134,7 +159,11 @@ class AdminSubArticleController extends Controller
     public function deleteAdminArtikel($id)
     {
         try {
-            $subArticle = SubArticle::findOrFail($id);
+            $subArticle = SubArticle::where('id', $id)
+                ->whereHas('article', function ($query) {
+                    $query->where('user_id', Auth::id());
+                })
+                ->firstOrFail();
             if ($subArticle->image) {
                 Storage::disk('public')->delete($subArticle->image);
             }

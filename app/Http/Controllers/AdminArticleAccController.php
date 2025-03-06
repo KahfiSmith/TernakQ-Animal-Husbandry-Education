@@ -32,26 +32,29 @@ class AdminArticleAccController extends Controller
     /**
      * Mengubah status artikel.
      */
-    public function updateStatus(Request $request, $id)
-    {
-        try {
-            $request->validate([
-                'status' => 'required|in:Tertunda,Disetujui,Ditolak',
-            ]);
+    public function updateArticle(Request $request, $id)
+{
+    try {
+        $validated = $request->validate([
+            'catatan' => 'nullable|string',
+            'status'  => 'required|in:Tertunda,Disetujui,Ditolak',
+        ]);
 
-            $article = Article::findOrFail($id);
-            $article->update(['status' => $request->status]);
+        $article = Article::findOrFail($id);
+        $article->update($validated);
 
-            return redirect()->route('admin.article-management')
-                ->with('status', 'success')
-                ->with('message', 'Status artikel berhasil diperbarui!');
-        } catch (\Exception $e) {
-            Log::error('Gagal mengubah status artikel: ' . $e->getMessage());
-            return redirect()->route('admin.article-management')
-                ->with('status', 'error')
-                ->with('message', 'Terjadi kesalahan saat memperbarui status artikel.');
-        }
+        return redirect()->route('admin.article-management')->with([
+            'status'  => 'success',
+            'message' => 'Artikel berhasil diperbarui!',
+        ]);
+    } catch (\Exception $e) {
+        Log::error('Gagal memperbarui artikel: ' . $e->getMessage());
+        return redirect()->route('admin.article-management')->with([
+            'status'  => 'error',
+            'message' => 'Terjadi kesalahan saat memperbarui artikel.',
+        ]);
     }
+}
 
     public function editArticle($id)
 {

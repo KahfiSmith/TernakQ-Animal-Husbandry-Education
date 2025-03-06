@@ -6,6 +6,8 @@ use App\Models\CardArticle;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class AdminCardArticleController extends Controller
 {
@@ -13,16 +15,25 @@ class AdminCardArticleController extends Controller
     {
         try {
             $artikelPage = $request->get('artikel_page', 1);
-            $articles = CardArticle::latest()->paginate(5, ['*'], 'artikel_page', $artikelPage);
+            $articles = CardArticle::where('user_id', Auth::id())
+                ->withCount('articles')
+                ->latest()
+                ->paginate(5, ['*'], 'artikel_page', $artikelPage);
 
-            $pendingCount = Article::where('status', 'Tertunda')->count();
-            $approvedCount = Article::where('status', 'Disetujui')->count();
-            $rejectedCount = Article::where('status', 'Ditolak')->count();
+            $pendingCount = Article::where('status', 'Tertunda')
+                ->where('user_id', Auth::id())
+                ->count();
+            $approvedCount = Article::where('status', 'Disetujui')
+                ->where('user_id', Auth::id())
+                ->count();
+            $rejectedCount = Article::where('status', 'Ditolak')
+                ->where('user_id', Auth::id())
+                ->count();
             
             return view('admin.add-card-article', compact('articles', 'pendingCount', 'approvedCount', 'rejectedCount'));
         } catch (\Exception $e) {
             Log::error('Gagal memuat data artikel: ' . $e->getMessage());
-            return redirect()->route('add-article')->with([
+            return redirect()->route('admin.add-article')->with([
                 'status' => 'error',
                 'message' => 'Terjadi kesalahan saat memuat data artikel.',
             ]);
@@ -50,16 +61,17 @@ class AdminCardArticleController extends Controller
             'title' => $validated['title'],
             'description' => $validated['description'],
             'image' => $imagePath,
+            'user_id' => Auth::id(),
         ]);
 
-        return redirect()->route('add-article')->with([
+        return redirect()->route('admin.add-article')->with([
             'status' => 'success',
             'message' => 'Artikel grup berhasil ditambahkan!',
         ]);
     } catch (\Exception $e) {
         Log::error('Gagal menyimpan artikel: ' . $e->getMessage());
 
-        return redirect()->route('add-article')->with([
+        return redirect()->route('admin.add-article')->with([
             'status' => 'error',
             'message' => 'Terjadi kesalahan saat menyimpan artikel.',
         ]);
@@ -72,22 +84,33 @@ public function updateAdminArtikel(Request $request, $id)
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Gambar opsional
         ]);
 
-        $card = CardArticle::findOrFail($id);
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('card_articles', 'public');
+            Log::info('Gambar berhasil disimpan di: ' . $imagePath); 
+        }
+
+        $card = CardArticle::where('id', $id)
+                ->where('user_id', Auth::id())
+                ->firstOrFail();
+
         $card->update([
             'title' => $validated['title'],
             'description' => $validated['description'],
+            'image' => $imagePath,
         ]);
 
-        return redirect()->route('add-article')->with([
+        return redirect()->route('admin.add-article')->with([
             'status' => 'success',
             'message' => 'Card berhasil diperbarui!',
         ]);
     } catch (\Exception $e) {
         Log::error('Gagal memperbarui Card: ' . $e->getMessage());
 
-        return redirect()->route('add-article')->with([
+        return redirect()->route('admin.add-article')->with([
             'status' => 'error',
             'message' => 'Terjadi kesalahan saat memperbarui Card.',
         ]);
@@ -97,7 +120,10 @@ public function updateAdminArtikel(Request $request, $id)
     public function deleteAdminArtikel($id)
     {
         try {
-            $cardArticle = CardArticle::findOrFail($id);
+            $cardArticle = CardArticle::where('id', $id)
+                ->where('user_id', Auth::id())
+                ->firstOrFail();
+
             if ($cardArticle->image) {
                 Storage::disk('public')->delete($cardArticle->image);
             }

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CardArticle;  // Model untuk grup artikel
-use App\Models\Article;      // Model untuk artikel
-use App\Models\Tag;          // Model untuk tag
+use App\Models\CardArticle;  
+use App\Models\Article;      
+use App\Models\Tag;         
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class AdminArticleController extends Controller
 {
@@ -18,16 +20,17 @@ class AdminArticleController extends Controller
             $articlePage = $request->get('article_page', 1);
 
             // Paginasi dengan appends untuk menjaga parameter query saat halaman berubah
-            $articles = Article::latest()->paginate(4, ['*'], 'article_page', $articlePage);
+            $articles = Article::where('user_id', Auth::id())
+            ->latest()
+            ->paginate(4, ['*'], 'article_page', $articlePage);
 
-            // Ambil semua grup artikel (CardArticle) dan tags untuk ditampilkan pada form
-            $cardArticles = CardArticle::all();
+            $cardArticles = CardArticle::where('user_id', Auth::id())->get();
             $tags = Tag::all();
 
             // Menambahkan parameter yang sama dengan query untuk pagination
             $articles->appends(['article_page' => $articlePage]);
 
-            return view('admin.add-article-detail', compact('articles', 'cardArticles', 'tags'));
+            return view('admin.add-article-detail', compact('articles', 'cardArticles', 'tags',));
         } catch (\Exception $e) {
             Log::error('Gagal memuat data artikel: ' . $e->getMessage());
 
@@ -58,6 +61,8 @@ class AdminArticleController extends Controller
                 $imagePath = $request->file('image')->store('articles', 'public');
             }
 
+            $validated['user_id'] = Auth::id();
+
             // Simpan artikel
             $article = Article::create([
                 'card_id' => $validated['card_id'],
@@ -65,6 +70,7 @@ class AdminArticleController extends Controller
                 'description' => $validated['description'],
                 'status' => $validated['status'],
                 'image' => $imagePath,
+                'user_id' => Auth::id(),
             ]);
 
             // Jika ada tag yang dipilih, simpan relasi antara artikel dan tag
@@ -100,7 +106,9 @@ class AdminArticleController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $article = Article::findOrFail($id);
+        $article = Article::where('id', $id)
+                ->where('user_id', Auth::id())
+                ->firstOrFail();
 
         // Pastikan hanya update artikel tanpa merubah card title
         $imagePath = $article->image;
@@ -140,13 +148,15 @@ class AdminArticleController extends Controller
     public function deleteAdminArtikel($id)
     {
         try {
-            $article = Article::findOrFail($id);
-            if ($article->image) {
-                Storage::disk('public')->delete($article->image);
-            }
+            $article = Article::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
 
             // Hapus artikel dan relasi dengan tags
             $article->tags()->detach();
+            if ($article->image) {
+                Storage::disk('public')->delete($article->image);
+            }   
             $article->delete();
 
             return response()->json(['success' => true, 'message' => 'Artikel berhasil dihapus.']);
