@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CardArticle;  // Model untuk grup artikel
-use App\Models\Article;      // Model untuk artikel
-use App\Models\Tag;          // Model untuk tag
+use App\Models\CardArticle;  
+use App\Models\Article;      
+use App\Models\Tag;          
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class UserArticleController extends Controller
 {
@@ -18,10 +20,11 @@ class UserArticleController extends Controller
             $articlePage = $request->get('article_page', 1);
 
             // Paginasi dengan appends untuk menjaga parameter query saat halaman berubah
-            $articles = Article::latest()->paginate(4, ['*'], 'article_page', $articlePage);
+            $articles = Article::where('user_id', Auth::id())
+            ->latest()
+            ->paginate(4, ['*'], 'article_page', $articlePage);
 
-            // Ambil semua grup artikel (CardArticle) dan tags untuk ditampilkan pada form
-            $cardArticles = CardArticle::all();
+            $cardArticles = CardArticle::where('user_id', Auth::id())->get();
             $tags = Tag::all();
 
             // Menambahkan parameter yang sama dengan query untuk pagination
@@ -58,6 +61,8 @@ class UserArticleController extends Controller
                 $imagePath = $request->file('image')->store('articles', 'public');
             }
 
+            $validated['user_id'] = Auth::id();
+
             // Simpan artikel
             $article = Article::create([
                 'card_id' => $validated['card_id'],
@@ -65,6 +70,7 @@ class UserArticleController extends Controller
                 'description' => $validated['description'],
                 'status' => $validated['status'],
                 'image' => $imagePath,
+                'user_id' => Auth::id(),
             ]);
 
             // Jika ada tag yang dipilih, simpan relasi antara artikel dan tag
@@ -100,7 +106,9 @@ class UserArticleController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $article = Article::findOrFail($id);
+        $article = Article::where('id', $id)
+                ->where('user_id', Auth::id())
+                ->firstOrFail();
 
         // Pastikan hanya update artikel tanpa merubah card title
         $imagePath = $article->image;
@@ -140,7 +148,9 @@ class UserArticleController extends Controller
     public function deleteUserArtikel($id)
     {
         try {
-            $article = Article::findOrFail($id);
+            $article = Article::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
 
             // Hapus artikel dan relasi dengan tags
             $article->tags()->detach();

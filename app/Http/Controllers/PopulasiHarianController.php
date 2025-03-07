@@ -6,6 +6,7 @@ use App\Models\PopulasiAyam;
 use App\Models\HarianAyam;
 use App\Models\KandangAyam;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -18,11 +19,16 @@ class PopulasiHarianController extends Controller
             $populasiPage = $request->get('populasi_page', 1);
             $harianPage = $request->get('harian_page', 1);
     
-            $populasi = PopulasiAyam::with('kandang')  
+            $populasi = PopulasiAyam::with('kandang') 
+                ->where('user_id', Auth::id()) 
                 ->latest()
                 ->paginate(5, ['*'], 'populasi_page', $populasiPage);
     
-            $harian = HarianAyam::latest()->paginate(5, ['*'], 'harian_page', $harianPage);
+            $harian = HarianAyam::whereHas('populasiAyam', function($query) {
+                $query->where('user_id', Auth::id());
+            })
+            ->latest()
+            ->paginate(5, ['*'], 'harian_page', $harianPage);
     
             $batches = PopulasiAyam::all();
             $kandang = KandangAyam::where('status_kandang', 'Aktif')->get(); 
@@ -49,10 +55,14 @@ class PopulasiHarianController extends Controller
                 'kandang_id' => 'required|exists:kandang_ayam,id'
             ]);
 
-            $kandang = KandangAyam::findOrFail($request->kandang_id);
+            $kandang = KandangAyam::where('id', $request->kandang_id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
 
             // Hitung jumlah ayam yang sudah ada di kandang
-            $totalAyamDiKandang = PopulasiAyam::where('kandang_id', $kandang->id)->sum('jumlah_ayam_masuk');
+            $totalAyamDiKandang = PopulasiAyam::where('kandang_id', $kandang->id)
+                ->where('user_id', Auth::id())
+                ->sum('jumlah_ayam_masuk');
 
             // Validasi agar jumlah ayam yang akan ditambahkan tidak melebihi kapasitas kandang
             if ($totalAyamDiKandang + $request->chickenQuantity > $kandang->kapasitas) {
@@ -72,6 +82,7 @@ class PopulasiHarianController extends Controller
                 'jumlah_ayam_masuk' => $request->chickenQuantity,
                 'status_ayam' => 'Proses',
                 'kandang_id' => $kandang->id, 
+                'user_id'            => Auth::id(),
             ]);
 
             return redirect()->back()->with('success', 'Data Populasi Ayam berhasil disimpan.');
@@ -92,9 +103,10 @@ class PopulasiHarianController extends Controller
                 'deadChicken' => 'required|integer|min:0',
             ]);
 
-            $populasi = PopulasiAyam::findOrFail($request->dailyBatchName);
+            $populasi = PopulasiAyam::where('id', $request->dailyBatchName)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
 
-                // Hitung total ayam sakit & mati yang sudah tercatat di batch ini
             $totalMatiSebelumnya = HarianAyam::where('id_populasi', $populasi->id)->sum('jumlah_ayam_mati');
             $totalSakitSebelumnya = HarianAyam::where('id_populasi', $populasi->id)->sum('jumlah_ayam_sakit');
 
@@ -118,6 +130,7 @@ class PopulasiHarianController extends Controller
                 'tanggal_input' => $request->dailyDate,
                 'jumlah_ayam_sakit' => $request->sickChicken,
                 'jumlah_ayam_mati' => $request->deadChicken,
+                'user_id'            => Auth::id(),
             ]);
 
             // Jika semua ayam mati, ubah status batch ke `Sudah Panen`
@@ -140,7 +153,9 @@ class PopulasiHarianController extends Controller
     public function destroyPopulasi($id)
     {
         try {
-            $populasi = PopulasiAyam::findOrFail($id);
+            $populasi = PopulasiAyam::where('id', $id)
+                ->where('user_id', Auth::id())
+                ->firstOrFail();
             $populasi->delete();
 
             return response()->json(['success' => true, 'message' => 'Data berhasil dihapus.']);
@@ -153,7 +168,11 @@ class PopulasiHarianController extends Controller
     public function destroyHarian($id)
     {
         try {
-            $harian = HarianAyam::findOrFail($id);
+            $harian = HarianAyam::where('id', $id)
+                ->whereHas('populasiAyam', function($query) {
+                    $query->where('user_id', Auth::id());
+                })
+                ->firstOrFail();
             $harian->delete();
     
             return response()->json([
@@ -184,14 +203,20 @@ class PopulasiHarianController extends Controller
         ]);
 
         // Cari Populasi Ayam berdasarkan ID
-        $populasi = PopulasiAyam::findOrFail($id);
+        $populasi = PopulasiAyam::where('id', $id)
+                ->where('user_id', Auth::id())
+                ->firstOrFail();
 
         // Menggabungkan kode batch
         $batchCode = 'BATCH-' . strtoupper($validated['batchCodeSuffix']);
 
         // Validasi kapasitas kandang
-        $kandang = KandangAyam::findOrFail($validated['kandang_id']);
-        $totalAyamDiKandang = PopulasiAyam::where('kandang_id', $kandang->id)->sum('jumlah_ayam_masuk');
+        $kandang = KandangAyam::where('id', $validated['kandang_id'])
+                ->where('user_id', Auth::id())
+                ->firstOrFail();
+            $totalAyamDiKandang = PopulasiAyam::where('kandang_id', $kandang->id)
+                ->where('user_id', Auth::id())
+                ->sum('jumlah_ayam_masuk');
 
         if ($totalAyamDiKandang + $validated['jumlah_ayam_masuk'] > $kandang->kapasitas) {
             return redirect()->back()->with('error', 'Jumlah ayam melebihi kapasitas kandang.');
@@ -228,10 +253,15 @@ class PopulasiHarianController extends Controller
             ]);
 
             // Cari data Harian Ayam berdasarkan ID
-            $harian = HarianAyam::findOrFail($id);
+            $harian = HarianAyam::where('id', $id)
+                ->whereHas('populasiAyam', function($query) {
+                    $query->where('user_id', Auth::id());
+                })
+                ->firstOrFail();
 
-            // Cari Populasi Ayam berdasarkan batch yang dipilih
-            $populasi = PopulasiAyam::findOrFail($validated['dailyBatchName']);
+            $populasi = PopulasiAyam::where('id', $validated['dailyBatchName'])
+                ->where('user_id', Auth::id())
+                ->firstOrFail();
 
             // Validasi jumlah total ayam sakit + mati tidak boleh melebihi jumlah ayam masuk
             $totalAyamDipantau = HarianAyam::where('id_populasi', $populasi->id)->sum('jumlah_ayam_mati')

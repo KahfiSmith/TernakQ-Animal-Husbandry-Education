@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Pengeluaran;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class PengeluaranController extends Controller
 {
@@ -18,7 +19,8 @@ class PengeluaranController extends Controller
             $pengeluaranPage = $request->get('pengeluaran_page', 1);
 
             // Ambil data pengeluaran dengan pagination (10 item per halaman)
-            $pengeluaran = Pengeluaran::orderBy('tanggal_pembelian', 'desc')
+            $pengeluaran = Pengeluaran::where('user_id', Auth::id())
+                ->orderBy('tanggal_pembelian', 'desc')
                 ->paginate(10, ['*'], 'pengeluaran_page', $pengeluaranPage);
 
             return view('finance-management-outcome', compact('pengeluaran'));
@@ -38,7 +40,7 @@ class PengeluaranController extends Controller
     public function storePengeluaran(Request $request)
     {
         try {
-            $request->validate([
+            $validated = $request->validate([
                 'category' => 'required|in:Pembelian Ayam,Pakan Ayam,"Obat, Vitamin, Vaksin"',
                 'description' => 'required|string|max:255',
                 'jumlah' => 'required|numeric|min:1',
@@ -48,7 +50,9 @@ class PengeluaranController extends Controller
                 'supplier' => 'nullable|string|max:255',
             ]);
 
-            Pengeluaran::create($request->all());
+            $validated['user_id'] = Auth::id();
+
+            Pengeluaran::create($validated);
 
             return redirect()->route('finance-management-outcome')->with([
                 'status' => 'success',
@@ -70,9 +74,7 @@ class PengeluaranController extends Controller
     public function updatePengeluaran(Request $request, $id)
     {
         try {
-            $pengeluaran = Pengeluaran::findOrFail($id);
-
-            $request->validate([
+            $validated = $request->validate([
                 'category' => 'required|in:Pembelian Ayam,Pakan Ayam,"Obat, Vitamin, Vaksin"',
                 'description' => 'required|string|max:255',
                 'jumlah' => 'nullable|numeric|min:0',
@@ -82,7 +84,11 @@ class PengeluaranController extends Controller
                 'supplier' => 'nullable|string|max:255',
             ]);
 
-            $pengeluaran->update($request->all());
+            $pengeluaran = Pengeluaran::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+            $pengeluaran->update($validated);
 
             return redirect()->route('finance-management-outcome')->with([
                 'status' => 'success',
@@ -104,7 +110,10 @@ class PengeluaranController extends Controller
     public function destroyPengeluaran(Request $request, $id)
     {
         try {
-            $pengeluaran = Pengeluaran::findOrFail($id);
+            $pengeluaran = Pengeluaran::where('id', $id)
+                ->where('user_id', Auth::id())
+                ->firstOrFail();
+
             $pengeluaran->delete();
 
             return response()->json(['success' => true, 'message' => 'Pengeluaran berhasil dihapus.']);

@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\CardArticle;
 use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class UserCardArticleController extends Controller
 {
@@ -13,11 +15,20 @@ class UserCardArticleController extends Controller
     {
         try {
             $artikelPage = $request->get('artikel_page', 1);
-            $articles = CardArticle::latest()->paginate(5, ['*'], 'artikel_page', $artikelPage);
+            $articles = CardArticle::where('user_id', Auth::id())
+                ->withCount('articles')
+                ->latest()
+                ->paginate(5, ['*'], 'artikel_page', $artikelPage);
 
-            $pendingCount = Article::where('status', 'Tertunda')->count();
-            $approvedCount = Article::where('status', 'Disetujui')->count();
-            $rejectedCount = Article::where('status', 'Ditolak')->count();
+            $pendingCount = Article::where('status', 'Tertunda')
+                ->where('user_id', Auth::id())
+                ->count();
+            $approvedCount = Article::where('status', 'Disetujui')
+                ->where('user_id', Auth::id())
+                ->count();
+            $rejectedCount = Article::where('status', 'Ditolak')
+                ->where('user_id', Auth::id())
+                ->count();
             
             return view('add-card-article', compact('articles', 'pendingCount', 'approvedCount', 'rejectedCount'));
         } catch (\Exception $e) {
@@ -50,6 +61,7 @@ class UserCardArticleController extends Controller
             'title' => $validated['title'],
             'description' => $validated['description'],
             'image' => $imagePath,
+            'user_id' => Auth::id(),
         ]);
 
         return redirect()->route('add-article')->with([
@@ -81,7 +93,10 @@ public function updateUserArtikel(Request $request, $id)
             Log::info('Gambar berhasil disimpan di: ' . $imagePath); 
         }
 
-        $card = CardArticle::findOrFail($id);
+        $card = CardArticle::where('id', $id)
+                ->where('user_id', Auth::id())
+                ->firstOrFail();
+
         $card->update([
             'title' => $validated['title'],
             'description' => $validated['description'],
@@ -105,7 +120,10 @@ public function updateUserArtikel(Request $request, $id)
     public function deleteUserArtikel($id)
     {
         try {
-            $cardArticle = CardArticle::findOrFail($id);
+            $cardArticle = CardArticle::where('id', $id)
+                ->where('user_id', Auth::id())
+                ->firstOrFail();
+
             if ($cardArticle->image) {
                 Storage::disk('public')->delete($cardArticle->image);
             }

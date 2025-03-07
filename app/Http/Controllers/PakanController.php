@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pakan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class PakanController extends Controller
 {
@@ -13,7 +14,9 @@ class PakanController extends Controller
     try {
         // Paginasi untuk stok pakan
         $pakanPage = $request->get('pakan_page', 1);
-        $pakan = Pakan::latest()->paginate(5, ['*'], 'pakan_page', $pakanPage);
+        $pakan = Pakan::where('user_id', Auth::id())
+                     ->latest()
+                     ->paginate(5, ['*'], 'pakan_page', $pakanPage);
 
         return view('food-management', compact('pakan'));
     } catch (\Exception $e) {
@@ -29,15 +32,18 @@ class PakanController extends Controller
 public function storePakan(Request $request)
 {
     try {
-        $request->validate([
-            'nama_pakan' => 'required|string|max:255',
-            'jenis_pakan' => 'required|string|max:255',
-            'berat' => 'required|numeric|min:0',
+        $validated = $request->validate([
+            'nama_pakan'    => 'required|string|max:255',
+            'jenis_pakan'   => 'required|string|max:255',
+            'berat'         => 'required|numeric|min:0',
             'tanggal_masuk' => 'required|date',
-            'harga_per_kg' => 'required|numeric|min:0'
+            'harga_per_kg'  => 'required|numeric|min:0'
         ]);
 
-        Pakan::create($request->all());
+        // Tambahkan user_id ke data yang sudah divalidasi
+        $validated['user_id'] = Auth::id();
+
+        Pakan::create($validated);
 
         return redirect()->route('food-management')->with([
             'status' => 'success',
@@ -52,6 +58,7 @@ public function storePakan(Request $request)
     }
 }
 
+
 public function updatePakan(Request $request, $id)
 {
     try {
@@ -63,7 +70,9 @@ public function updatePakan(Request $request, $id)
             'harga_per_kg' => 'required|numeric|min:0'
         ]);
 
-        $pakan = Pakan::findOrFail($id);
+        $pakan = Pakan::where('id', $id)
+                        ->where('user_id', Auth::id())
+                        ->firstOrFail();
         $pakan->update($request->all());
 
         return redirect()->route('food-management')->with([
@@ -82,8 +91,10 @@ public function updatePakan(Request $request, $id)
 public function destroyPakan($id)
 {
     try {
-        $pakan = Pakan::findOrFail($id);
-        $pakan->delete();
+        $pakan = Pakan::where('id', $id)
+                        ->where('user_id', Auth::id())
+                        ->firstOrFail();
+            $pakan->delete();
 
         return response()->json([
             'success' => true,
@@ -97,6 +108,5 @@ public function destroyPakan($id)
         ], 500);
     }
 }
-
 
 }

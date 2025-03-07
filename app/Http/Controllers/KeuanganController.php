@@ -8,6 +8,7 @@ use App\Models\Pengeluaran;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 
 class KeuanganController extends Controller
 {
@@ -35,7 +36,8 @@ class KeuanganController extends Controller
         $namaBulan = Carbon::create()->month($bulan)->translatedFormat('F');
 
         // Ambil data pendapatan pada bulan & tahun tertentu
-        $pendapatan = Pendapatan::whereYear('tanggal_transaksi', $tahun)
+        $pendapatan = Pendapatan::where('user_id', Auth::id())
+            ->whereYear('tanggal_transaksi', $tahun)
             ->whereMonth('tanggal_transaksi', $bulan)
             ->orderBy('tanggal_transaksi', 'asc')
             ->get()
@@ -49,7 +51,8 @@ class KeuanganController extends Controller
             });
 
         // Ambil data pengeluaran pada bulan & tahun tertentu
-        $pengeluaran = Pengeluaran::whereYear('tanggal_pembelian', $tahun)
+        $pengeluaran = Pengeluaran::where('user_id', Auth::id())
+            ->whereYear('tanggal_pembelian', $tahun)
             ->whereMonth('tanggal_pembelian', $bulan)
             ->orderBy('tanggal_pembelian', 'asc')
             ->get()
@@ -106,7 +109,8 @@ class KeuanganController extends Controller
         $namaBulan = Carbon::create()->month($bulan)->translatedFormat('F');
 
         // Ambil data keuangan
-        $pendapatan = Pendapatan::whereYear('tanggal_transaksi', $tahun)
+        $pendapatan = Pendapatan::where('user_id', Auth::id())
+            ->whereYear('tanggal_transaksi', $tahun)
             ->whereMonth('tanggal_transaksi', $bulan)
             ->orderBy('tanggal_transaksi', 'asc')
             ->get()

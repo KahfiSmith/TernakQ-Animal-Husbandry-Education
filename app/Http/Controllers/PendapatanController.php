@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Pendapatan;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class PendapatanController extends Controller
 {
@@ -18,7 +19,8 @@ class PendapatanController extends Controller
             $pendapatanPage = $request->get('pendapatan_page', 1);
 
             // Ambil data pendapatan dengan pagination (10 item per halaman)
-            $pendapatan = Pendapatan::orderBy('tanggal_transaksi', 'desc')
+            $pendapatan = Pendapatan::where('user_id', Auth::id())
+                ->orderBy('tanggal_transaksi', 'desc')
                 ->paginate(10, ['*'], 'pendapatan_page', $pendapatanPage);
 
             return view('finance-management-income', compact('pendapatan'));
@@ -38,7 +40,7 @@ class PendapatanController extends Controller
     public function storePendapatan(Request $request)
     {
         try {
-            $request->validate([
+            $validated = $request->validate([
                 'kategori' => 'required|in:Penjualan Ayam,Penjualan Kotoran,Pendapatan Kemitraan',
                 'jumlah' => 'required|numeric|min:1',
                 'satuan' => 'required|in:ekor,kg,karung',
@@ -48,7 +50,9 @@ class PendapatanController extends Controller
                 'nama_perusahaan' => 'nullable|string|max:255',
             ]);
 
-            Pendapatan::create($request->all());
+            $validated['user_id'] = Auth::id();
+
+            Pendapatan::create($validated);
 
             return redirect()->route('finance-management-income')->with([
                 'status' => 'success',
@@ -70,9 +74,7 @@ class PendapatanController extends Controller
     public function updatePendapatan(Request $request, $id)
     {
         try {
-            $pendapatan = Pendapatan::findOrFail($id);
-
-            $request->validate([
+            $validated = $request->validate([
                 'kategori' => 'required|in:Penjualan Ayam,Penjualan Kotoran,Pendapatan Kemitraan',
                 'jumlah' => 'required|numeric|min:1',
                 'satuan' => 'required|in:ekor,kg,karung',
@@ -81,8 +83,11 @@ class PendapatanController extends Controller
                 'nama_pembeli' => 'nullable|string|max:255',
                 'nama_perusahaan' => 'nullable|string|max:255',
             ]);
+            $pendapatan = Pendapatan::where('id', $id)
+                ->where('user_id', Auth::id())
+                ->firstOrFail();
 
-            $pendapatan->update($request->all());
+            $pendapatan->update($validated);
 
             return redirect()->route('finance-management-income')->with([
                 'status' => 'success',
@@ -104,7 +109,10 @@ class PendapatanController extends Controller
     public function destroyPendapatan(Request $request, $id)
     {
         try {
-            $pendapatan = Pendapatan::findOrFail($id);
+            $pendapatan = Pendapatan::where('id', $id)
+                ->where('user_id', Auth::id())
+                ->firstOrFail();
+
             $pendapatan->delete();
 
             return response()->json(['success' => true, 'message' => 'Pendapatan berhasil dihapus.']);

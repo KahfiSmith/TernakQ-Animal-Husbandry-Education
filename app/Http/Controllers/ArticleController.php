@@ -11,24 +11,47 @@ class ArticleController extends Controller
 {
     public function index()
     {
-        $cardArticles = CardArticle::withCount('articles')->latest()->take(8)->get();
+        $cardArticles = CardArticle::whereHas('articles', function($q) {
+            $q->where('status', 'Disetujui');
+        })
+        ->withCount(['articles' => function($q) {
+            $q->where('status', 'Disetujui');
+        }])
+        ->latest()
+        ->take(8)
+        ->get();
 
         return view('home', compact('cardArticles'));
     }
 
     public function showAllCards()
     {
-        $cardArticles = CardArticle::withCount('articles')->latest()->paginate(12);
+        $cardArticles = CardArticle::whereHas('articles', function($q) {
+            $q->where('status', 'Disetujui');
+        })
+        ->withCount(['articles' => function($q) {
+            $q->where('status', 'Disetujui');
+        }])
+        ->latest()
+        ->paginate(12);
+
         return view('livewire.pages.home.all-cards', compact('cardArticles'));
     }
 
     public function showArticles($id)
-    {
-        $card = CardArticle::with('articles')->findOrFail($id);
-        $articles = $card->articles()->latest()->get();
+{
+    try {
+        $card = CardArticle::whereHas('articles', function($query) {
+                $query->where('status', 'Disetujui');
+            })->findOrFail($id);
+        
+        $articles = $card->articles()->where('status', 'Disetujui')->latest()->get();
 
         return view('livewire.pages.home.articles', compact('card', 'articles'));
+    } catch (\Exception $e) {
+        return redirect('/')->with('error', 'Card artikel tidak ditemukan atau tidak memiliki artikel yang disetujui.');
     }
+}
 
     public function showArticleDetail($id)
 {

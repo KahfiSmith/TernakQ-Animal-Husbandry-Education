@@ -6,6 +6,8 @@ use App\Models\SubArticle;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class UserSubArticleController extends Controller
 {
@@ -17,15 +19,16 @@ class UserSubArticleController extends Controller
 {
     try {
         // Ambil daftar artikel induk untuk dropdown
-        $articles = Article::all();
+        $articles = Article::where('user_id', Auth::id())->get();
         $selectedArticle = null;
         $subArticles = collect(); // Default kosong jika belum ada artikel dipilih
 
         $articleId = $request->query('article_id'); // Ambil dari query string
         if ($articleId) {
+            // Pastikan artikel yang dipilih milik user
             $selectedArticle = Article::with(['subArticles' => function ($query) {
                 $query->orderBy('order_number', 'asc');
-            }])->find($articleId);
+            }])->where('user_id', Auth::id())->find($articleId);
 
             if ($selectedArticle) {
                 $subArticles = $selectedArticle->subArticles;
@@ -43,13 +46,6 @@ class UserSubArticleController extends Controller
     }
 }
 
-
-
-    /**
-     * Menyimpan sub-artikel baru.
-     * Pastikan form mengirimkan: article_id, title, content, order_number, dan image (opsional).
-     */
-    
     public function storeMultipleSubArticles(Request $request)
 {
     try {
@@ -61,6 +57,10 @@ class UserSubArticleController extends Controller
             'sub_articles.*.order_number' => 'required|integer|min:1',
             'sub_articles.*.image'        => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        $article = Article::where('id', $validated['article_id'])
+                ->where('user_id', Auth::id())
+                ->firstOrFail();
 
         $subArticlesData = [];
         foreach ($validated['sub_articles'] as $subArticle) {
@@ -75,6 +75,7 @@ class UserSubArticleController extends Controller
                 'content'      => $subArticle['content'],
                 'order_number' => $subArticle['order_number'],
                 'image'        => $imagePath,
+                'user_id'      => Auth::id(),
                 'created_at'   => now(),
                 'updated_at'   => now(),
             ];
@@ -102,7 +103,11 @@ class UserSubArticleController extends Controller
     public function updateUserArtikel(Request $request, $id)
     {
         try {
-            $subArticle = SubArticle::findOrFail($id);
+            $subArticle = SubArticle::where('id', $id)
+                ->whereHas('article', function ($query) {
+                    $query->where('user_id', Auth::id());
+                })
+                ->firstOrFail();
 
             $validated = $request->validate([
                 'article_id'   => 'required|exists:articles,id',
@@ -149,7 +154,11 @@ class UserSubArticleController extends Controller
     public function deleteUserArtikel($id)
     {
         try {
-            $subArticle = SubArticle::findOrFail($id);
+            $subArticle = SubArticle::where('id', $id)
+                ->whereHas('article', function ($query) {
+                    $query->where('user_id', Auth::id());
+                })
+                ->firstOrFail();
             if ($subArticle->image) {
                 Storage::disk('public')->delete($subArticle->image);
             }
