@@ -10,10 +10,20 @@ class CardArticle extends Model
 {
     use HasFactory;
     protected $table = 'card_articles';
-    protected $fillable = ['title', 'description', 'image'];
+    protected $fillable = [
+    'title', 
+    'description', 
+    'image',
+    'user_id',
+];
     public function articles(): HasMany
     {
         return $this->hasMany(Article::class, 'card_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     protected static function booted()

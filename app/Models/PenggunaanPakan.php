@@ -11,7 +11,10 @@ class PenggunaanPakan extends Model
     use HasFactory;
 
     protected $fillable = [
-        'pakan_id', 'tanggal_pakai', 'jumlah_pakai'
+        'pakan_id', 
+        'tanggal_pakai', 
+        'jumlah_pakai',
+        'user_id', 
     ];
 
     // Relasi dengan Pakan

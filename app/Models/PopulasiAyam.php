@@ -19,6 +19,7 @@ class PopulasiAyam extends Model
         'tanggal_doc',
         'jumlah_ayam_masuk',
         'status_ayam',
+        'user_id',
     ];
 
     public function harianAyam()
@@ -29,5 +30,10 @@ class PopulasiAyam extends Model
     public function kandang()
     {
         return $this->belongsTo(KandangAyam::class, 'kandang_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

@@ -11,12 +11,22 @@ class Pakan extends Model
     
     protected $table = 'pakan';
     protected $fillable = [
-        'nama_pakan', 'jenis_pakan', 'berat', 'tanggal_masuk', 'harga_per_kg'
+        'nama_pakan', 
+        'jenis_pakan', 
+        'berat', 
+        'tanggal_masuk', 
+        'harga_per_kg',
+        'user_id', 
     ];
 
     // Relasi dengan PenggunaanPakan
     public function penggunaan()
     {
         return $this->hasMany(PenggunaanPakan::class, 'pakan_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

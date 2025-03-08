@@ -17,11 +17,17 @@ class HarianAyam extends Model
         'tanggal_input',
         'jumlah_ayam_mati',
         'jumlah_ayam_sakit',
+        'user_id',
     ];
 
     public function populasiAyam()
     {
         return $this->belongsTo(PopulasiAyam::class, 'id_populasi');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     protected static function booted()
@@ -30,4 +36,5 @@ class HarianAyam extends Model
             $harian->nama_batch = $harian->populasiAyam->nama_batch;
         });
     }
+    
 }

@@ -17,9 +17,9 @@ class Pendapatan extends Model
         'total_pendapatan', 
         'tanggal_transaksi', 
         'nama_pembeli', 
-        'nama_perusahaan'
+        'nama_perusahaan',
+        'user_id',
     ];
-
 
     public static function boot()
     {
@@ -31,5 +31,10 @@ class Pendapatan extends Model
         static::updating(function ($pendapatan) {
             $pendapatan->total_pendapatan = $pendapatan->jumlah * $pendapatan->harga_per_satuan;
         });
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

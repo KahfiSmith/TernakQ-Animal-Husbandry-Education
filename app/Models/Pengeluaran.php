@@ -18,6 +18,7 @@ class Pengeluaran extends Model
         'total_biaya',
         'supplier',
         'tanggal_pembelian',
+        'user_id',
     ];
 
     public static function boot()
@@ -31,5 +32,10 @@ class Pengeluaran extends Model
         static::updating(function ($pengeluaran) {
             $pengeluaran->total_biaya = $pengeluaran->jumlah * $pengeluaran->harga_per_satuan;
         });
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

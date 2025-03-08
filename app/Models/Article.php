@@ -10,7 +10,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Article extends Model
 {
-    protected $fillable = ['card_id', 'title', 'catatan', 'description', 'image', 'status'];
+    protected $fillable = [
+    'card_id', 
+    'title', 
+    'catatan', 
+    'description', 
+    'image', 
+    'status',
+    'user_id',];
 
     public function cardArticle(): BelongsTo
     {
@@ -25,5 +32,10 @@ class Article extends Model
     public function tags()
     {
         return $this->belongsToMany(Tag::class, 'article_tags');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
