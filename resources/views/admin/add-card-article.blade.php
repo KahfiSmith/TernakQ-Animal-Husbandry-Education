@@ -1,9 +1,9 @@
 @extends('layouts.admin-layout')
 
-@section('title', 'Dashboard - Tambah Artikel Grup')
+@section('title', 'Dashboard - Tambah Grup Artikel')
 
 @section('content')
-    <main class="flex flex-col gap-7 w-full" x-data="{
+    <main class="flex flex-col space-y-6 w-full" x-data="{
         editMode: false,
         articleId: '',
         title: '',
@@ -30,44 +30,20 @@
             </script>
         @endif
 
-        {{-- <div class="flex space-x-6 items-center justify-between">
-            <div>
-                <a href="{{ route('add-article-detail') }}" wire:navigate class="inline-flex justify-center items-center text-center font-medium text-base tracking-widest focus:outline-none focus-visible:outline-none transition ease-in-out duration-150 bg-orangeCrayola ring-2
-                ring-gray-700 shadow-[4px_4px_0px_2px_#374151] text-white hover:shadow-[2px_2px_0px_2px_#374151]
-                hover:translate-y-0.5 hover:translate-x-0.5 py-2.5 px-4 rounded">Tambah Artikel</a>
-            </div>
-            <div class="flex gap-20 items-center">
-                <!-- Artikel Tertunda -->
-                <div class="flex flex-col justify-center items-center space-y-1">
-                    <h3 class="font-medium text-base">Artikel Tertunda</h3>
-                    <span class="font-semibold text-3xl">{{ $pendingCount }}</span>
-                </div>
-            
-                <!-- Garis Vertikal -->
-                <div class="border-l-2 border-gray-600 h-12"></div>
-            
-                <!-- Artikel Disetujui -->
-                <div class="flex flex-col justify-center items-center space-y-1">
-                    <h3 class="font-medium text-base">Artikel Disetujui</h3>
-                    <span class="font-semibold text-3xl">{{ $approvedCount }}</span>
-                </div>
-            
-                <!-- Garis Vertikal -->
-                <div class="border-l-2 border-gray-600 h-12"></div>
-            
-                <!-- Artikel Ditolak -->
-                <div class="flex flex-col justify-center items-center space-y-1">
-                    <h3 class="font-medium text-base">Artikel Ditolak</h3>
-                    <span class="font-semibold text-3xl">{{ $rejectedCount }}</span>
-                </div>
-            </div>
-        </div>
+        <nav class="text-sm text-gray-600 font-medium" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                <li class="inline-flex items-center">
+                    Grup Artikel
+                </li>
+            </ol>
+        </nav>
+
         <div class="flex flex-col p-4 sm:p-6 bg-white shadow sm:rounded-lg ring-2 ring-gray-700 border-b-gray-200">
             <h2 class="text-xl font-bold mb-2 text-orangeCrayola">
-                <span x-text="editMode ? 'Edit Artikel Grup' : 'Tambah Artikel Grup'"></span>
+                <span x-text="editMode ? 'Edit Grup Artikel' : 'Tambah Grup Artikel'"></span>
             </h2>
             <form method="POST"
-                :action="editMode ? '{{ url('add-article') }}/' + articleId : '{{ route('user-article.store') }}'"
+                :action="editMode ? '{{ url('/admin/add-article') }}/' + articleId : '{{ route('admin.user-article.store') }}'"
                 class="space-y-6 max-full" enctype="multipart/form-data">
                 @csrf
 
@@ -76,14 +52,14 @@
                 </template>
 
                 <div class="flex flex-col space-y-1">
-                    <x-input-label for="title" :value="__('Judul Artikel')" />
+                    <x-input-label for="title" :value="__('Judul Grup Artikel')" />
                     <x-text-input id="title" name="title" type="text" class="block mt-1 w-full py-2.5" required
                         x-model="title" />
                 </div>
 
                 <!-- Input Deskripsi -->
                 <div class="flex flex-col space-y-1">
-                    <x-input-label for="description" :value="__('Deskripsi')" />
+                    <x-input-label for="description" :value="__('Deskripsi Grup Artikel')" />
                     <textarea id="description" name="description"
                         class="block mt-1 w-full h-[100px] resize-none py-2.5 ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151]
                         focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5
@@ -94,7 +70,7 @@
 
                 <!-- Input Gambar -->
                 <div class="flex flex-col space-y-1">
-                    <x-input-label for="image" :value="__('Gambar')" />
+                    <x-input-label for="image" :value="__('Gambar Grup Artikel')" />
 
                     <div x-data="{ imagePreview: null }" class="relative w-full">
                         <label for="image"
@@ -140,7 +116,7 @@
                         class="bg-orangeCrayola ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] 
                         text-white hover:shadow-[2px_2px_0px_2px_#374151] hover:translate-y-0.5 
                         hover:translate-x-0.5 py-2.5 px-4 rounded"
-                        x-text="editMode ? 'Update Artikel Grup' : 'Tambah Artikel Grup'">
+                        x-text="editMode ? 'Update Grup Artikel' : 'Tambah Grup Artikel'">
                     </x-primary-button>
                     <x-primary-button type="button" x-show="editMode"
                         @click="editMode = false; title = ''; description = ''; artikelId = '';"
@@ -152,14 +128,42 @@
                 </div>
             </form>
         </div>
+        <div class="flex space-x-6 items-center justify-between">
+            <div>
+                <a href="{{ route('add-article-detail') }}" wire:navigate
+                    class="inline-flex justify-center items-center text-center font-medium text-base tracking-widest focus:outline-none focus-visible:outline-none transition ease-in-out duration-150 bg-pewterBlue ring-2
+                ring-gray-700 shadow-[4px_4px_0px_2px_#374151] text-white hover:shadow-[2px_2px_0px_2px_#374151]
+                hover:translate-y-0.5 hover:translate-x-0.5 py-2.5 px-4 rounded">Tambah
+                    Artikel</a>
+            </div>
+            <div class="flex space-x-6 items-center">
+                <!-- Artikel Tertunda -->
+                <div class="flex flex-col justify-center items-center space-y-1 bg-orange-200 py-2 px-4 rounded-md">
+                    <h3 class="font-medium text-normal text-orange-700">Artikel Tertunda</h3>
+                    <span class="font-semibold text-xl text-orange-700">{{ $pendingCount }}</span>
+                </div>
+
+                <!-- Artikel Disetujui -->
+                <div class="flex flex-col justify-center items-center space-y-1 bg-blue-200 py-2 px-4 rounded-md">
+                    <h3 class="font-medium text-normal text-blue-700">Artikel Disetujui</h3>
+                    <span class="font-semibold text-xl text-blue-700">{{ $approvedCount }}</span>
+                </div>
+
+                <!-- Artikel Ditolak -->
+                <div class="flex flex-col justify-center items-center space-y-1 bg-red-200 py-2 px-4 rounded-md">
+                    <h3 class="font-medium text-normal text-red-700">Artikel Ditolak</h3>
+                    <span class="font-semibold text-xl text-red-700">{{ $rejectedCount }}</span>
+                </div>
+            </div>
+        </div>
         <div class="bg-white p-6 rounded-lg shadow-md w-full ring-2 ring-gray-700">
-            <h2 class="text-xl font-bold mb-2 text-orangeCrayola">Data Artikel Grup</h2>
+            <h2 class="text-xl font-bold mb-2 text-orangeCrayola">Data Grup Artikel</h2>
             <div class="overflow-x-auto">
                 <table class="w-full text-center border-collapse">
                     <thead class="text-gray-600 uppercase text-sm tracking-wide">
                         <tr class="border-b-2 border-gray-700">
                             <th class="px-4 py-3">No</th>
-                            <th class="px-4 py-3">Judul Artikel</th>
+                            <th class="px-4 py-3">Judul</th>
                             <th class="px-4 py-3">Deskripsi</th>
                             <th class="px-4 py-3">Gambar</th>
                             <th class="px-4 py-3">Aksi</th>
@@ -195,7 +199,7 @@
                                     <button type="button"
                                         class="swal-delete-user-article px-3 py-3 rounded bg-red-100 text-red-700 flex justify-center items-center w-12 h-12 cursor-pointer"
                                         data-id="{{ $article->id }}"
-                                        data-url="{{ route('user-article.destroy', $article->id) }}">
+                                        data-url="{{ route('admin.user-article.destroy', $article->id) }}">
                                         <i class="fa-solid fa-trash text-lg"></i>
                                     </button>
                                 </td>
@@ -207,7 +211,7 @@
             <div class="mt-4">
                 {{ $articles->links('pagination::tailwind') }}
             </div>
-        </div> --}}
+        </div>
     </main>
     <script>
         document.addEventListener('DOMContentLoaded', function() {

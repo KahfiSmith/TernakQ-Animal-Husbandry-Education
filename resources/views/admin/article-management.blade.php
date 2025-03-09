@@ -50,7 +50,7 @@
                                     @endif
                                 </td>
                                 <td class="px-4 py-3">
-                                    <a href="{{ route('admin.article.edit', $article->id) }}"
+                                    <a href="{{ route('admin.article-management.edit', $article->id) }}"
                                         class="px-2 py-3 rounded font-semibold bg-gray-300 text-white-700 flex justify-center items-center gap-2 cursor-pointer">
                                         <span><i class="fa-solid fa-pen-clip"></i></span>
                                         <p>Review</p>
