@@ -27,7 +27,8 @@ class AdminSubArticleController extends Controller
             if ($articleId) {
                 // Pastikan artikel yang dipilih milik user
                 $selectedArticle = Article::with(['subArticles' => function ($query) {
-                    $query->orderBy('order_number', 'asc');
+                    $query->orderBy('order_number', 'asc')
+                          ->orderBy('id', 'desc'); // Data baru dengan order_number sama akan tampil lebih atas
                 }])->where('user_id', Auth::id())->find($articleId);
     
                 if ($selectedArticle) {

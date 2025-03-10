@@ -87,15 +87,15 @@ public function updateAdminArtikel(Request $request, $id)
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Gambar opsional
         ]);
 
-        $imagePath = null;
+        $card = CardArticle::where('id', $id)
+                ->where('user_id', Auth::id())
+                ->firstOrFail();
+
+        $imagePath = $card->image;
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('card_articles', 'public');
             Log::info('Gambar berhasil disimpan di: ' . $imagePath); 
         }
-
-        $card = CardArticle::where('id', $id)
-                ->where('user_id', Auth::id())
-                ->firstOrFail();
 
         $card->update([
             'title' => $validated['title'],
