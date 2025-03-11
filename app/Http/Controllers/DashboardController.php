@@ -38,24 +38,28 @@ class DashboardController extends Controller
 
         // Data Chart Bulanan dari harian_ayam untuk ayam sakit dan mati
         $monthlyData = DB::table('harian_ayam')
-            ->select(
-                DB::raw('MONTH(tanggal_input) as month'),
-                DB::raw('SUM(jumlah_ayam_sakit) as sick'),
-                DB::raw('SUM(jumlah_ayam_mati) as dead')
-            )
-            ->whereYear('tanggal_input', Carbon::now()->year)
-            ->groupBy(DB::raw('MONTH(tanggal_input)'))
-            ->orderBy('month')
-            ->get();
+    ->join('populasi_ayam', 'harian_ayam.id_populasi', '=', 'populasi_ayam.id')
+    ->whereIn('populasi_ayam.status_ayam', ['Proses', 'Siap Panen'])
+    ->select(
+        DB::raw('MONTH(harian_ayam.tanggal_input) as month'),
+        DB::raw('SUM(harian_ayam.jumlah_ayam_sakit) as sick'),
+        DB::raw('SUM(harian_ayam.jumlah_ayam_mati) as dead')
+    )
+    ->whereYear('harian_ayam.tanggal_input', Carbon::now()->year)
+    ->groupBy(DB::raw('MONTH(harian_ayam.tanggal_input)'))
+    ->orderBy('month')
+    ->get();
 
-        // Data Chart Harian (untuk hari ini)
-        $todayData = DB::table('harian_ayam')
-            ->whereDate('tanggal_input', Carbon::today())
-            ->select(
-                DB::raw('SUM(jumlah_ayam_sakit) as sick'),
-                DB::raw('SUM(jumlah_ayam_mati) as dead')
-            )
-            ->first();
+// Data Chart Harian (untuk hari ini)
+$todayData = DB::table('harian_ayam')
+    ->join('populasi_ayam', 'harian_ayam.id_populasi', '=', 'populasi_ayam.id')
+    ->whereIn('populasi_ayam.status_ayam', ['Proses', 'Siap Panen'])
+    ->whereDate('harian_ayam.tanggal_input', Carbon::today())
+    ->select(
+        DB::raw('SUM(harian_ayam.jumlah_ayam_sakit) as sick'),
+        DB::raw('SUM(harian_ayam.jumlah_ayam_mati) as dead')
+    )
+    ->first();
 
         // Data detail kandang untuk tabel manajemen ayam, gabungkan data dari populasi_ayam dan harian_ayam
         $populasiSub = DB::table('populasi_ayam')
@@ -87,6 +91,18 @@ class DashboardController extends Controller
             ->having('total_ayam', '>', 0)
             ->get();
 
+            // Pendapatan bulan ini
+$pendapatanBulanIni = DB::table('pendapatan')
+->whereMonth('tanggal_transaksi', Carbon::now()->month)
+->whereYear('tanggal_transaksi', Carbon::now()->year)
+->sum('total_pendapatan');
+
+// Pengeluaran bulan ini
+$pengeluaranBulanIni = DB::table('pengeluaran')
+->whereMonth('tanggal_pembelian', Carbon::now()->month)
+->whereYear('tanggal_pembelian', Carbon::now()->year)
+->sum('total_biaya');
+
 
         return view('dashboard', compact(
             'totalKandangAyams',
@@ -95,7 +111,9 @@ class DashboardController extends Controller
             'percentageChange',
             'monthlyData',
             'todayData',
-            'KandangAyams'
+            'KandangAyams',
+            'pendapatanBulanIni',
+            'pengeluaranBulanIni',
         ));
     }
 }

@@ -1,60 +1,53 @@
-import { Chart } from "chart.js/auto";
+import { Chart } from 'chart.js/auto';
 
 document.addEventListener("DOMContentLoaded", function () {
+    // Ambil data yang diset di Blade
+    const monthlyData = window.monthlyData || [];
+    
+    // Array nama bulan lengkap
+    const monthNames = [
+        "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+        "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+    ];
+
+    // Inisialisasi data untuk tiap bulan dengan nilai default 0
+    const sickByMonth = new Array(12).fill(0);
+    const deadByMonth = new Array(12).fill(0);
+
+    // Isi data berdasarkan bulan (asumsi item.month adalah angka 1-12)
+    monthlyData.forEach(item => {
+        // Pastikan indeksnya benar (bulan 1 => index 0, dst.)
+        sickByMonth[item.month - 1] = item.sick;
+        deadByMonth[item.month - 1] = item.dead;
+    });
+
+    // Gunakan nama bulan sebagai label dan array data yang sudah lengkap
     const data = {
-        labels: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
+        labels: monthNames,
         datasets: [
             {
-                label: "Ayam Sehat",
-                data: [50, 32, 65, 12, 45, 45, 50, 60, 32, 34, 76, 32], 
-                backgroundColor: "#56A795", 
-                borderColor: "#78C2AC", 
-                borderWidth: 1,
-            },
-            {
                 label: "Ayam Sakit",
-                data: [10, 15, 20, 25, 30, 35, 12, 32, 65, 80, 43, 12], 
-                backgroundColor: "#FFC942", 
-                borderColor: "#FFDA73", 
-                borderWidth: 1,
+                data: sickByMonth,
+                backgroundColor: "#FFC942",
             },
             {
                 label: "Ayam Mati",
-                data: [23, 56, 32, 21, 10, 10, 54, 60, 70, 43, 32, 54], 
-                backgroundColor: "#F97930", 
-                borderColor: "#F9B37A", 
-                borderWidth: 1,
-            },
-        ],
+                data: deadByMonth,
+                backgroundColor: "#F97930",
+            }
+        ]
     };
 
-    const options = {
-        responsive: true,
-        plugins: {
-            legend: {
-                display: true,
-                position: "top",
-            },
-        },
-        scales: {
-            x: {
-                grid: {
-                    display: false, 
-                },
-            },
-            y: {
-                grid: {
-                    color: "#e2e8f0", 
-                },
-                beginAtZero: true, 
-            },
-        },
-    };
-
+    // Buat chart
     const ctx = document.getElementById("myBarChart").getContext("2d");
     new Chart(ctx, {
-        type: "bar", 
+        type: "bar",
         data: data,
-        options: options,
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
     });
 });

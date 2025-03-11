@@ -14,6 +14,10 @@ use App\Http\Controllers\UserCardArticleController;
 use App\Http\Controllers\UserArticleController;
 use App\Http\Controllers\UserSubArticleController;
 use App\Http\Controllers\AdminArticleAccController;
+use App\Http\Controllers\AdminCardArticleController;
+use App\Http\Controllers\AdminArticleController;
+use App\Http\Controllers\AdminSubArticleController;
+use App\Http\Controllers\DashboardController;
 
 // ROUTES
 Route::get('/redirect-after-login', function () {
@@ -23,12 +27,12 @@ Route::get('/redirect-after-login', function () {
     return redirect()->route('dashboard'); // 👈 Redirect user biasa ke dashboard
 });
 
-// HOME ROUTES
-Route::view('dashboard', 'dashboard')
+Route::middleware(['auth', 'user'])->group(function () {
+    // DASHBOARD
+    Route::get('dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-Route::middleware(['auth', 'user'])->group(function () {
     // MANAJEMEN KANDANG
     Route::get('/cage-management', [KandangAyamController::class, 'indexKandangManagement'])->name('cage-management');
     Route::post('/cage-management', [KandangAyamController::class, 'storeKandang'])->name('kandang.store');
@@ -109,14 +113,28 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/article-management', [AdminArticleAccController::class, 'indexAdminArticle'])
         ->name('admin.article-management');
     Route::get('/admin/article-management/{id}/edit', [AdminArticleAccController::class, 'editArticle'])
-        ->name('admin.article.edit');
-    Route::put('/admin/article-management/{id}', [AdminArticleAccController::class, 'updateStatus'])
-        ->name('admin.article.update');
+        ->name('admin.article-management.edit');
+    Route::put('/admin/article-management/{id}', [AdminArticleAccController::class, 'updateArticle'])
+        ->name('admin.article-management.update');
 
     // TAMBAH ARTIKEL GRUP
-    Route::get('/admin/add-article', function () {
-        return view('admin.add-card-article');
-    })->name('admin.add-card-article');
+    Route::get('/admin/add-article', [AdminCardArticleController::class, 'indexAdminArtikel'])->name('admin.add-article');
+    Route::post('/admin/add-article', [AdminCardArticleController::class, 'storeAdminArtikel'])->name('admin.user-article.store');
+    Route::put('/admin/add-article/{id}', [AdminCardArticleController::class, 'updateAdminArtikel'])->name('admin.user-article.update');
+    Route::delete('/admin/add-article/{id}', [AdminCardArticleController::class, 'deleteAdminArtikel'])->name('admin.user-article.destroy');
+
+    // TAMBAH ARTIKEL
+    Route::get('/admin/add-article-detail', [AdminArticleController::class, 'indexAdminArtikel'])->name('admin.add-article-detail');
+    Route::post('/admin/add-article-detail', [AdminArticleController::class, 'storeAdminArtikel'])->name('admin.user-article-detail.store');
+    Route::put('/admin/add-article-detail/{id}', [AdminArticleController::class, 'updateAdminArtikel'])->name('admin.user-article-detail.update');
+    Route::delete('/admin/add-article-detail/{id}', [AdminArticleController::class, 'deleteAdminArtikel'])->name('admin.user-article-detail.destroy');
+
+    // TAMBAH SUB ARTIKEL
+    Route::get('/admin/add-article-sub', [AdminSubArticleController::class, 'indexAdminArtikel'])->name('admin.add-article-sub');
+    Route::post('/admin/add-article-sub-multiple', [AdminSubArticleController::class, 'storeMultipleSubArticles'])
+    ->name('admin.user-article-sub.store-multiple');
+    Route::put('/admin/add-article-sub/{id}', [AdminSubArticleController::class, 'updateAdminArtikel'])->name('admin.user-article-sub.update');
+    Route::delete('/admin/add-article-sub/{id}', [AdminSubArticleController::class, 'deleteAdminArtikel'])->name('admin.user-article-sub.destroy');    
 });
 
 require __DIR__.'/auth.php';
