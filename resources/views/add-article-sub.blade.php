@@ -27,13 +27,12 @@
         <nav class="text-sm text-gray-600 font-medium" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
                 <li class="inline-flex items-center">
-                    <a href="{{ route('add-article') }}"
-                        class="text-gray-500 hover:text-gray-700 hover:underline">Grup Artikel</a>
+                    <a href="{{ route('add-article') }}" class="text-gray-500 hover:text-gray-700 hover:underline">Grup
+                        Artikel</a>
                 </li>
                 <li>
                     <svg class="h-4 w-4 text-gray-400" viewBox="0 0 24 24" stroke="currentColor" fill="none">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 5l7 7-7 7" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                     </svg>
                 </li>
                 <li class="inline-flex items-center">
@@ -42,8 +41,7 @@
                 </li>
                 <li>
                     <svg class="h-4 w-4 text-gray-400" viewBox="0 0 24 24" stroke="currentColor" fill="none">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9 5l7 7-7 7" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                     </svg>
                 </li>
                 <li class="text-gray-500 font-normal">Sub Artikel</li>
@@ -66,7 +64,8 @@
                                 class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] 
                                 focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 
                                 rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-700 
-                                text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5">
+                                text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5"
+                                onchange="location.href='{{ route('add-article-sub') }}?article_id=' + this.value">
                                 <option value="" selected disabled>Pilih Artikel</option>
                                 @foreach ($articles as $article)
                                     <option value="{{ $article->id }}"
@@ -75,6 +74,7 @@
                                     </option>
                                 @endforeach
                             </select>
+
                         </div>
 
                         <!-- Container untuk Sub Artikel -->
@@ -93,7 +93,8 @@
                                     class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] 
                                     focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none 
                                     focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out 
-                                    block mt-1 w-full py-2.5 mb-6" placeholder="Judul Sub Artikel">
+                                    block mt-1 w-full py-2.5 mb-6"
+                                    placeholder="Judul Sub Artikel">
 
                                 <!-- Konten Sub Artikel -->
                                 <label class="block font-medium text-sm text-gray-700 mb-3">Konten Sub Artikel 1</label>
@@ -101,15 +102,18 @@
                                     class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] 
                                     focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none 
                                     focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out 
-                                    block mt-1 w-full py-2.5 mb-6" placeholder="Konten Sub Artikel"></textarea>
+                                    block mt-1 w-full py-2.5 mb-6"
+                                    placeholder="Konten Sub Artikel"></textarea>
 
                                 <!-- Urutan -->
                                 <label class="block font-medium text-sm text-gray-700 mb-3">Urutan 1</label>
-                                <input type="number" name="sub_articles[0][order_number]" min="1" required value="1"
+                                <input type="number" name="sub_articles[0][order_number]" min="1" required
+                                    value="1"
                                     class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] 
                                     focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none 
                                     focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out 
-                                    block mt-1 w-full py-2.5 mb-6" placeholder="Urutan">
+                                    block mt-1 w-full py-2.5 mb-6"
+                                    placeholder="Urutan">
 
                                 <!-- Gambar -->
                                 <div class="flex flex-col">
@@ -122,7 +126,8 @@
                                                 <span class="text-gray-700 font-medium">Klik Gambar di Sini</span>
                                             </div>
                                             <div id="preview_0" class="hidden relative w-full flex justify-center">
-                                                <img id="imagePreview_0" class="w-[250px] h-[200px] rounded-md shadow-md object-cover" />
+                                                <img id="imagePreview_0"
+                                                    class="w-[250px] h-[200px] rounded-md shadow-md object-cover" />
                                                 <button type="button"
                                                     class="absolute top-0 right-0 bg-gray-800 text-white rounded-full p-1 -mt-2 -mr-2 shadow-md hover:bg-red-600 transition w-8 h-8"
                                                     onclick="clearPreview(0)">
@@ -130,8 +135,8 @@
                                                 </button>
                                             </div>
                                         </label>
-                                        <input type="file" id="image_0" name="sub_articles[0][image]" accept="image/*" class="hidden"
-                                            onchange="previewImage(event, 0)">
+                                        <input type="file" id="image_0" name="sub_articles[0][image]" accept="image/*"
+                                            class="hidden" onchange="previewImage(event, 0)">
                                     </div>
                                 </div>
                             </div>
@@ -290,4 +295,12 @@
             });
         });
     </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const subArticlesData = @json($subArticles);
+            console.log("Data subArticles dari server:", subArticlesData);
+        });
+    </script>
+
 @endsection

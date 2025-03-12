@@ -6,7 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>@yield('title', config('app.name', 'Laravel'))</title>
-        @vite(['resources/css/app.css', 'resources/js/charts/barChart.js', 'resources/js/charts/pieChart.js'])
+        @vite(['resources/css/app.css'])
     </head>
     <body class="font-sans antialiased">
         <div class="flex min-h-screen">
@@ -25,5 +25,6 @@
                 
             </div>
         </div>
-    </body>
+        @vite(['resources/js/charts/barChart.js', 'resources/js/charts/pieChart.js'])
+    </body> 
 </html>

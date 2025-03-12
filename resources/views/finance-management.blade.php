@@ -36,7 +36,7 @@
                     <template x-for="month in filteredMonths()" :key="month">
                         <option :value="month < 10 ? '0' + month : month"
                             :selected="bulan == (month < 10 ? '0' + month : month)">
-                            <span x-text="new Date(0, month - 1).toLocaleString('default', { month: 'long' })"></span>
+                            <span x-text="new Date(0, month - 1).toLocaleString('id-ID', { month: 'long' })"></span>
                         </option>
                     </template>
                 </select>
@@ -114,7 +114,7 @@
                 <tbody class="text-sm">
                     @foreach ($transaksi as $trx)
                         <tr class="border-b border-gray-200">
-                            <td class="px-4 py-3">{{ \Carbon\Carbon::parse($trx['tanggal'])->format('d F Y') }}</td>
+                            <td class="px-4 py-3">{{ \Carbon\Carbon::parse($trx['tanggal'])->translatedFormat('d F Y') }}</td>
                             <td class="px-4 py-3">{{ Str::limit($trx['keterangan'], 50) }}</td>
                             <td
                                 class="px-4 py-3 text-center font-semibold {{ $trx['tipe'] == 'pendapatan' ? 'text-green-600' : 'text-red-600' }}">

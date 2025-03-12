@@ -73,7 +73,7 @@
                 <!-- Pilih Status Ayam -->
                 <div>
                     <x-input-label for="status_ayam" :value="__('Status Ayam')" />
-                    <select id="status_ayam" name="status_ayam" class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5 required x-model="editData.status_ayam">
+                    <select id="status_ayam" name="status_ayam" class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5" required x-model="editData.status_ayam">
                         <option value="" disabled>Pilih Status Ayam</option>
                         <option value="Proses">Proses</option>
                         <option value="Siap Panen">Siap Panen</option>

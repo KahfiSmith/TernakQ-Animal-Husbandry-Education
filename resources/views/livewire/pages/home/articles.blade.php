@@ -20,7 +20,7 @@
                 <ol class="inline-flex items-center space-x-1 md:space-x-3">
                     <li class="inline-flex items-center">
                         <a href="{{ route('cards') }}" wire:navigate
-                            class="text-gray-500 hover:text-gray-700  inline-flex items-center ease-in-out duration-300 hover:underline">
+                            class="text-gray-500 hover:text-gray-700 inline-flex items-center ease-in-out duration-300 hover:underline">
                             Grup Artikel
                         </a>
                     </li>
@@ -31,36 +31,50 @@
                         </svg>
                     </li>
                     <li aria-current="page" class="text-gray-500 font-normal">
-                        {{ $card->title }}
+                        @if(isset($card))
+                            {{ $card->title }}
+                        @else
+                            Card tidak ditemukan
+                        @endif
                     </li>
                 </ol>
             </nav>
 
-            <div class="flex space-x-8 mb-9">
-                <img src="{{ asset('storage/' . $card->image) }}" alt="Image"
-                    class="w-[450px] h-[300px] rounded-md ring-2 ring-gray-300 object-cover">
-                <div class="flex flex-col mb-7">
-                    <h2 class="text-4xl font-semibold mb-3">{{ $card->title }}</h2>
-                    <p class="text-lg mb-7 leading-relaxed tracking-wide">{{ $card->description }} </p>
-                    <div class="flex w-full mb-4 space-x-11">
-                        <div class="flex space-x-2 items-center">
-                            <i class="fa-solid fa-receipt text-2xl text-gray-600"></i>
-                            <span class="text-base">{{ $card->articles->count() }} Artikel</span>
-                        </div>
-                        <div class="flex space-x-2 items-center">
-                            <i class="fa-solid fa-clock text-2xl text-gray-600"></i>
-                            <span class="text-base">45 Menit</span>
+            @if(isset($card))
+                <div class="flex space-x-8 mb-9">
+                    <img src="{{ asset('storage/' . $card->image) }}" alt="Image"
+                        class="w-[450px] h-[300px] rounded-md ring-2 ring-gray-300 object-cover">
+                    <div class="flex flex-col mb-7">
+                        <h2 class="text-4xl font-semibold mb-3">{{ $card->title }}</h2>
+                        <p class="text-lg mb-7 leading-relaxed tracking-wide">{{ $card->description }} </p>
+                        <div class="flex w-full mb-4 space-x-11">
+                            <div class="flex space-x-2 items-center">
+                                <i class="fa-solid fa-receipt text-2xl text-gray-600"></i>
+                                <span class="text-base">{{ $card->articles->count() }} Artikel</span>
+                            </div>
+                            <div class="flex space-x-2 items-center">
+                                <i class="fa-solid fa-clock text-2xl text-gray-600"></i>
+                                <span class="text-base">{{ $card->readingTime }} Menit</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            @else
+                <div class="text-center py-12">
+                    <p class="text-gray-500 text-xl">Card artikel tidak ditemukan.</p>
+                </div>
+            @endif
 
             <div class="flex flex-col">
                 <h2 class="text-3xl font-semibold mb-4">Semua Artikel</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-                    @foreach ($articles as $article)
-                        <x-card-article :article="$article" />
-                    @endforeach
+                    @if(isset($articles) && $articles->isNotEmpty())
+                        @foreach ($articles as $article)
+                            <x-card-article :article="$article" />
+                        @endforeach
+                    @else
+                        <p class="text-gray-500">Belum ada artikel.</p>
+                    @endif
                 </div>
             </div>
         </div>

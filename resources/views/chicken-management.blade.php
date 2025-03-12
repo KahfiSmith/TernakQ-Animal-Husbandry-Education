@@ -32,7 +32,7 @@
 
         <!-- Alpine.js Scope -->
         <div x-data="harianHandler()" class="flex flex-col">
-            <div class="flex gap-8 mb-6">
+            <div class="flex gap-6 mb-6">
                 <!-- Card Tambah Data Populasi Ayam -->
                 <div class="flex flex-col p-6 ring-2 ring-gray-700 rounded-lg bg-white hover:bg-orangeCrayola/10 hover:shadow-lg transition duration-300 w-full cursor-pointer"
                     @click="openModal = 'jumlahAyam'; console.log('Opened jumlahAyam modal')">

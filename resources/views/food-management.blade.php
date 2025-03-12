@@ -178,7 +178,7 @@
                                 <td class="px-4 py-3">{{ $pkn->nama_pakan }}</td>
                                 <td class="px-4 py-3">{{ $pkn->jenis_pakan }}</td>
                                 <td class="px-4 py-3">{{ $pkn->berat }}</td>
-                                <td class="px-4 py-3">{{ $pkn->tanggal_masuk }}</td>
+                                <td class="px-4 py-3">{{ \Carbon\Carbon::parse($pkn->tanggal_masuk)->translatedFormat('d F Y') }}</td>
                                 <td class="px-4 py-3">Rp {{ number_format($pkn->harga_per_kg, 0, ',', '.') }}</td>
                                 <td class="px-4 py-3 flex gap-3 justify-center items-center">
                                     <button

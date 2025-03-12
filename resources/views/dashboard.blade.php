@@ -40,7 +40,7 @@
                             <h3 class="text-md font-semibold text-gray-500 uppercase tracking-wide">
                                 Angka Kematian Ayam
                             </h3>
-                            <span class="text-4xl font-bold text-gray-600">{{ $totalDeaths }}</span>
+                            <span class="text-4xl font-bold text-gray-600">{{ $totalDeathsThisMonth }}</span>
                         </div>
                         <div>
                             <img src="{{ asset('images/chicken.svg') }}" alt="Ayam Icon" class="bg-pewterBlue w-14 h-14 p-3 rounded-full shadow-sm">
@@ -91,7 +91,7 @@
         <div class="flex gap-6 w-full">
             <!-- Chart Harian -->
             <div class="bg-white p-6 rounded-md shadow-sm w-1/3 ring-2 ring-gray-700">
-                <h2 class="text-lg font-semibold mb-2">Manajemen Ayam Harian</h2>
+                <h2 class="text-lg font-semibold mb-2">Manajemen Keuangan</h2>
                 <canvas id="myPieChart"></canvas>
             </div>
 

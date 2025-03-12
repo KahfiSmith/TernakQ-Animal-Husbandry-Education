@@ -29,7 +29,7 @@
         <tbody>
             @foreach ($transaksi as $trx)
                 <tr>
-                    <td>{{ \Carbon\Carbon::parse($trx['tanggal'])->format('d F Y') }}</td>
+                    <td>{{ \Carbon\Carbon::parse($trx['tanggal'])->translatedFormat('d F Y') }}</td>
                     <td>{{ $trx['keterangan'] }}</td>
                     <td class="text-right {{ $trx['tipe'] == 'pendapatan' ? 'text-green' : 'text-red' }}">
                         {{ $trx['tipe'] == 'pendapatan' ? '+' : '-' }} Rp {{ number_format($trx['jumlah'], 0, ',', '.') }}

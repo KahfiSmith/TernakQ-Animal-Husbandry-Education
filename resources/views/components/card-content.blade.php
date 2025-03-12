@@ -18,7 +18,7 @@
         </div>
         <div class="flex space-x-2 items-center">
             <i class="fa-solid fa-clock"></i>
-            <span class="text-sm">45 Menit</span>
+            <span class="text-sm">{{ $card->readingTime }} Menit</span>
         </div>
     </div>
     <div class="border-b-2 border-gray-700"></div>

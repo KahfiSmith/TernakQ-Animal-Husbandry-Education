@@ -72,9 +72,7 @@
 
         <!-- Deskripsi Artikel -->
         <div class="prose prose-lg text-gray-700 leading-relaxed mb-8 tracking-wide">
-            {{ $article->description }} Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quasi, totam? Quod quo
-            sunt asperiores, minima temporibus mollitia consequatur cumque, doloremque ab, natus quia et odio placeat
-            exercitationem quaerat recusandae est.
+            {{ $article->description }}
         </div>
 
         <!-- Sub-Artikel -->
@@ -84,12 +82,8 @@
                     @foreach ($article->subArticles as $subArticle)
                         <div class="p-4 bg-gray-50 rounded-lg shadow-sm hover:bg-gray-50 transition">
                             <h3 class="text-xl font-semibold text-gray-700 mb-2">{{ $subArticle->title }}</h3>
-                            <p class="text-gray-600 leading-relaxed tracking-wide">
-                                {{ $subArticle->content }} Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                                Repellendus quis eum expedita voluptatibus, sequi facere odio nemo, obcaecati veritatis
-                                praesentium nobis! Eius vel iusto, labore hic ab vitae quos aperiam tempore iure
-                                nesciunt perferendis maxime quasi error in molestias aliquam, cumque rem quis
-                                architecto! Vitae, harum quod. Odio, dignissimos necessitatibus!
+                            <p class="text-gray-600 leading-relaxed tracking-wide mb-1">
+                                {{ $subArticle->content }} 
                             </p>
                             @if ($subArticle->image)
                                 <img src="{{ asset('storage/' . $subArticle->image) }}" alt="Image"
