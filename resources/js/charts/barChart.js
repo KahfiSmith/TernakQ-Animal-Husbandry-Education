@@ -1,6 +1,7 @@
 import { Chart } from 'chart.js/auto';
 
-document.addEventListener("DOMContentLoaded", function () {
+// Fungsi inisialisasi chart batang
+export function initBarChart() {
     // Ambil data yang diset di Blade
     const monthlyData = window.monthlyData || [];
     
@@ -38,16 +39,24 @@ document.addEventListener("DOMContentLoaded", function () {
         ]
     };
 
-    // Buat chart
-    const ctx = document.getElementById("myBarChart").getContext("2d");
-    new Chart(ctx, {
-        type: "bar",
-        data: data,
-        options: {
-            responsive: true,
-            scales: {
-                y: { beginAtZero: true }
+    const ctx = document.getElementById("myBarChart")?.getContext("2d");
+    if (ctx) {
+        new Chart(ctx, {
+            type: "bar",
+            data: data,
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
             }
-        }
-    });
+        });
+    } else {
+        console.error("Element #myBarChart tidak ditemukan.");
+    }
+}
+
+// Panggil saat DOM sudah siap
+document.addEventListener("DOMContentLoaded", function () {
+    initBarChart();
 });

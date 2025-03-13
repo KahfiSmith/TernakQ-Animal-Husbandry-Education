@@ -36,4 +36,12 @@ class PopulasiAyam extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    protected static function booted()
+    {
+        static::updated(function ($populasi) {
+            // Perbarui field nama_batch di semua record harian ayam yang terkait
+            $populasi->harianAyam()->update(['nama_batch' => $populasi->nama_batch]);
+        });
+    }
 }
