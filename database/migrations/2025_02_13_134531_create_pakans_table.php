@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('nama_pakan');
             $table->string('jenis_pakan');
-            $table->decimal('berat', 10, 2);
+            $table->decimal('berat');
             $table->date('tanggal_masuk');
-            $table->decimal('harga_per_kg', 10, 2);
+            $table->decimal('harga_per_kg');
             $table->timestamps();
         });
     }

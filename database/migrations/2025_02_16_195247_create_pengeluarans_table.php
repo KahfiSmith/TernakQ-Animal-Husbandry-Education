@@ -16,9 +16,9 @@ return new class extends Migration
             $table->enum('category', ['Pembelian Ayam', 'Pakan Ayam', 'Obat, Vitamin, Vaksin']);
             $table->text('description');
             $table->integer('jumlah')->unsigned();
-            $table->enum('satuan', ['ekor', 'kg', 'karung', 'liter', 'unit'])->nullable(); // ENUM untuk satuan
-            $table->decimal('harga_per_satuan', 10, 2)->nullable();
-            $table->decimal('total_biaya', 15, 2);
+            $table->enum('satuan', ['ekor', 'kg', 'karung', 'botol', 'unit', 'paket']); // ENUM untuk satuan
+            $table->decimal('harga_per_satuan');
+            $table->decimal('total_biaya');
             $table->string('supplier')->nullable();
             $table->date('tanggal_pembelian');
             $table->timestamps();

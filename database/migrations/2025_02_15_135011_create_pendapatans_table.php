@@ -16,8 +16,8 @@ return new class extends Migration
             $table->enum('kategori', ['Penjualan Ayam', 'Penjualan Kotoran', 'Kemitraan'])->index();
             $table->integer('jumlah')->unsigned();
             $table->enum('satuan', ['ekor', 'kg', 'karung']);
-            $table->decimal('harga_per_satuan', 10, 2);
-            $table->decimal('total_pendapatan', 10, 2);
+            $table->decimal('harga_per_satuan');
+            $table->decimal('total_pendapatan');
             $table->date('tanggal_transaksi');
             $table->string('nama_pembeli')->nullable();
             $table->string('nama_perusahaan')->nullable();
