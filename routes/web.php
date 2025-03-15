@@ -28,6 +28,7 @@ Route::get('/redirect-after-login', function () {
 });
 
 Route::middleware(['auth', 'user'])->group(function () {
+
     // DASHBOARD
     Route::get('dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
@@ -93,20 +94,6 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::delete('/add-article-sub/{id}', [UserSubArticleController::class, 'deleteUserArtikel'])->name('user-article-sub.destroy');
 });
 
-    // PUBLIC ROUTES
-    Route::get('/', [ArticleController::class, 'index'])->name('home');
-    Route::view('profile', 'profile')
-        ->middleware(['auth'])
-        ->name('profile');
-    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
-    Route::get('/content', [ArticleController::class, 'showAllCards'])->name('cards');
-    Route::get('/content/{id}/articles', [ArticleController::class, 'showArticles'])->name('cards.articles');
-    Route::get('/articles/{id}', [ArticleController::class, 'showArticleDetail'])->name('articles.detail');
-    Route::get('sidebar', function () {
-        return view('sidebar');
-    })->name('sidebar');
-
-
 // ADMIN ROUTES
 Route::middleware(['auth', 'admin'])->group(function () {
     // MANAJEMEN ARTIKEL
@@ -136,5 +123,17 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::put('/admin/add-article-sub/{id}', [AdminSubArticleController::class, 'updateAdminArtikel'])->name('admin.user-article-sub.update');
     Route::delete('/admin/add-article-sub/{id}', [AdminSubArticleController::class, 'deleteAdminArtikel'])->name('admin.user-article-sub.destroy');    
 });
+
+// PUBLIC ROUTES
+Route::get('/', [ArticleController::class, 'index'])->name('home');
+Route::view('profile', 'profile')->middleware(['auth'])->name('profile');
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+Route::get('/content', [ArticleController::class, 'showAllCards'])->name('cards');
+Route::get('/content/{id}/articles', [ArticleController::class, 'showArticles'])->name('cards.articles');
+Route::get('/articles/{id}', [ArticleController::class, 'showArticleDetail'])->name('articles.detail');
+Route::get('/test-apex', function() {
+    return view('test-apex'); 
+});
+
 
 require __DIR__.'/auth.php';

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Pengeluaran;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class PengeluaranController extends Controller
 {
@@ -44,10 +45,12 @@ class PengeluaranController extends Controller
                 'category' => 'required|in:Pembelian Ayam,Pakan Ayam,"Obat, Vitamin, Vaksin"',
                 'description' => 'required|string|max:255',
                 'jumlah' => 'required|numeric|min:1',
-                'satuan' => 'nullable|string|max:50',
-                'harga_per_satuan' => 'nullable|numeric|min:0',
+                'satuan' => 'required|string|max:50',
+                'harga_per_satuan' => 'required|numeric|min:1000',
                 'tanggal_pembelian' => 'required|date',
                 'supplier' => 'nullable|string|max:255',
+            ], [
+                'harga_per_satuan.min' => 'Harga per kilogram harus minimal memiliki 4 digit (misalnya, 1000 atau lebih).'
             ]);
 
             $validated['user_id'] = Auth::id();
@@ -58,6 +61,11 @@ class PengeluaranController extends Controller
                 'status' => 'success',
                 'message' => 'Pengeluaran berhasil ditambahkan.',
             ]);
+
+        } catch (ValidationException $e) {
+            // Ambil pesan error pertama
+            $errors = $e->validator->errors()->all();
+            return redirect()->back()->with('status', 'error')->with('message', $errors[0]);
         } catch (\Exception $e) {
             Log::error('Gagal menyimpan pengeluaran: ' . $e->getMessage());
 
@@ -77,11 +85,13 @@ class PengeluaranController extends Controller
             $validated = $request->validate([
                 'category' => 'required|in:Pembelian Ayam,Pakan Ayam,"Obat, Vitamin, Vaksin"',
                 'description' => 'required|string|max:255',
-                'jumlah' => 'nullable|numeric|min:0',
-                'satuan' => 'nullable|string|max:50',
-                'harga_per_satuan' => 'nullable|numeric|min:0',
+                'jumlah' => 'required|numeric|min:1',
+                'satuan' => 'required|string|max:50',
+                'harga_per_satuan' => 'required|numeric|min:1000',
                 'tanggal_pembelian' => 'required|date',
                 'supplier' => 'nullable|string|max:255',
+            ], [
+                'harga_per_satuan.min' => 'Harga per kilogram harus minimal memiliki 4 digit (misalnya, 1000 atau lebih).'
             ]);
 
             $pengeluaran = Pengeluaran::where('id', $id)
@@ -94,6 +104,11 @@ class PengeluaranController extends Controller
                 'status' => 'success',
                 'message' => 'Pengeluaran berhasil diperbarui.',
             ]);
+
+        } catch (ValidationException $e) {
+            // Ambil pesan error pertama
+            $errors = $e->validator->errors()->all();
+            return redirect()->back()->with('status', 'error')->with('message', $errors[0]);
         } catch (\Exception $e) {
             Log::error('Gagal memperbarui pengeluaran: ' . $e->getMessage());
 

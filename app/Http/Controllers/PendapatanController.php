@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Pendapatan;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class PendapatanController extends Controller
 {
@@ -44,10 +45,12 @@ class PendapatanController extends Controller
                 'kategori' => 'required|in:Penjualan Ayam,Penjualan Kotoran,Pendapatan Kemitraan',
                 'jumlah' => 'required|numeric|min:1',
                 'satuan' => 'required|in:ekor,kg,karung',
-                'harga_per_satuan' => 'required|numeric|min:0',
+                'harga_per_satuan' => 'required|numeric|min:1000',
                 'tanggal_transaksi' => 'required|date',
                 'nama_pembeli' => 'nullable|string|max:255',
                 'nama_perusahaan' => 'nullable|string|max:255',
+            ], [
+                'harga_per_satuan.min' => 'Harga per kilogram harus minimal memiliki 4 digit (misalnya, 1000 atau lebih).'
             ]);
 
             $validated['user_id'] = Auth::id();
@@ -58,6 +61,11 @@ class PendapatanController extends Controller
                 'status' => 'success',
                 'message' => 'Pendapatan berhasil ditambahkan.',
             ]);
+
+        } catch (ValidationException $e) {
+            // Ambil pesan error pertama
+            $errors = $e->validator->errors()->all();
+            return redirect()->back()->with('status', 'error')->with('message', $errors[0]);
         } catch (\Exception $e) {
             Log::error('Gagal menyimpan pendapatan: ' . $e->getMessage());
 
@@ -78,10 +86,12 @@ class PendapatanController extends Controller
                 'kategori' => 'required|in:Penjualan Ayam,Penjualan Kotoran,Pendapatan Kemitraan',
                 'jumlah' => 'required|numeric|min:1',
                 'satuan' => 'required|in:ekor,kg,karung',
-                'harga_per_satuan' => 'required|numeric|min:0',
+                'harga_per_satuan' => 'required|numeric|min:1000',
                 'tanggal_transaksi' => 'required|date',
                 'nama_pembeli' => 'nullable|string|max:255',
                 'nama_perusahaan' => 'nullable|string|max:255',
+            ], [
+                'harga_per_satuan.min' => 'Harga per kilogram harus minimal memiliki 4 digit (misalnya, 1000 atau lebih).'
             ]);
             $pendapatan = Pendapatan::where('id', $id)
                 ->where('user_id', Auth::id())
@@ -93,6 +103,11 @@ class PendapatanController extends Controller
                 'status' => 'success',
                 'message' => 'Pendapatan berhasil diperbarui.',
             ]);
+
+        } catch (ValidationException $e) {
+            // Ambil pesan error pertama
+            $errors = $e->validator->errors()->all();
+            return redirect()->back()->with('status', 'error')->with('message', $errors[0]);
         } catch (\Exception $e) {
             Log::error('Gagal memperbarui pendapatan: ' . $e->getMessage());
 

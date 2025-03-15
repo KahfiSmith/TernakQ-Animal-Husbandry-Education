@@ -93,8 +93,9 @@
                                 <option value="ekor">Ekor</option>
                                 <option value="kg">Kilogram</option>
                                 <option value="karung">Karung</option>
-                                <option value="liter">Liter</option>
+                                <option value="botol">Botol</option>
                                 <option value="unit">Unit</option>
+                                <option value="paket">Paket</option>
                             </select>
                         </div>
 
