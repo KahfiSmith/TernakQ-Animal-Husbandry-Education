@@ -20,7 +20,8 @@ class AdminArticleController extends Controller
             $articlePage = $request->get('article_page', 1);
 
             // Paginasi dengan appends untuk menjaga parameter query saat halaman berubah
-            $articles = Article::where('user_id', Auth::id())
+            $articles = Article::with('cardArticle')
+            ->where('user_id', Auth::id())
             ->latest()
             ->paginate(4, ['*'], 'article_page', $articlePage);
 
