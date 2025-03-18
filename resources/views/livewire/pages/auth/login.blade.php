@@ -29,14 +29,14 @@ new #[Layout('layouts.guest')] class extends Component
     <form wire:submit="login">
         <!-- Email Address -->
         <div>
-            <x-input-label for="email" :value="__('Email')" />
+            <x-input-label for="email" :value="__('Email')" required/>
             <x-text-input wire:model="form.email" id="email" class="block mt-1 w-full py-2.5" type="email" name="email" required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('form.email')" class="mt-2" />
         </div>
 
         <!-- Password -->
         <div class="mt-6">
-            <x-input-label for="password" :value="__('Kata Sandi')" />
+            <x-input-label for="password" :value="__('Kata Sandi')" required/>
 
             <x-text-input wire:model="form.password" id="password" class="block mt-1 w-full py-2.5"
                             type="password"

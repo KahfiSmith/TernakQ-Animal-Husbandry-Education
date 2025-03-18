@@ -73,21 +73,21 @@ new #[Layout('layouts.guest')] class extends Component
     <form wire:submit="resetPassword">
         <!-- Email Address -->
         <div>
-            <x-input-label for="email" :value="__('Email')" />
+            <x-input-label for="email" :value="__('Email')" required/>
             <x-text-input wire:model="email" id="email" class="block mt-1 w-full py-2.5" type="email" name="email" required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
         <!-- Password -->
         <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+            <x-input-label for="password" :value="__('Password')" required/>
             <x-text-input wire:model="password" id="password" class="block mt-1 w-full py-2.5" type="password" name="password" required autocomplete="new-password" />
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
         <!-- Confirm Password -->
         <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+            <x-input-label for="password_confirmation" :value="__('Confirm Password')" required/>
 
             <x-text-input wire:model="password_confirmation" id="password_confirmation" class="block mt-1 w-full py-2.5"
                           type="password"
