@@ -68,7 +68,7 @@
 
             <!-- Dropdown untuk memilih CardArticle -->
             <div class="flex flex-col space-y-1">
-                <x-input-label for="card_id" :value="__('Pilih Artikel Grup')" />
+                <x-input-label for="card_id" :value="__('Pilih Artikel Grup')" required/>
                 <select id="card_id" name="card_id" x-model="cardId" class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5" required>
                     @foreach ($cardArticles as $card)
                         <option value="{{ $card->id }}" @selected(old('card_id') == $card->id)>{{ $card->title }}</option>
@@ -78,13 +78,13 @@
 
             <!-- Input untuk Judul Artikel -->
             <div class="flex flex-col space-y-1">
-                <x-input-label for="title" :value="__('Judul Artikel')" />
+                <x-input-label for="title" :value="__('Judul Artikel')" required/>
                 <x-text-input id="title" name="title" type="text" class="block mt-1 w-full py-2.5" required x-model="title" />
             </div>
 
             <!-- Input untuk Deskripsi Artikel -->
             <div class="flex flex-col space-y-1">
-                <x-input-label for="description" :value="__('Deskripsi Artikel')" />
+                <x-input-label for="description" :value="__('Deskripsi Artikel')" required/>
                 <textarea id="description" name="description"
                 class="block mt-1 w-full h-[100px] resize-none py-2.5 ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151]
                 focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5
@@ -94,7 +94,7 @@
             </div>
 
             <div class="flex flex-col space-y-1">
-                <x-input-label for="image" :value="__('Gambar Artikel')" />
+                <x-input-label for="image" :value="__('Gambar Artikel')" required/>
                 <div x-data="{ imagePreview: null }" class="relative w-full">
                     <label for="image"
                            class="cursor-pointer flex flex-col items-center justify-center border-2 border-gray-700 shadow-[4px_4px_0px_2px_#374151] rounded-md p-6 hover:bg-gray-100 transition duration-150 ease-in-out">
@@ -125,7 +125,7 @@
 
             <!-- Dropdown untuk memilih Tag -->
             <div class="flex flex-col space-y-1">
-                <x-input-label for="tags" :value="__('Pilih Tag Artikel')" />
+                <x-input-label for="tags" :value="__('Pilih Tag Artikel')" required/>
                 <div class="relative">
                     <button type="button"
                             class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5"

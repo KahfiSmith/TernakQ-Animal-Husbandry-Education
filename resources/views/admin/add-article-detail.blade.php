@@ -68,8 +68,8 @@
 
             <!-- Dropdown untuk memilih CardArticle -->
             <div class="flex flex-col space-y-1">
-                <x-input-label for="card_id" :value="__('Pilih Artikel Grup')" />
-                <select id="card_id" name="card_id" class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5" required>
+                <x-input-label for="card_id" :value="__('Pilih Artikel Grup')" required/>
+                <select id="card_id" name="card_id" x-model="cardId" class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5" required>
                     @foreach ($cardArticles as $card)
                         <option value="{{ $card->id }}" @selected(old('card_id') == $card->id)>{{ $card->title }}</option>
                     @endforeach
@@ -78,13 +78,13 @@
 
             <!-- Input untuk Judul Artikel -->
             <div class="flex flex-col space-y-1">
-                <x-input-label for="title" :value="__('Judul Artikel')" />
+                <x-input-label for="title" :value="__('Judul Artikel')" required/>
                 <x-text-input id="title" name="title" type="text" class="block mt-1 w-full py-2.5" required x-model="title" />
             </div>
 
             <!-- Input untuk Deskripsi Artikel -->
             <div class="flex flex-col space-y-1">
-                <x-input-label for="description" :value="__('Deskripsi Artikel')" />
+                <x-input-label for="description" :value="__('Deskripsi Artikel')" required/>
                 <textarea id="description" name="description"
                 class="block mt-1 w-full h-[100px] resize-none py-2.5 ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151]
                 focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5
@@ -94,7 +94,7 @@
             </div>
 
             <div class="flex flex-col space-y-1">
-                <x-input-label for="image" :value="__('Gambar Artikel')" />
+                <x-input-label for="image" :value="__('Gambar Artikel')" required/>
                 <div x-data="{ imagePreview: null }" class="relative w-full">
                     <label for="image"
                            class="cursor-pointer flex flex-col items-center justify-center border-2 border-gray-700 shadow-[4px_4px_0px_2px_#374151] rounded-md p-6 hover:bg-gray-100 transition duration-150 ease-in-out">
@@ -136,7 +136,7 @@
                     <div id="tags-dropdown" style="display: none;" class="absolute w-full mt-1 bg-white border-2 border-gray-300 rounded-md shadow-lg z-10">
                         @foreach($tags as $tag)
                             <label class="block px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer">
-                                <input type="checkbox" name="tags[]" value="{{ $tag->id }}" class="mr-2">
+                                <input type="checkbox" name="tags[]" value="{{ $tag->id }}" x-model="tags" class="mr-2">
                                 {{ $tag->name }}
                             </label>
                         @endforeach
@@ -159,11 +159,25 @@
         </form>
     </div>
 
-    <div class="flex justify-end space-x-6">
+    <div class="flex space-x-6 items-center justify-between">
         <div>
             <a href="{{ route('admin.add-article-sub') }}" wire:navigate class="inline-flex justify-center items-center text-center font-medium text-base tracking-widest focus:outline-none focus-visible:outline-none transition ease-in-out duration-150 bg-pewterBlue ring-2
             ring-gray-700 shadow-[4px_4px_0px_2px_#374151] text-white hover:shadow-[2px_2px_0px_2px_#374151]
             hover:translate-y-0.5 hover:translate-x-0.5 py-2.5 px-4 rounded">Tambah Sub Artikel</a>
+        </div>
+        <div class="flex space-x-6 items-center">
+            
+            <!-- Artikel Tertunda -->
+            <div class="flex flex-col justify-center items-center space-y-1 bg-orange-200 py-2 px-4 rounded-md ring-2 ring-orange-400">
+                <h3 class="font-medium text-normal text-orange-700">Total Artikel</h3>
+                <span class="font-semibold text-xl text-orange-700">{{ $totalArticles }}</span>
+            </div>
+    
+            <!-- Artikel Disetujui -->
+            <div class="flex flex-col justify-center items-center space-y-1 bg-blue-200 py-2 px-4 rounded-md ring-2 ring-blue-400">
+                <h3 class="font-medium text-normal text-blue-700">Artikel Hari Ini</h3>
+                <span class="font-semibold text-xl text-blue-700">{{ $todayArticles }}</span>
+            </div>
         </div>
     </div>
 
@@ -175,6 +189,7 @@
                 <thead class="text-gray-600 uppercase text-sm tracking-wide">
                     <tr class="border-b-2 border-gray-700">
                         <th class="px-4 py-3">No</th>
+                        <th class="px-4 py-3">Grup Artikel</th>
                         <th class="px-4 py-3">Judul Artikel</th>
                         <th class="px-4 py-3">Catatan</th>
                         <th class="px-4 py-3">Status</th>
@@ -186,6 +201,7 @@
                     @foreach ($articles as $article)
                         <tr class="hover:bg-gray-50 border-b border-gray-200">
                             <td class="px-4 py-3">{{ $loop->iteration }}</td>
+                            <td class="px-4 py-3">{{ $article->cardArticle->title ?? '-' }}</td>
                             <td class="px-4 py-3">{{ $article->title }}</td>
                             <td class="px-4 py-3">-</td>
                             <td class="px-4 py-3">

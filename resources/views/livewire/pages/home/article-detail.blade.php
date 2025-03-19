@@ -80,7 +80,7 @@
             <div class="border-t border-gray-300 pt-6">
                 <div class="space-y-6">
                     @foreach ($article->subArticles as $subArticle)
-                        <div class="p-4 bg-gray-50 rounded-lg shadow-sm hover:bg-gray-50 transition">
+                        <div id="sub-article-{{ $subArticle->id }}" class="p-4 bg-gray-50 rounded-lg shadow-sm hover:bg-gray-50 transition">
                             <h3 class="text-xl font-semibold text-gray-700 mb-2">{{ $subArticle->title }}</h3>
                             <p class="text-gray-600 leading-relaxed tracking-wide mb-1">
                                 {{ $subArticle->content }} 

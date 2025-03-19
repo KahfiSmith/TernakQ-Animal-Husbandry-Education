@@ -52,14 +52,14 @@
                 </template>
 
                 <div class="flex flex-col space-y-1">
-                    <x-input-label for="title" :value="__('Judul Grup Artikel')" />
+                    <x-input-label for="title" :value="__('Judul Grup Artikel')" required/>
                     <x-text-input id="title" name="title" type="text" class="block mt-1 w-full py-2.5" required
                         x-model="title" />
                 </div>
 
                 <!-- Input Deskripsi -->
                 <div class="flex flex-col space-y-1">
-                    <x-input-label for="description" :value="__('Deskripsi Grup Artikel')" />
+                    <x-input-label for="description" :value="__('Deskripsi Grup Artikel')" required/>
                     <textarea id="description" name="description"
                         class="block mt-1 w-full h-[100px] resize-none py-2.5 ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151]
                         focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5
@@ -70,7 +70,7 @@
 
                 <!-- Input Gambar -->
                 <div class="flex flex-col space-y-1">
-                    <x-input-label for="image" :value="__('Gambar Grup Artikel')" />
+                    <x-input-label for="image" :value="__('Gambar Grup Artikel')" required/>
 
                     <div x-data="{ imagePreview: null }" class="relative w-full">
                         <label for="image"

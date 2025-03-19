@@ -59,7 +59,7 @@
 
                         <!-- Pilih Artikel Induk -->
                         <div class="flex flex-col space-y-1 mb-6">
-                            <x-input-label for="article_id" :value="__('Pilih Artikel Induk')" />
+                            <x-input-label for="article_id" :value="__('Pilih Artikel Induk')" required/>
                             <select name="article_id" id="article_id" required
                                 class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] 
                                 focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 
@@ -88,7 +88,7 @@
                                 </button>
 
                                 <!-- Judul Sub Artikel -->
-                                <label class="block font-medium text-sm text-gray-700 mb-3">Judul Sub Artikel 1</label>
+                                <label class="block font-medium text-sm text-gray-700 mb-3">Judul Sub Artikel 1<span class="text-red-500">*</span></label>
                                 <input type="text" name="sub_articles[0][title]" required
                                     class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] 
                                     focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none 
@@ -97,7 +97,7 @@
                                     placeholder="Judul Sub Artikel">
 
                                 <!-- Konten Sub Artikel -->
-                                <label class="block font-medium text-sm text-gray-700 mb-3">Konten Sub Artikel 1</label>
+                                <label class="block font-medium text-sm text-gray-700 mb-3">Konten Sub Artikel 1<span class="text-red-500">*</span></label>
                                 <textarea name="sub_articles[0][content]" rows="3" required
                                     class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] 
                                     focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none 
@@ -106,8 +106,8 @@
                                     placeholder="Konten Sub Artikel"></textarea>
 
                                 <!-- Urutan -->
-                                <label class="block font-medium text-sm text-gray-700 mb-3">Urutan 1</label>
-                                <input type="number" name="sub_articles[0][order_number]" min="1" required
+                                <label class="block font-medium text-sm text-gray-700 mb-3">Urutan 1<span class="text-red-500">*</span></label>
+                                <input type="number" name="sub_articles[0][order_number]" required
                                     value="1"
                                     class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] 
                                     focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none 
@@ -246,20 +246,20 @@
                         <i class="fa-solid fa-times"></i>
                     </button>
 
-                    <label class="block font-medium text-sm text-gray-700 mb-3">Judul Sub Artikel ${subArticleIndex + 1}</label>
+                    <label class="block font-medium text-sm text-gray-700 mb-3">Judul Sub Artikel ${subArticleIndex + 1}<span class="text-red-500">*</span></label>
                     <input type="text" name="sub_articles[${subArticleIndex}][title]" required  class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] 
                                     focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none 
                                     focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out 
                                     block mt-1 w-full py-2.5 mb-6" placeholder="Judul Sub Artikel">
 
-                    <label class="block font-medium text-sm text-gray-700 mb-3">Konten Sub Artikel ${subArticleIndex + 1}</label>
+                    <label class="block font-medium text-sm text-gray-700 mb-3">Konten Sub Artikel ${subArticleIndex + 1}<span class="text-red-500">*</span></label>
                     <textarea name="sub_articles[${subArticleIndex}][content]" rows="3" required  class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] 
                                     focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none 
                                     focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out 
                                     block mt-1 w-full py-2.5 mb-6" placeholder="Konten Sub Artikel"></textarea>
 
-                    <label class="block font-medium text-sm text-gray-700 mb-3">Urutan ${subArticleIndex + 1}</label>
-                    <input type="number" name="sub_articles[${subArticleIndex}][order_number]" min="1" required value="${subArticleIndex + 1}"
+                    <label class="block font-medium text-sm text-gray-700 mb-3">Urutan ${subArticleIndex + 1}<span class="text-red-500">*</span></label>
+                    <input type="number" name="sub_articles[${subArticleIndex}][order_number]" required value="${subArticleIndex + 1}"
                          class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] 
                                     focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none 
                                     focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out 

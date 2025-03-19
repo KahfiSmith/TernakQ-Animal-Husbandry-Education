@@ -21,11 +21,11 @@
             <div class="space-y-4 mb-8">
                 <!-- Nama Batch -->
                 <div>
-                    <x-input-label for="dailyBatchName" :value="__('Nama Batch')" />
+                    <x-input-label for="dailyBatchName" :value="__('Nama Populasi')" />
                     <select id="editDailyBatchName" name="dailyBatchName"
                         class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5"
                         required x-model="editData.id_populasi" @change="updateBatchInfoEdit()" x-init="updateBatchInfoEdit()">
-                        <option value="" disabled>Pilih Batch</option>
+                        <option value="" disabled>Pilih Populasi</option>
                         @foreach ($batches as $batch)
                             <option value="{{ $batch->id }}" data-jumlah="{{ $batch->jumlah_ayam_masuk }}">
                                 {{ $batch->nama_batch }} ({{ $batch->jumlah_ayam_masuk }} Ayam)
@@ -85,7 +85,7 @@
             console.log("Jumlah Ayam (data-jumlah):", selectedOption.dataset.jumlah);
 
             editJumlahAyam = selectedOption.dataset.jumlah ? parseInt(selectedOption.dataset.jumlah) : 0;
-            document.getElementById("editJumlahAyamText").innerText = `Jumlah ayam dalam batch: ${editJumlahAyam}`;
+            document.getElementById("editJumlahAyamText").innerText = `Jumlah ayam dalam populasi: ${editJumlahAyam}`;
         }
         validateEditChickenCounts();
     }
