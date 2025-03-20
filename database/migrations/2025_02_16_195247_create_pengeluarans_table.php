@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('pengeluaran', function (Blueprint $table) {
             $table->id();
             $table->enum('category', ['Pembelian Ayam', 'Pakan Ayam', 'Obat, Vitamin, Vaksin']);
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->integer('jumlah')->unsigned();
             $table->enum('satuan', ['ekor', 'kg', 'karung', 'botol', 'unit', 'paket']); // ENUM untuk satuan
             $table->decimal('harga_per_satuan');

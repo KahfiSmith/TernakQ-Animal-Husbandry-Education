@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('kandang_ayam', function (Blueprint $table) { 
             $table->id();
             $table->string('nama_kandang');
-            $table->integer('kapasitas');
+            $table->integer('kapasitas')->unsigned();
             $table->enum('status_kandang', ['Aktif', 'Tidak Aktif'])->default('Aktif');
             $table->timestamps();
         });

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('kode_batch')->unique();
             $table->string('nama_batch');
             $table->date('tanggal_doc');
-            $table->integer('jumlah_ayam_masuk');
+            $table->integer('jumlah_ayam_masuk')->unsigned();
             $table->enum('status_ayam', ['Proses', 'Siap Panen', 'Sudah Panen'])->default('Proses');
             $table->timestamps();
         });

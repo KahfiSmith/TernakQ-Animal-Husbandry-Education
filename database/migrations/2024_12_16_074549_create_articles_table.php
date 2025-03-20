@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('card_id')->constrained('card_articles')->onDelete('cascade');
             $table->string('title');
-            $table->text('description')->nullable();
+            $table->text('description');
             $table->text('catatan')->nullable();
             $table->string('image');
             $table->enum('status', ['Tertunda', 'Disetujui', 'Ditolak'])->default('pending');

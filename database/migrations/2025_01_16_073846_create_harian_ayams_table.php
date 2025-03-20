@@ -16,8 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('id_populasi');
             $table->string('nama_batch');
             $table->date('tanggal_input');
-            $table->integer('jumlah_ayam_mati');
-            $table->integer('jumlah_ayam_sakit');
+            $table->integer('jumlah_ayam_mati')->unsigned();
+            $table->integer('jumlah_ayam_sakit')->unsigned();
             $table->timestamps();
 
             $table->foreignId('id_populasi')->constrained('populasi_ayam')->onDelete('cascade');
