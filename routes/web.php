@@ -131,9 +131,5 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name
 Route::get('/content', [ArticleController::class, 'showAllCards'])->name('cards');
 Route::get('/content/{id}/articles', [ArticleController::class, 'showArticles'])->name('cards.articles');
 Route::get('/articles/{id}', [ArticleController::class, 'showArticleDetail'])->name('articles.detail');
-Route::get('/test-apex', function() {
-    return view('test-apex'); 
-});
-
 
 require __DIR__.'/auth.php';

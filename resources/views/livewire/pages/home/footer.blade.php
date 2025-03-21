@@ -54,7 +54,7 @@
             class="bg-cosmicLatte w-8 h-8 rounded-full flex justify-center items-center">
              <i class="fa-brands fa-linkedin text-polishedPine text-lg"></i>
          </a>
-         <a href="https://www.facebook.com/groups/270376331661364" target="_blank"
+         <a href="https://www.facebook.com/profile.php?id=100028652941985" target="_blank"
             class="bg-cosmicLatte w-8 h-8 rounded-full flex justify-center items-center">
              <i class="fa-brands fa-facebook text-polishedPine text-lg"></i>
          </a>

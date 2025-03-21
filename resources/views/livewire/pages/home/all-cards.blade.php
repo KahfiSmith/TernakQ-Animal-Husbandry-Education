@@ -14,7 +14,10 @@
                     </a>
                 </div>
                 <!-- Search Input -->
-                <x-search-input placeholder="Cari konten..." />
+                <form action="{{ route('cards') }}" method="GET" class="mb-4 flex space-x-4">
+                    <x-search-input name="search" placeholder="Cari grup artikel..."
+                        value="{{ request()->get('search') }}" />
+                </form>
             </nav>
         </div>
 
@@ -41,6 +44,12 @@
                         Tidak ada konten yang tersedia saat ini.
                     </p>
                 @endforelse
+            </div>
+
+            <div class="flex justify-center mt-6">
+                <div class="w-full max-w-md">
+                    {{ $cardArticles->links() }}
+                </div>
             </div>
         </div>
 

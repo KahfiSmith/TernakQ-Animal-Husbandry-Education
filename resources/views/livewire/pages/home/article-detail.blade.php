@@ -10,7 +10,7 @@
 </head>
 
 <body class="antialiased p-6">
-    <section class="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-lg ring-2 ring-gray-300">
+    <section class="max-w-5xl mx-auto p-6 bg-white/80 rounded-lg shadow-lg ring-2 ring-gray-300">
         <div class="flex">
             <nav class="text-sm text-gray-600 mb-4 font-medium" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-1 md:space-x-3">
@@ -61,7 +61,7 @@
             <img src="{{ asset('storage/' . $article->image) }}" alt="Image"
                 class="object-cover rounded-lg shadow-md mb-2 mx-auto max-h-[400px] min-h-[380px] w-full">
         @else
-        No Image
+            No Image
         @endif
 
         <!-- Tanggal Publikasi -->
@@ -80,10 +80,11 @@
             <div class="border-t border-gray-300 pt-6">
                 <div class="space-y-6">
                     @foreach ($article->subArticles as $subArticle)
-                        <div id="sub-article-{{ $subArticle->id }}" class="p-4 bg-gray-50 rounded-lg shadow-sm hover:bg-gray-50 transition">
+                        <div id="sub-article-{{ $subArticle->id }}"
+                            class="p-4 bg-cosmicLatte rounded-lg shadow-sm transition">
                             <h3 class="text-xl font-semibold text-gray-700 mb-2">{{ $subArticle->title }}</h3>
                             <p class="text-gray-600 leading-relaxed tracking-wide mb-1">
-                                {{ $subArticle->content }} 
+                                {{ $subArticle->content }}
                             </p>
                             @if ($subArticle->image)
                                 <img src="{{ asset('storage/' . $subArticle->image) }}" alt="Image"

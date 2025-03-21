@@ -11,7 +11,9 @@
                         <img src="{{ asset('images/logo.svg') }}" alt="logo" />
                     </a>
                 </div>
-                <x-search-input placeholder="Cari artikel..." />
+                <form action="{{ route('cards.articles', ['id' => $card->id]) }}" method="GET" class="mb-4">
+                    <x-search-input name="search" placeholder="Cari artikel..." value="{{ request()->get('search') }}" />
+                </form>
             </nav>
         </div>
 
@@ -31,7 +33,7 @@
                         </svg>
                     </li>
                     <li aria-current="page" class="text-gray-500 font-normal">
-                        @if(isset($card))
+                        @if (isset($card))
                             {{ $card->title }}
                         @else
                             Card tidak ditemukan
@@ -40,7 +42,7 @@
                 </ol>
             </nav>
 
-            @if(isset($card))
+            @if (isset($card))
                 <div class="flex space-x-8 mb-9">
                     <img src="{{ asset('storage/' . $card->image) }}" alt="Image"
                         class="w-[450px] h-[300px] rounded-md ring-2 ring-gray-300 object-cover">
@@ -65,16 +67,21 @@
                 </div>
             @endif
 
-            <div class="flex flex-col">
+            <div class="flex flex-col w-full">
                 <h2 class="text-3xl font-semibold mb-4">Semua Artikel</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-                    @if(isset($articles) && $articles->isNotEmpty())
+                    @if (isset($articles) && $articles->isNotEmpty())
                         @foreach ($articles as $article)
                             <x-card-article :article="$article" />
                         @endforeach
                     @else
                         <p class="text-gray-500">Belum ada artikel.</p>
                     @endif
+                </div>
+                <div class="flex justify-center mt-6">
+                    <div class="w-full max-w-md">
+                        {{ $articles->links() }}
+                    </div>
                 </div>
             </div>
         </div>
