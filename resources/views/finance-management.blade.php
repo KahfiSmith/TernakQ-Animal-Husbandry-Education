@@ -5,6 +5,14 @@
 @section('content')
     <main class="flex flex-col space-y-6">
 
+        <nav class="text-sm text-gray-600 font-medium" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                <li class="inline-flex items-center">
+                    Manajemen Keuangan
+                </li>
+            </ol>
+        </nav>
+
         <!-- Header Ringkasan Keuangan -->
         <div class="flex items-center justify-between bg-white p-6 rounded-lg shadow-md ring-2 ring-gray-700">
             <h2 class="text-2xl font-bold text-orangeCrayola">Laporan Keuangan</h2>

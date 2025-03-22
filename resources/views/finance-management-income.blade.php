@@ -34,14 +34,34 @@
             </script>
         @endif
 
+        <nav class="text-sm text-gray-600 font-medium" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                <li class="inline-flex items-center">
+                    <a href="{{ route('finance-management') }}" wire:navigate
+                        class="text-gray-500 hover:text-gray-700 inline-flex items-center ease-in-out duration-300 hover:underline">
+                        Manajemen Keuangan
+                    </a>
+                </li>
+                <li>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </li>
+                <li aria-current="page" class="text-gray-500 font-normal">
+                    Pendapatan
+                </li>
+            </ol>
+        </nav>
+
         <!-- Form Tambah Pendapatan -->
-        <div class="flex flex-col p-4 sm:p-6 bg-white shadow sm:rounded-lg ring-2 ring-gray-700 border-b-gray-200"
-            >
+        <div class="flex flex-col p-4 sm:p-6 bg-white shadow sm:rounded-lg ring-2 ring-gray-700 border-b-gray-200">
             <h2 class="text-xl font-bold mb-2 text-orangeCrayola">
                 <span x-text="editMode ? 'Edit Pendapatan' : 'Tambah Pendapatan'"></span>
             </h2>
 
-            <form method="POST" :action="editMode ? '{{ url('finance-management-income') }}/' + pendapatanId : '{{ route('pendapatan.store') }}'" 
+            <form method="POST"
+                :action="editMode ? '{{ url('finance-management-income') }}/' + pendapatanId : '{{ route('pendapatan.store') }}'"
                 class="space-y-6 max-full">
                 @csrf
                 <template x-if="editMode">
@@ -52,7 +72,7 @@
                     <div class="flex flex-col space-y-6">
                         <!-- Kategori Pendapatan -->
                         <div class="flex flex-col space-y-1">
-                            <x-input-label for="kategori" :value="__('Kategori')" />
+                            <x-input-label for="kategori" :value="__('Kategori')" required />
                             <select id="kategori" name="kategori"
                                 class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] 
                             focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 
@@ -67,14 +87,14 @@
 
                         <!-- Jumlah -->
                         <div class="flex flex-col space-y-1">
-                            <x-input-label for="jumlah" :value="__('Jumlah')" />
+                            <x-input-label for="jumlah" :value="__('Jumlah')" required />
                             <x-text-input id="jumlah" name="jumlah" type="number" class="block mt-1 w-full py-2.5"
-                                required min="1" x-model="jumlah" />
+                                required x-model="jumlah" oninput="validateNumber(this)" />
                         </div>
 
                         <!-- Satuan -->
                         <div class="flex flex-col space-y-1">
-                            <x-input-label for="satuan" :value="__('Satuan')" />
+                            <x-input-label for="satuan" :value="__('Satuan')" required />
                             <select id="satuan" name="satuan"
                                 class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] 
                             focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 
@@ -89,14 +109,15 @@
 
                         <!-- Harga per Satuan -->
                         <div class="flex flex-col space-y-1">
-                            <x-input-label for="harga_per_satuan" :value="__('Harga per Satuan (IDR)')" />
+                            <x-input-label for="harga_per_satuan" :value="__('Harga per Satuan (IDR)')" required />
                             <x-text-input id="harga_per_satuan" name="harga_per_satuan" type="number"
-                                class="block mt-1 w-full py-2.5" required min="0" x-model="hargaPerSatuan" />
+                                class="block mt-1 w-full py-2.5" required min="0" x-model="hargaPerSatuan"
+                                oninput="validateNumber(this)" />
                         </div>
 
                         <!-- Tanggal Transaksi -->
                         <div class="flex flex-col space-y-1">
-                            <x-input-label for="tanggal_transaksi" :value="__('Tanggal Transaksi')" />
+                            <x-input-label for="tanggal_transaksi" :value="__('Tanggal Transaksi')" required />
                             <x-text-input id="tanggal_transaksi" name="tanggal_transaksi" type="date"
                                 class="block mt-1 w-full py-2.5" required x-model="tanggalTransaksi" />
                         </div>
@@ -118,10 +139,12 @@
 
                     <!-- Tombol Submit -->
                     <div class="flex justify-start">
-                        <x-primary-button type="submit" class="bg-orangeCrayola ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] 
+                        <x-primary-button type="submit"
+                            class="bg-orangeCrayola ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] 
                         text-white hover:shadow-[2px_2px_0px_2px_#374151] hover:translate-y-0.5 
-                        hover:translate-x-0.5 py-2.5 px-4 rounded" x-text="editMode ? 'Update Pendapatan' : 'Tambah Pendapatan'"></x-primary-button>
-                        <x-primary-button type="button" x-show="editMode" 
+                        hover:translate-x-0.5 py-2.5 px-4 rounded"
+                            x-text="editMode ? 'Update Pendapatan' : 'Tambah Pendapatan'"></x-primary-button>
+                        <x-primary-button type="button" x-show="editMode"
                             @click="editMode = false; pendapatanId = ''; kategori = ''; jumlah = ''; satuan = ''; hargaPerSatuan = ''; tanggalTransaksi = ''; namaPembeli = ''; namaPerusahaan = '';"
                             class="ml-5 bg-gray-500 ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] 
                         text-white hover:shadow-[2px_2px_0px_2px_#374151] hover:translate-y-0.5 
@@ -160,7 +183,8 @@
                                 <td class="px-4 py-3">{{ $item->jumlah }}</td>
                                 <td class="px-4 py-3">{{ $item->satuan }}</td>
                                 <td class="px-4 py-3">Rp {{ number_format($item->harga_per_satuan, 0, ',', '.') }}</td>
-                                <td class="px-4 py-3">Rp {{ number_format($item->jumlah * $item->harga_per_satuan, 0, ',', '.') }}</td>
+                                <td class="px-4 py-3">Rp
+                                    {{ number_format($item->jumlah * $item->harga_per_satuan, 0, ',', '.') }}</td>
                                 <td class="px-4 py-3">{{ date('d M Y', strtotime($item->tanggal_transaksi)) }}</td>
                                 <td class="px-4 py-3">{{ $item->nama_pembeli ?? '-' }}</td>
                                 <td class="px-4 py-3">{{ $item->nama_perusahaan ?? '-' }}</td>
@@ -183,7 +207,8 @@
 
                                     <button type="button"
                                         class="swal-delete-pendapatan px-3 py-3 bg-red-100 text-red-700 rounded w-12 h-12 cursor-pointer"
-                                        data-id="{{ $item->id }}" data-url="{{ route('pendapatan.destroy', $item->id) }}">
+                                        data-id="{{ $item->id }}"
+                                        data-url="{{ route('pendapatan.destroy', $item->id) }}">
                                         <i class="fa-solid fa-trash text-lg"></i>
                                     </button>
                                 </td>
@@ -257,6 +282,13 @@
             // Panggil fungsi untuk tabel kandang
             handleDelete('.swal-delete-pendapatan', 'Pendapatan');
         });
+    </script>
+
+    <script>
+        function validateNumber(input) {
+            // Hanya menerima angka (menghapus karakter selain angka)
+            input.value = input.value.replace(/[^0-9]/g, '');
+        }
     </script>
 
 @endsection
