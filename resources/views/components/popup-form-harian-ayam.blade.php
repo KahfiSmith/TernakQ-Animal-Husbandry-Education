@@ -21,39 +21,39 @@
 
                 <!-- Nama Batch -->
                 <div>
-                    <x-input-label for="dailyBatchName" :value="__('Nama Batch')" />
+                    <x-input-label for="dailyBatchName" :value="__('Nama Populasi')" required/>
                     <select id="dailyBatchName" name="dailyBatchName" onchange="updateBatchInfo()"
                         class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5 mb-1"
                         required>
-                        <option value="" disabled selected>Pilih Batch</option>
+                        <option value="" disabled selected>Pilih Populasi</option>
                         @foreach ($batches as $batch)
                             <option value="{{ $batch->id }}" data-jumlah="{{ $batch->jumlah_ayam_masuk }}">
                                 {{ $batch->nama_batch }} ({{ $batch->jumlah_ayam_masuk }} Ayam)
                             </option>
                         @endforeach
                     </select>
-                    <span class="text-sm text-gray-600" id="jumlahAyamText">Jumlah ayam dalam batch: -</span>
+                    <span class="text-sm text-gray-600" id="jumlahAyamText">Jumlah ayam dalam populasi: -</span>
                 </div>
 
                 <!-- Tanggal -->
                 <div>
-                    <x-input-label for="dailyDate" :value="__('Tanggal Input')" />
+                    <x-input-label for="dailyDate" :value="__('Tanggal Input')" required/>
                     <x-text-input id="dailyDate" name="dailyDate" type="date" class="block mt-1 w-full py-2.5" required />
                 </div>
 
                 <!-- Jumlah Ayam Sakit -->
                 <div>
-                    <x-input-label for="sickChicken" :value="__('Jumlah Ayam Sakit')" />
+                    <x-input-label for="sickChicken" :value="__('Jumlah Ayam Sakit')" required/>
                     <x-text-input id="sickChicken" name="sickChicken" type="number"
-                        class="block mt-1 w-full py-2.5 mb-1" required oninput="validateChickenCounts()" />
+                        class="block mt-1 w-full py-2.5 mb-1" required oninput="this.value = this.value.replace(/[^0-9]/g, ''); validateChickenCounts()" />
                     <span class="text-red-500 text-sm" id="errorSick"></span>
                 </div>
 
                 <!-- Jumlah Ayam Mati -->
                 <div>
-                    <x-input-label for="deadChicken" :value="__('Jumlah Ayam Mati')" />
-                    <x-text-input id="deadChicken" name="deadChicken" type="number"
-                        class="block mt-1 w-full py-2.5 mb-1" required oninput="validateChickenCounts()" />
+                    <x-input-label for="deadChicken" :value="__('Jumlah Ayam Mati')" required/>
+                    <x-text-input id="deadChicken" name="deadChicken" type="text"
+                        class="block mt-1 w-full py-2.5 mb-1" required oninput="this.value = this.value.replace(/[^0-9]/g, ''); validateChickenCounts()" />
                     <span class="text-red-500 text-sm" id="errorDead"></span>
                 </div>
             </div>
@@ -68,8 +68,7 @@
     </div>
 </div>
 
-
-<script>
+{{-- <script>
     let jumlahAyam = 0;
 
     function updateBatchInfo() {
@@ -116,4 +115,4 @@
     function closeModal() {
         document.getElementById("harianAyamModal").classList.add("hidden");
     }
-</script>   
+</script>   --}}

@@ -23,36 +23,39 @@
             <div class="space-y-4 mb-8">
                 <!-- Nama Batch -->
                 <div>
-                    <x-input-label for="dailyBatchName" :value="__('Nama Batch')" />
+                    <x-input-label for="dailyBatchName" :value="__('Nama Populasi')" required />
                     <select id="dailyBatchName" name="dailyBatchName"
-                        class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:outline-none block mt-1 w-full py-2.5"
+                         class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5 mb-1"
                         required x-model="editData.id_populasi">
-                        <option value="" disabled>Pilih Batch</option>
+                        <option value="" disabled>Pilih Populasi</option>
                         @foreach ($batches as $batch)
-                            <option value="{{ $batch->id }}">{{ $batch->nama_batch }} ({{ $batch->jumlah_ayam_masuk }} Ayam)</option>
+                            <option value="{{ $batch->id }}">{{ $batch->nama_batch }}
+                                ({{ $batch->jumlah_ayam_masuk }} Ayam)</option>
                         @endforeach
                     </select>
                 </div>
 
                 <!-- Tanggal Input -->
                 <div>
-                    <x-input-label for="tanggal_input" :value="__('Tanggal Input')" />
+                    <x-input-label for="tanggal_input" :value="__('Tanggal Input')" required />
                     <x-text-input id="tanggal_input" name="tanggal_input" type="date"
                         class="block mt-1 w-full py-2.5" x-model="editData.tanggal_input" required />
                 </div>
 
                 <!-- Jumlah Ayam Sakit -->
                 <div>
-                    <x-input-label for="jumlah_ayam_sakit" :value="__('Jumlah Ayam Sakit')" />
-                    <x-text-input id="jumlah_ayam_sakit" name="jumlah_ayam_sakit" type="number"
-                        class="block mt-1 w-full py-2.5" x-model="editData.jumlah_ayam_sakit" required />
+                    <x-input-label for="jumlah_ayam_sakit" :value="__('Jumlah Ayam Sakit')" required />
+                    <x-text-input id="jumlah_ayam_sakit" name="jumlah_ayam_sakit" type="text"
+                        class="block mt-1 w-full py-2.5" x-model="editData.jumlah_ayam_sakit" required
+                        oninput="validateNumber(this)" />
                 </div>
 
                 <!-- Jumlah Ayam Mati -->
                 <div>
-                    <x-input-label for="jumlah_ayam_mati" :value="__('Jumlah Ayam Mati')" />
-                    <x-text-input id="jumlah_ayam_mati" name="jumlah_ayam_mati" type="number"
-                        class="block mt-1 w-full py-2.5" x-model="editData.jumlah_ayam_mati" required />
+                    <x-input-label for="jumlah_ayam_mati" :value="__('Jumlah Ayam Mati')" required />
+                    <x-text-input id="jumlah_ayam_mati" name="jumlah_ayam_mati" type="text"
+                        class="block mt-1 w-full py-2.5" x-model="editData.jumlah_ayam_mati" required
+                        oninput="validateNumber(this)" />
                 </div>
             </div>
 
@@ -66,3 +69,10 @@
         </form>
     </div>
 </div>
+
+<script>
+    function validateNumber(input) {
+        // Hanya menerima angka (menghapus karakter selain angka)
+        input.value = input.value.replace(/[^0-9]/g, '');
+    }
+</script>

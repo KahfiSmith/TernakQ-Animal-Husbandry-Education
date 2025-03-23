@@ -13,13 +13,13 @@
             <div class="space-y-4 mb-8">
 
                 <div>
-                    <x-input-label for="kandang_id" :value="__('Pilih Kandang')" />
-                    <select id="kandang_id" name="kandang_id" class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5"
-                    required>
+                    <x-input-label for="kandang_id" :value="__('Pilih Kandang')" required />
+                    <select id="kandang_id" name="kandang_id"
+                        class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5"
+                        required>
                         <option value="" disabled selected>Pilih Kandang</option>
                         @foreach ($kandang as $item)
-                            <option value="{{ $item->id }}" 
-                                    {{ old('kandang_id') == $item->id ? 'selected' : '' }}>
+                            <option value="{{ $item->id }}" {{ old('kandang_id') == $item->id ? 'selected' : '' }}>
                                 {{ $item->nama_kandang }} - Kapasitas: {{ $item->kapasitas }}
                             </option>
                         @endforeach
@@ -28,40 +28,40 @@
 
                 <!-- Input Kode Batch: Pisahkan menjadi Prefix dan Suffix -->
                 <div>
-                    <x-input-label for="batchCodeSuffix" :value="__('Kode Batch')" />
+                    <x-input-label for="batchCodeSuffix" :value="__('Kode Populasi')" required />
                     <div class="flex space-x-4">
                         <!-- Input untuk Prefix statis "BATCH-" -->
                         <x-text-input id="batchPrefix" name="batchPrefix" type="text"
                             class="flex-none block mt-1 w-1/4 py-2.5 border border-r-0 border-gray-300 rounded-l-md text-gray-700"
-                            value="BATCH-" readonly />
+                            value="POPULASI-" readonly />
                         <!-- Input untuk Suffix yang dapat diedit -->
                         <x-text-input id="batchCodeSuffix" name="batchCodeSuffix" type="text"
                             class="flex-1 block mt-1 w-full py-2.5 border border-gray-300 rounded-r-md" required
-                            pattern="[a-zA-Z0-9]{3}" maxlength="3" 
-                            title="Masukkan kombinasi huruf dan angka, maksimal 3 karakter" 
-                            placeholder="A01" uppercase />
+                            pattern="[a-zA-Z0-9]{3}" maxlength="3"
+                            title="Masukkan kombinasi huruf dan angka, maksimal 3 karakter" placeholder="A01"
+                            uppercase />
                     </div>
                 </div>
 
                 <!-- Input Nama Batch -->
                 <div>
-                    <x-input-label for="batchName" :value="__('Nama Batch')" />
+                    <x-input-label for="batchName" :value="__('Nama Populasi')" required />
                     <x-text-input id="batchName" name="batchName" type="text" class="block mt-1 w-full py-2.5"
                         required />
                 </div>
 
                 <!-- Input Tanggal DOC -->
                 <div>
-                    <x-input-label for="docDate" :value="__('Tanggal DOC')" />
+                    <x-input-label for="docDate" :value="__('Tanggal DOC')" required />
                     <x-text-input id="docDate" name="docDate" type="date" class="block mt-1 w-full py-2.5"
                         required />
                 </div>
 
                 <!-- Input Jumlah Ayam Masuk -->
                 <div>
-                    <x-input-label for="chickenQuantity" :value="__('Jumlah Ayam Masuk')" />
-                    <x-text-input id="chickenQuantity" name="chickenQuantity" type="number"
-                        class="block mt-1 w-full py-2.5" required />
+                    <x-input-label for="chickenQuantity" :value="__('Jumlah Ayam Masuk')" required />
+                    <x-text-input id="chickenQuantity" name="chickenQuantity" type="text"
+                        class="block mt-1 w-full py-2.5" required oninput="validateNumber(this)" />
                 </div>
             </div>
 
@@ -75,3 +75,10 @@
         </form>
     </div>
 </div>
+
+<script>
+    function validateNumber(input) {
+        // Hanya menerima angka (menghapus karakter selain angka)
+        input.value = input.value.replace(/[^0-9]/g, '');
+    }
+</script>
