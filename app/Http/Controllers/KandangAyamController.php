@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\KandangAyam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class KandangAyamController extends Controller
 {
@@ -18,7 +20,7 @@ class KandangAyamController extends Controller
             $kandangPage = $request->get('kandang_page', 1);
 
             // Paginasi dengan appends
-            $kandang = KandangAyam::where('user_id', auth()->id())
+            $kandang = KandangAyam::where('user_id', Auth::id())
              ->latest()
              ->paginate(4, ['*'], 'kandang_page', $kandangPage);
 
@@ -37,31 +39,44 @@ class KandangAyamController extends Controller
      * Menyimpan data kandang ayam baru.
      */
     public function storeKandang(Request $request)
-    {
-        try {
-            $validated = $request->validate([
-                'nama_kandang'    => 'required|string|max:255|unique:kandang_ayam',
-                'kapasitas'       => 'required|integer|min:1',
-                'status_kandang'  => 'required|in:Aktif,Tidak Aktif',
-            ]);
+{
+    try {
+        // Validasi input
+        $validated = $request->validate([
+            'nama_kandang'    => 'required|string|max:255|unique:kandang_ayam',
+            'kapasitas'       => 'required|integer|min:1', // Validasi kapasitas minimal 1
+            'status_kandang'  => 'required|in:Aktif,Tidak Aktif',
+        ], [
+            'kapasitas.min' => 'Kapasitas kandang minimal 1.',  // Custom message untuk kapasitas
+        ]);
 
-            $validated['user_id'] = auth()->id();
-            KandangAyam::create($validated);
+        // Menambahkan ID user yang sedang login
+        $validated['user_id'] = Auth::id();
 
-            return redirect()->route('cage-management')->with([
-                'status' => 'success',
-                'message' => 'Kandang berhasil ditambahkan.',
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Gagal menyimpan kandang: ' . $e->getMessage());
+        // Menyimpan data ke tabel KandangAyam
+        KandangAyam::create($validated);
 
-            return redirect()->route('cage-management')->with([
-                'status' => 'error',
-                'message' => 'Terjadi kesalahan saat menyimpan data kandang.',
-            ]);
-        }
+        // Redirect kembali dengan pesan sukses
+        return redirect()->route('cage-management')->with([
+            'status' => 'success',
+            'message' => 'Kandang berhasil ditambahkan.',
+        ]);
+    } catch (ValidationException $e) {
+        // Ambil pesan error pertama
+        $errors = $e->validator->errors()->all();
+        return redirect()->back()->with('status', 'error')->with('message', $errors[0]);
+    } catch (\Exception $e) {
+        // Jika terjadi kesalahan lainnya
+        Log::error('Gagal menyimpan kandang: ' . $e->getMessage());
+
+        return redirect()->route('cage-management')->with([
+            'status' => 'error',
+            'message' => 'Terjadi kesalahan saat menyimpan data kandang.',
+        ]);
     }
+}
 
+    
     /**
      * Memperbarui data kandang yang sudah ada.
      */
@@ -72,21 +87,28 @@ class KandangAyamController extends Controller
                 'nama_kandang'   => 'required|string|max:255|unique:kandang_ayam,nama_kandang,' . $id,
                 'kapasitas'      => 'required|integer|min:1',
                 'status_kandang' => 'required|in:Aktif,Tidak Aktif',
+            ], [
+                'kapasitas.min' => 'Kapasitas kandang minimal 1.',  // Custom message untuk kapasitas
             ]);
 
-            $kandang = KandangAyam::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
+            $kandang = KandangAyam::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
             $kandang->update($validated);   
 
             return redirect()->route('cage-management')->with([
                 'status' => 'success',
                 'message' => 'Kandang berhasil diperbarui.',
             ]);
+        } catch (ValidationException $e) {
+            // Ambil pesan error pertama
+            $errors = $e->validator->errors()->all();
+            return redirect()->back()->with('status', 'error')->with('message', $errors[0]);
         } catch (\Exception $e) {
-            Log::error('Gagal memperbarui kandang: ' . $e->getMessage());
-
+            // Jika terjadi kesalahan lainnya
+            Log::error('Gagal menyimpan kandang: ' . $e->getMessage());
+    
             return redirect()->route('cage-management')->with([
                 'status' => 'error',
-                'message' => 'Terjadi kesalahan saat memperbarui kandang.',
+                'message' => 'Terjadi kesalahan saat menyimpan data kandang.',
             ]);
         }
     }
@@ -97,7 +119,7 @@ class KandangAyamController extends Controller
     public function destroyKandang($id)
     {
         try {
-            $kandang = KandangAyam::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
+            $kandang = KandangAyam::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
             $kandang->delete(); 
 
             return response()->json(['success' => true, 'message' => 'Kandang berhasil dihapus.']);

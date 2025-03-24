@@ -62,6 +62,8 @@ class AdminSubArticleController extends Controller
             'sub_articles.*.content'      => 'required|string',
             'sub_articles.*.order_number' => 'required|integer|min:1',
             'sub_articles.*.image'        => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ], [
+            'sub_articles.*.order_number.min' => 'Order number minimal 1.'  // Pesan error custom untuk order_number
         ]);
 
         $article = Article::where('id', $validated['article_id'])
@@ -93,6 +95,10 @@ class AdminSubArticleController extends Controller
             'status'  => 'success',
             'message' => 'Semua sub-artikel berhasil disimpan!',
         ]);
+    } catch (ValidationException $e) {
+        // Ambil pesan error pertama
+        $errors = $e->validator->errors()->all();
+        return redirect()->back()->with('status', 'error')->with('message', $errors[0]);
     } catch (\Exception $e) {
         Log::error('Gagal menyimpan sub-artikel: ' . $e->getMessage());
         return redirect()->route('admin.add-article-sub')->with([

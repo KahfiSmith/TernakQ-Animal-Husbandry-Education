@@ -83,7 +83,7 @@ public function updateAdminArtikel(Request $request, $id)
     try {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'description' => 'required|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Gambar opsional
         ]);
 
@@ -94,7 +94,6 @@ public function updateAdminArtikel(Request $request, $id)
         $imagePath = $card->image;
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('card_articles', 'public');
-            Log::info('Gambar berhasil disimpan di: ' . $imagePath); 
         }
 
         $card->update([

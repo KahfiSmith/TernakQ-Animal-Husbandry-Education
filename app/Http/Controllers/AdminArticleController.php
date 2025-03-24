@@ -55,11 +55,11 @@ class AdminArticleController extends Controller
             $validated = $request->validate([
                 'card_id' => 'required|exists:card_articles,id', // Pilih grup artikel
                 'title' => 'required|string|max:255',
-                'description' => 'nullable|string',
+                'description' => 'required|string',
                 'status' => 'required|string|in:Tertunda,Disetujui,Ditolak',
-                'tags' => 'nullable|array', // Untuk multiple tags
+                'tags' => 'required|array', // Untuk multiple tags
                 'tags.*' => 'exists:tags,id', 
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
             $imagePath = null;
@@ -105,9 +105,9 @@ class AdminArticleController extends Controller
         $validated = $request->validate([
             'card_id' => 'required|exists:card_articles,id',
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'description' => 'required|string',
             'status' => 'required|string|in:Tertunda,Disetujui,Ditolak',
-            'tags' => 'nullable|array',
+            'tags' => 'required|array',
             'tags.*' => 'exists:tags,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
