@@ -6,6 +6,7 @@ use App\Models\Pakan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class PakanController extends Controller
 {
@@ -35,20 +36,25 @@ public function storePakan(Request $request)
         $validated = $request->validate([
             'nama_pakan'    => 'required|string|max:255',
             'jenis_pakan'   => 'required|string|max:255',
-            'berat'         => 'required|numeric|min:0',
+            'berat'         => 'required|numeric|min:1',
             'tanggal_masuk' => 'required|date',
-            'harga_per_kg'  => 'required|numeric|min:0'
+            'harga_per_kg'  => 'required|numeric|min:1000'
+        ], [
+            'berat.min' => 'Berat minimal 1.',
+            'harga_per_kg.min' => 'Harga per kilogram harus minimal memiliki 4 digit (misalnya, 1000 atau lebih).'
         ]);
 
-        // Tambahkan user_id ke data yang sudah divalidasi
         $validated['user_id'] = Auth::id();
-
         Pakan::create($validated);
 
         return redirect()->route('food-management')->with([
             'status' => 'success',
             'message' => 'Pakan berhasil ditambahkan.'
         ]);
+    } catch (ValidationException $e) {
+        // Ambil pesan error pertama
+        $errors = $e->validator->errors()->all();
+        return redirect()->back()->with('status', 'error')->with('message', $errors[0]);
     } catch (\Exception $e) {
         Log::error('Gagal menambah pakan: ' . $e->getMessage());
         return redirect()->route('food-management')->with([
@@ -58,16 +64,18 @@ public function storePakan(Request $request)
     }
 }
 
-
 public function updatePakan(Request $request, $id)
 {
     try {
         $request->validate([
             'nama_pakan' => 'required|string|max:255',
             'jenis_pakan' => 'required|string|max:255',
-            'berat' => 'required|numeric|min:0',
+            'berat' => 'required|numeric|min:1',
             'tanggal_masuk' => 'required|date',
-            'harga_per_kg' => 'required|numeric|min:0'
+            'harga_per_kg' => 'required|numeric|min:1000'
+        ], [
+            'berat.min' => 'Berat minimal 1.',
+            'harga_per_kg.min' => 'Harga per kilogram harus minimal memiliki 4 digit (misalnya, 1000 atau lebih).'
         ]);
 
         $pakan = Pakan::where('id', $id)
@@ -79,6 +87,11 @@ public function updatePakan(Request $request, $id)
             'status' => 'success',
             'message' => 'Pakan berhasil diperbarui.'
         ]);
+
+    } catch (ValidationException $e) {
+        // Ambil pesan error pertama
+        $errors = $e->validator->errors()->all();
+        return redirect()->back()->with('status', 'error')->with('message', $errors[0]);
     } catch (\Exception $e) {
         Log::error('Gagal memperbarui pakan: ' . $e->getMessage());
         return redirect()->route('food-management')->with([
