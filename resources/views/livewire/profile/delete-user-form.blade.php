@@ -26,7 +26,7 @@ new class extends Component
 <section class="space-y-6">
     <header>
         <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Delete Account') }}
+            {{ __('Hapus Akun') }}
         </h2>
 
         <p class="mt-1 text-sm text-gray-600">
@@ -37,7 +37,7 @@ new class extends Component
     <x-danger-button
         x-data=""
         x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
-    >{{ __('Delete Account') }}</x-danger-button>
+    >{{ __('Hapus Akun') }}</x-danger-button>
 
     <x-modal name="confirm-user-deletion" :show="$errors->isNotEmpty()" focusable>
         <form wire:submit="deleteUser" class="p-6">
@@ -47,11 +47,11 @@ new class extends Component
             </h2>
 
             <p class="mt-1 text-sm text-gray-600">
-                {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
+                {{ __('Setelah akun Anda dihapus, semua sumber daya dan datanya akan dihapus secara permanen. Sebelum menghapus akun Anda, harap unduh data atau informasi apa pun yang ingin Anda simpan.') }}
             </p>
 
             <div class="mt-6">
-                <x-input-label for="password" value="{{ __('Password') }}" class="sr-only" />
+                <x-input-label for="password" value="{{ __('Kata Sandi') }}" class="sr-only" />
 
                 <x-text-input
                     wire:model="password"
@@ -67,11 +67,11 @@ new class extends Component
 
             <div class="mt-6 flex justify-end">
                 <x-primary-button x-on:click="$dispatch('close')">
-                    {{ __('Cancel') }}
+                    {{ __('Batal') }}
                 </x-primary-button>
 
                 <x-danger-button class="ms-3">
-                    {{ __('Delete Account') }}
+                    {{ __('Hapus Akun') }}
                 </x-danger-button>
             </div>
         </form>

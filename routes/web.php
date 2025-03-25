@@ -91,6 +91,10 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::post('/add-article-sub-multiple', [UserSubArticleController::class, 'storeMultipleSubArticles'])
     ->name('user-article-sub.store-multiple');
     Route::put('/add-article-sub/{id}', [UserSubArticleController::class, 'updateUserArtikel'])->name('user-article-sub.update');
+    
+    // Route untuk Edit Sub Artikel
+    Route::get('/add-article-sub/{id}/edit', [UserSubArticleController::class, 'editUserArtikel'])->name('user-article-sub.edit');
+
     Route::delete('/add-article-sub/{id}', [UserSubArticleController::class, 'deleteUserArtikel'])->name('user-article-sub.destroy');
 });
 

@@ -1,8 +1,8 @@
 @props(['card'])
 
 <a href="{{ route('cards.articles', ['id' => $card->id]) }}"
-    class="flex flex-col ring-2 ring-gray-700 shadow-md overflow-hidden group relative rounded-md
-            h-full min-h-[420px] cursor-pointer">
+    class="flex flex-col ring-2 ring-gray-700 overflow-hidden group relative rounded-md
+            h-full min-h-[420px] cursor-pointer shadow-[0px_4px_0px_2px_#374151] hover:shadow-[0px_2px_0px_2px_#374151] hover:translate-y-1 transition ease-in-out duration-200 bg-white/50">
             <img src="{{ asset('storage/' . $card->image) }}" alt="Image" loading="lazy"
         class="rounded-t-md w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110">
     <div class="flex flex-col flex-grow px-4 space-y-1 pb-5 pt-4">
