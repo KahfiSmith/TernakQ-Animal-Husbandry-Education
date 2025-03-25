@@ -50,6 +50,7 @@ class PengeluaranController extends Controller
                 'tanggal_pembelian' => 'required|date',
                 'supplier' => 'nullable|string|max:255',
             ], [
+                'jumlah.min' => 'jumlah minimal 1.',
                 'harga_per_satuan.min' => 'Harga per kilogram harus minimal memiliki 4 digit (misalnya, 1000 atau lebih).'
             ]);
 
@@ -91,6 +92,7 @@ class PengeluaranController extends Controller
                 'tanggal_pembelian' => 'required|date',
                 'supplier' => 'nullable|string|max:255',
             ], [
+                'jumlah.min' => 'jumlah minimal 1.',
                 'harga_per_satuan.min' => 'Harga per kilogram harus minimal memiliki 4 digit (misalnya, 1000 atau lebih).'
             ]);
 
