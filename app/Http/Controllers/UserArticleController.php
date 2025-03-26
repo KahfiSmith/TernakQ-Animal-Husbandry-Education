@@ -20,7 +20,8 @@ class UserArticleController extends Controller
             $articlePage = $request->get('article_page', 1);
 
             // Paginasi dengan appends untuk menjaga parameter query saat halaman berubah
-            $articles = Article::where('user_id', Auth::id())
+            $articles = Article::with('cardArticle')
+            ->where('user_id', Auth::id())
             ->latest()
             ->paginate(4, ['*'], 'article_page', $articlePage);
 
@@ -60,11 +61,11 @@ class UserArticleController extends Controller
             $validated = $request->validate([
                 'card_id' => 'required|exists:card_articles,id', // Pilih grup artikel
                 'title' => 'required|string|max:255',
-                'description' => 'nullable|string',
+                'description' => 'required|string',
                 'status' => 'required|string|in:Tertunda,Disetujui,Ditolak',
-                'tags' => 'nullable|array', // Untuk multiple tags
+                'tags' => 'required|array', // Untuk multiple tags
                 'tags.*' => 'exists:tags,id', 
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
             $imagePath = null;
@@ -110,9 +111,9 @@ class UserArticleController extends Controller
         $validated = $request->validate([
             'card_id' => 'required|exists:card_articles,id',
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'description' => 'required|string',
             'status' => 'required|string|in:Tertunda,Disetujui,Ditolak',
-            'tags' => 'nullable|array',
+            'tags' => 'required|array',
             'tags.*' => 'exists:tags,id',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
