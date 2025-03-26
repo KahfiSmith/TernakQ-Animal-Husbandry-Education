@@ -6,6 +6,7 @@ use App\Models\Pakan;
 use App\Models\PenggunaanPakan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\ValidationException;
 
 class PenggunaanPakanController extends Controller
 {
@@ -15,7 +16,9 @@ class PenggunaanPakanController extends Controller
         $request->validate([
             'nama_pakan' => 'required|string|max:255',
             'tanggal_pakai' => 'required|date',
-            'jumlah_pakai' => 'required|numeric|min:0',
+            'jumlah_pakai' => 'required|numeric|min:1',
+        ], [
+            'jumlah_pakai.min' => 'Minimal jumlah 1',  // Custom message untuk kapasitas
         ]);
 
         // Cari pakan berdasarkan nama
@@ -41,6 +44,8 @@ class PenggunaanPakanController extends Controller
             'pakan_id' => $pakan->id,
             'tanggal_pakai' => $request->tanggal_pakai,
             'jumlah_pakai' => $request->jumlah_pakai
+        ], [
+            'jumlah_pakai.min' => 'Minimal jumlah 1',  // Custom message untuk kapasitas
         ]);
 
         // Kurangi stok pakan
@@ -52,6 +57,10 @@ class PenggunaanPakanController extends Controller
             'status' => 'success',
             'message' => 'Penggunaan pakan berhasil disimpan.'
         ]);
+    } catch (ValidationException $e) {
+        // Ambil pesan error pertama
+        $errors = $e->validator->errors()->all();
+        return redirect()->back()->with('status', 'error')->with('message', $errors[0]);
     } catch (\Exception $e) {
         Log::error('Gagal menyimpan penggunaan pakan: ' . $e->getMessage());
         return redirect()->route('food-management')->with
