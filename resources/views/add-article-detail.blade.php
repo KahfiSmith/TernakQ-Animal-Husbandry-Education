@@ -123,20 +123,20 @@
 
             <input type="hidden" name="status" value="Tertunda">
 
-            <!-- Dropdown untuk memilih Tag -->
             <div class="flex flex-col space-y-1">
-                <x-input-label for="tags" :value="__('Pilih Tag Artikel')" required/>
+                <x-input-label for="tags" :value="__('Pilih 3 Tag Artikel')" required/>
                 <div class="relative">
                     <button type="button"
-                            class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5"
+                            class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px#374151] focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5"
                             onclick="toggleTagDropdown()">
-                        Pilih Tag
+                            Pilih 3 Tag Artikel
                         <i class="fa fa-chevron-down ml-2"></i>
                     </button>
                     <div id="tags-dropdown" style="display: none;" class="absolute w-full mt-1 bg-white border-2 border-gray-300 rounded-md shadow-lg z-10">
                         @foreach($tags as $tag)
                             <label class="block px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer">
-                                <input type="checkbox" name="tags[]" value="{{ $tag->id }}" x-model="tags" class="mr-2">
+                                <input type="checkbox" name="tags[]" value="{{ $tag->id }}" 
+                                    onclick="updateSelectedTags({{ $tag->id }}, this)" class="mr-2">
                                 {{ $tag->name }}
                             </label>
                         @endforeach
@@ -311,7 +311,7 @@
         }
 
         // Panggil fungsi untuk tabel kandang
-        handleDelete('.swal-delete-article', 'Tambah Artikel');
+        handleDelete('.swal-delete-article', 'Artikel');
     });
 </script>
 
@@ -319,6 +319,36 @@
     function toggleTagDropdown() {
         const dropdown = document.getElementById('tags-dropdown');
         dropdown.style.display = (dropdown.style.display === 'none' || dropdown.style.display === '') ? 'block' : 'none';
+    }
+</script>
+
+<script>
+    let selectedTags = [];
+
+    function updateSelectedTags(tagId, checkbox) {
+        // Cek jika tag sudah terpilih atau tidak
+        if (checkbox.checked) {
+            if (selectedTags.length < 3) {
+                selectedTags.push(tagId);
+            } else {
+                // Jika sudah memilih 3 tag, beri peringatan dan batal memilih tag ini
+                alert("Anda hanya dapat memilih 3 tag.");
+                checkbox.checked = false; // Batalkan pilihan tag ini
+            }
+        } else {
+            // Hapus tag dari list jika dibatalkan
+            selectedTags = selectedTags.filter(id => id !== tagId);
+        }
+
+        // Menonaktifkan checkbox lebih dari 3 tag yang dipilih
+        const checkboxes = document.querySelectorAll('input[name="tags[]"]');
+        checkboxes.forEach(function(checkbox) {
+            if (selectedTags.length >= 3 && !checkbox.checked) {
+                checkbox.disabled = true;  // Disable checkbox jika lebih dari 3 tag dipilih
+            } else {
+                checkbox.disabled = false; // Enable kembali checkbox jika ada yang dibatalkan
+            }
+        });
     }
 </script>
 
