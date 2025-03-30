@@ -190,8 +190,7 @@
                                         articleId = '{{ $article->id }}';  <!-- gunakan articleId -->
                                         title = '{{ $article->title }}';
                                         description = '{{ $article->description }}';
-                                        image = '{{ asset('storage/' . $article->image) }}';
-                                        console.log('Artikel ID:', articleId);">
+                                        image = '{{ asset('storage/' . $article->image) }}';">
                                         <i class="fa-solid fa-pen-to-square text-lg"></i>
                                     </button>
 
@@ -270,7 +269,7 @@
             }
 
             // Panggil fungsi untuk tabel kandang
-            handleDelete('.swal-delete-user-article', 'Tambah Artikel');
+            handleDelete('.swal-delete-user-article', 'Grup Artikel');
         });
     </script>
 @endsection
