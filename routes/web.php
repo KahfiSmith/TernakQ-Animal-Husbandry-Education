@@ -22,17 +22,15 @@ use App\Http\Controllers\DashboardController;
 // ROUTES
 Route::get('/redirect-after-login', function () {
     if (Auth::check() && Auth::user()->role === 'admin') {
-        return redirect()->route('admin.article-management'); // 👈 Redirect ke halaman admin
+        return redirect()->route('admin.article-management'); 
     }
-    return redirect()->route('dashboard'); // 👈 Redirect user biasa ke dashboard
+    return redirect()->route('dashboard'); 
 });
 
 Route::middleware(['auth', 'user'])->group(function () {
 
     // DASHBOARD
-    Route::get('dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
     // MANAJEMEN KANDANG
     Route::get('/cage-management', [KandangAyamController::class, 'indexKandangManagement'])->name('cage-management');
@@ -88,25 +86,19 @@ Route::middleware(['auth', 'user'])->group(function () {
 
     // TAMBAH SUB ARTIKEL
     Route::get('/add-article-sub', [UserSubArticleController::class, 'indexUserArtikel'])->name('add-article-sub');
-    Route::post('/add-article-sub-multiple', [UserSubArticleController::class, 'storeMultipleSubArticles'])
-    ->name('user-article-sub.store-multiple');
+    Route::post('/add-article-sub-multiple', [UserSubArticleController::class, 'storeMultipleSubArticles'])->name('user-article-sub.store-multiple');
     Route::put('/add-article-sub/{id}', [UserSubArticleController::class, 'updateUserArtikel'])->name('user-article-sub.update');
-    
-    // Route untuk Edit Sub Artikel
     Route::get('/add-article-sub/{id}/edit', [UserSubArticleController::class, 'editUserArtikel'])->name('user-article-sub.edit');
-
     Route::delete('/add-article-sub/{id}', [UserSubArticleController::class, 'deleteUserArtikel'])->name('user-article-sub.destroy');
+
 });
 
 // ADMIN ROUTES
 Route::middleware(['auth', 'admin'])->group(function () {
     // MANAJEMEN ARTIKEL
-    Route::get('/admin/article-management', [AdminArticleAccController::class, 'indexAdminArticle'])
-        ->name('admin.article-management');
-    Route::get('/admin/article-management/{id}/edit', [AdminArticleAccController::class, 'editArticle'])
-        ->name('admin.article-management.edit');
-    Route::put('/admin/article-management/{id}', [AdminArticleAccController::class, 'updateArticle'])
-        ->name('admin.article-management.update');
+    Route::get('/admin/article-management', [AdminArticleAccController::class, 'indexAdminArticle'])->name('admin.article-management');
+    Route::get('/admin/article-management/{id}/edit', [AdminArticleAccController::class, 'editArticle'])->name('admin.article-management.edit');
+    Route::put('/admin/article-management/{id}', [AdminArticleAccController::class, 'updateArticle'])->name('admin.article-management.update');
 
     // TAMBAH ARTIKEL GRUP
     Route::get('/admin/add-article', [AdminCardArticleController::class, 'indexAdminArtikel'])->name('admin.add-article');
@@ -122,10 +114,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     // TAMBAH SUB ARTIKEL
     Route::get('/admin/add-article-sub', [AdminSubArticleController::class, 'indexAdminArtikel'])->name('admin.add-article-sub');
-    Route::post('/admin/add-article-sub-multiple', [AdminSubArticleController::class, 'storeMultipleSubArticles'])
-    ->name('admin.user-article-sub.store-multiple');
+    Route::post('/admin/add-article-sub-multiple', [AdminSubArticleController::class, 'storeMultipleSubArticles'])->name('admin.user-article-sub.store-multiple');
     Route::put('/admin/add-article-sub/{id}', [AdminSubArticleController::class, 'updateAdminArtikel'])->name('admin.user-article-sub.update');
-    Route::delete('/admin/add-article-sub/{id}', [AdminSubArticleController::class, 'deleteAdminArtikel'])->name('admin.user-article-sub.destroy');    
+    Route::get('/admin/add-article-sub/{id}/edit', [AdminSubArticleController::class, 'editAdminArtikel'])->name('admin.user-article-sub.edit');
+    Route::delete('/admin/add-article-sub/{id}', [AdminSubArticleController::class, 'deleteAdminArtikel'])->name('admin.user-article-sub.destroy');  
 });
 
 // PUBLIC ROUTES
