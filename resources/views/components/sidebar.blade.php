@@ -42,7 +42,7 @@
                     'title' => 'Tambah Artikel',
                     'url' => route('add-article'),
                     'icon' => asset('images/article.svg'),
-                    'active' => request()->routeIs('add-article*'),
+                    'active' => request()->is('add-article*') || request()->is('add-article-sub/*'),
                 ],
             ];
         @endphp
