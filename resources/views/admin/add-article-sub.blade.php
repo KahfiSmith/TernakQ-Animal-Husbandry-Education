@@ -53,9 +53,13 @@
             <div class="w-full">
                 <div class="p-6 bg-white shadow-md rounded-lg ring-2 ring-gray-700 w-full">
                     <h2 class="text-xl font-bold mb-6 text-orangeCrayola">Tambah Banyak Sub Artikel Sekaligus</h2>
-                    <form method="POST" action="{{ route('user-article-sub.store-multiple') }}"
+                    <form method="POST"
+                        action="{{ isset($subArticle) ? route('admin.user-article-sub.update', ['id' => $subArticle->id]) : route('admin.user-article-sub.store-multiple') }}"
                         enctype="multipart/form-data">
                         @csrf
+                        @isset($subArticle)
+                            @method('PUT') <!-- Method PUT untuk edit -->
+                        @endisset
 
                         <!-- Pilih Artikel Induk -->
                         <div class="flex flex-col space-y-1 mb-6">
@@ -65,55 +69,54 @@
                                 focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 
                                 rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-700 
                                 text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5"
-                                onchange="location.href='{{ route('admin.add-article-sub') }}?article_id=' + this.value">
+                                
+                                @if (!isset($subArticle)) onchange="location.href='{{ route('admin.add-article-sub') }}?article_id=' + this.value" @endif>
                                 <option value="" selected disabled>Pilih Artikel</option>
                                 @foreach ($articles as $article)
                                     <option value="{{ $article->id }}"
-                                        {{ request('article_id') == $article->id ? 'selected' : '' }}>
+                                        {{ $article->id == old('article_id', optional($selectedArticle)->id) ? 'selected' : '' }}>
                                         {{ $article->title }}
                                     </option>
                                 @endforeach
                             </select>
-
                         </div>
 
                         <!-- Container untuk Sub Artikel -->
                         <div id="sub-articles-container">
-                            <!-- Blok Sub Artikel Pertama (Index 0) -->
                             <div class="sub-article-item ring-2 ring-gray-700 rounded-lg p-6 mb-6 relative">
-                                <!-- Tombol Hapus (disembunyikan untuk blok pertama) -->
-                                <button type="button"
-                                    class="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center remove-sub-article hidden">
-                                    <i class="fa-solid fa-times"></i>
-                                </button>
-
                                 <!-- Judul Sub Artikel -->
-                                <label class="block font-medium text-sm text-gray-700 mb-3">Judul Sub Artikel 1<span
-                                        class="text-red-500">*</span></label>
+                                <label class="block font-medium text-sm text-gray-700 mb-3">
+                                    Judul Sub Artikel 1<span class="text-red-500">*</span>
+                                </label>
                                 <input type="text" name="sub_articles[0][title]" required
-                                    class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] 
-                                    focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none 
-                                    focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out 
-                                    block mt-1 w-full py-2.5 mb-6"
+                                    value="{{ old('sub_articles.0.title', optional($subArticle)->title) }}"
+                                    class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151]
+                                    focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5
+                                    rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-700
+                                    text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5 mb-6"
                                     placeholder="Judul Sub Artikel">
 
                                 <!-- Konten Sub Artikel -->
-                                <label class="block font-medium text-sm text-gray-700 mb-3">Konten Sub Artikel 1<span class="text-red-500">*</span></label>
+                                <label class="block font-medium text-sm text-gray-700 mb-3">
+                                    Konten Sub Artikel 1<span class="text-red-500">*</span>
+                                </label>
                                 <textarea name="sub_articles[0][content]" rows="3" required
-                                    class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] 
-                                    focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none 
-                                    focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out 
-                                    block mt-1 w-full py-2.5 mb-6"
-                                    placeholder="Konten Sub Artikel"></textarea>
+                                    class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151]
+                                    focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5
+                                    rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-700
+                                    text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5 mb-6"
+                                    placeholder="Konten Sub Artikel">{{ old('sub_articles.0.content', optional($subArticle)->content) }}</textarea>
 
                                 <!-- Urutan -->
-                                <label class="block font-medium text-sm text-gray-700 mb-3">Urutan 1</label>
+                                <label class="block font-medium text-sm text-gray-700 mb-3">
+                                    Urutan 1<span class="text-red-500">*</span>
+                                </label>
                                 <input type="number" name="sub_articles[0][order_number]" required
-                                    value="1"
-                                    class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] 
-                                    focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none 
-                                    focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out 
-                                    block mt-1 w-full py-2.5 mb-6"
+                                    value="{{ old('sub_articles.0.order_number', optional($subArticle)->order_number) }}"
+                                    class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151]
+                                    focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5
+                                    rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-700
+                                    text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5 mb-6"
                                     placeholder="Urutan">
 
                                 <!-- Gambar -->
@@ -121,36 +124,58 @@
                                     <x-input-label :for="'image_0'" :value="__('Gambar Artikel 1')" />
                                     <div class="relative w-full" id="image-upload-container_0">
                                         <label for="image_0"
-                                            class="cursor-pointer flex flex-col items-center justify-center border-2 border-gray-700 shadow-[4px_4px_0px_2px_#374151] rounded-md p-6 hover:bg-gray-100 transition duration-150 ease-in-out">
-                                            <div id="noPreview_0" class="flex flex-col items-center space-y-2">
+                                            class="cursor-pointer flex flex-col items-center justify-center 
+                                                      border-2 border-gray-700 shadow-[4px_4px_0px_2px_#374151] 
+                                                      rounded-md p-6 hover:bg-gray-100 transition duration-150 ease-in-out">
+
+                                            <!-- Placeholder jika belum ada gambar -->
+                                            <div id="noPreview_0"
+                                                class="flex flex-col items-center space-y-2 {{ optional($subArticle)->image ? 'hidden' : '' }}">
                                                 <i class="fa-solid fa-image text-4xl text-gray-700"></i>
                                                 <span class="text-gray-700 font-medium">Klik Gambar di Sini</span>
                                             </div>
-                                            <div id="preview_0" class="hidden relative w-full flex justify-center">
+
+                                            <!-- Container preview gambar -->
+                                            <div id="preview_0"
+                                                class="relative w-full flex justify-center {{ optional($subArticle)->image ? '' : 'hidden' }}">
                                                 <img id="imagePreview_0"
-                                                    class="w-[250px] h-[200px] rounded-md shadow-md object-cover" />
+                                                    class="w-[250px] h-[200px] rounded-md shadow-md object-cover"
+                                                    src="{{ optional($subArticle)->image ? asset('storage/' . $subArticle->image) : '' }}" />
                                                 <button type="button"
-                                                    class="absolute top-0 right-0 bg-gray-800 text-white rounded-full p-1 -mt-2 -mr-2 shadow-md hover:bg-red-600 transition w-8 h-8"
+                                                    class="absolute top-0 right-0 bg-gray-800 text-white 
+                                                           rounded-full p-1 -mt-2 -mr-2 shadow-md 
+                                                           hover:bg-red-600 transition w-8 h-8"
                                                     onclick="clearPreview(0)">
                                                     <i class="fa-solid fa-xmark"></i>
                                                 </button>
                                             </div>
                                         </label>
+
+                                        <!-- Input file untuk memilih gambar baru -->
                                         <input type="file" id="image_0" name="sub_articles[0][image]" accept="image/*"
                                             class="hidden" onchange="previewImage(event, 0)">
+
+                                        <!-- Hidden input untuk menandai penghapusan gambar -->
+                                        <input type="hidden" id="remove_image_0" name="sub_articles[0][remove_image]"
+                                            value="0">
                                     </div>
                                 </div>
                             </div>
                         </div>
 
+                        <!-- Tombol -->
                         <div class="flex justify-between mt-4">
                             <x-primary-button type="button" id="add-sub-article"
-                                class="bg-pewterBlue ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] text-white hover:shadow-[2px_2px_0px_2px_#374151] hover:translate-y-0.5 hover:translate-x-0.5 py-2.5 px-4 rounded">
+                                class="bg-pewterBlue ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151]
+                            text-white hover:shadow-[2px_2px_0px_2px_#374151]
+                            hover:translate-y-0.5 hover:translate-x-0.5 py-2.5 px-4 rounded">
                                 + Tambah Sub Artikel
                             </x-primary-button>
                             <x-primary-button type="submit"
-                                class="bg-orangeCrayola ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] text-white hover:shadow-[2px_2px_0px_2px_#374151] hover:translate-y-0.5 hover:translate-x-0.5 py-2.5 px-4 rounded">
-                                Simpan Semua Sub Artikel
+                                class="bg-orangeCrayola ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151]
+                            text-white hover:shadow-[2px_2px_0px_2px_#374151]
+                            hover:translate-y-0.5 hover:translate-x-0.5 py-2.5 px-4 rounded">
+                                Simpan Sub Artikel
                             </x-primary-button>
                         </div>
                     </form>
@@ -163,7 +188,8 @@
                     <div class="bg-white p-6 rounded-lg shadow-md ring-2 ring-gray-700 w-full">
                         <h2 class="text-xl font-bold mb-4 text-orangeCrayola">Artikel Induk</h2>
                         <div class="border-b border-gray-300 pb-4">
-                            <h3 class="text-lg font-semibold text-gray-800">{{ $selectedArticle->title }}</h3>
+                            <h3 class="text-lg font-semibold text-gray-800">{{ $selectedArticle->title }}
+                            </h3>
                             <p class="text-gray-700 mt-2">{{ $selectedArticle->description }}</p>
                             <p class="text-sm text-gray-500">Status: {{ $selectedArticle->status }}</p>
                             @if ($selectedArticle->image)
@@ -178,8 +204,39 @@
 
                 <div class="bg-white p-6 rounded-lg shadow-md ring-2 ring-gray-700 w-full">
                     <h2 class="text-xl font-bold text-orangeCrayola">Preview Sub Artikel</h2>
+
                     @if ($selectedArticle)
-                        @if ($subArticles->isNotEmpty())
+                        @if (isset($subArticle))
+                            <!-- Jika sedang edit satu sub artikel -->
+                            <div class="border-b border-gray-300 py-4">
+                                <h3 class="text-lg font-semibold text-gray-800">{{ $subArticle->title }}</h3>
+                                <p class="text-gray-700 mt-2 break-words">{{ $subArticle->content }}</p>
+                                <p class="text-sm text-gray-500">Urutan: {{ $subArticle->order_number }}</p>
+                                @if ($subArticle->image)
+                                    <div class="mt-2">
+                                        <img src="{{ asset('storage/' . $subArticle->image) }}" alt="Gambar Sub Artikel"
+                                            class="w-40 h-40 object-cover rounded-md shadow-md">
+                                    </div>
+                                @endif
+
+                                <!-- Tombol Edit dan Hapus -->
+                                <div class="mt-4">
+                                    <a href="{{ route('admin.user-article-sub.edit', ['id' => $subArticle->id]) }}"
+                                        class="text-blue-500 hover:underline">Edit</a>
+
+                                    <form action="{{ route('admin.user-article-sub.destroy', ['id' => $subArticle->id]) }}"
+                                        method="POST" class="inline-block ml-4">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="text-red-500 hover:underline swal-delete-user-subarticle">
+                                            Hapus
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        @elseif ($subArticles->isNotEmpty())
+                            <!-- Jika tidak sedang edit, tampilkan semua sub artikel -->
                             @foreach ($subArticles as $sub)
                                 <div class="border-b border-gray-300 py-4">
                                     <h3 class="text-lg font-semibold text-gray-800">{{ $sub->title }}</h3>
@@ -191,6 +248,20 @@
                                                 class="w-40 h-40 object-cover rounded-md shadow-md">
                                         </div>
                                     @endif
+
+                                    <!-- Tombol Edit dan Hapus -->
+                                    <div class="mt-4">
+                                        <a href="{{ route('admin.user-article-sub.edit', ['id' => $sub->id]) }}"
+                                            class="text-blue-500 hover:underline font-medium">Edit</a>
+
+                                        <!-- Hapus dengan SweetAlert -->
+                                        <button type="button"
+                                            class="swal-delete-user-subarticle text-red-500 hover:underline ml-4 font-medium"
+                                            data-id="{{ $sub->id }}"
+                                            data-url="{{ route('admin.user-article-sub.destroy', $sub->id) }}">
+                                            Hapus
+                                        </button>
+                                    </div>
                                 </div>
                             @endforeach
                         @else
@@ -298,9 +369,141 @@
     </script>
 
     <script>
+        // Fungsi untuk menampilkan preview gambar baru
+        function previewImage(event, index) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const previewImg = document.getElementById('imagePreview_' + index);
+                const previewContainer = document.getElementById('preview_' + index);
+                const noPreview = document.getElementById('noPreview_' + index);
+
+                // Set src gambar baru
+                previewImg.src = reader.result;
+
+                // Tampilkan container preview, sembunyikan placeholder
+                previewContainer.classList.remove('hidden');
+                noPreview.classList.add('hidden');
+            };
+            // Membaca file gambar yang dipilih
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        // Fungsi untuk menghapus preview gambar
+        function clearPreview(index) {
+            const previewImg = document.getElementById('imagePreview_' + index);
+            const previewContainer = document.getElementById('preview_' + index);
+            const noPreview = document.getElementById('noPreview_' + index);
+            const fileInput = document.getElementById('image_' + index);
+
+            // Mengosongkan src dan menyembunyikan preview
+            previewImg.src = '';
+            previewContainer.classList.add('hidden');
+            noPreview.classList.remove('hidden');
+            // Reset input file agar tidak meng-upload apa pun
+            fileInput.value = '';
+        }
+    </script>
+
+    <script>
+        function clearPreview(index) {
+            const previewImg = document.getElementById('imagePreview_' + index);
+            const previewContainer = document.getElementById('preview_' + index);
+            const noPreview = document.getElementById('noPreview_' + index);
+            const fileInput = document.getElementById('image_' + index);
+            const removeImage = document.getElementById('remove_image_' + index);
+
+            // Hilangkan gambar di preview
+            previewImg.src = '';
+            previewContainer.classList.add('hidden');
+            noPreview.classList.remove('hidden');
+
+            // Kosongkan input file
+            fileInput.value = '';
+
+            // Tandai bahwa gambar harus dihapus di server
+            removeImage.value = '1';
+        }
+
+        function previewImage(event, index) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function() {
+                const previewImg = document.getElementById('imagePreview_' + index);
+                const previewContainer = document.getElementById('preview_' + index);
+                const noPreview = document.getElementById('noPreview_' + index);
+                const removeImage = document.getElementById('remove_image_' + index);
+
+                previewImg.src = reader.result;
+                previewContainer.classList.remove('hidden');
+                noPreview.classList.add('hidden');
+
+                // Jika upload gambar baru, maka remove_image jadi '0'
+                removeImage.value = '0';
+            };
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const subArticlesData = @json($subArticles);
-            console.log("Data subArticles dari server:", subArticlesData);
+            function handleDelete(buttonClass, entityName) {
+                document.querySelectorAll(buttonClass).forEach(button => {
+                    button.addEventListener('click', function() {
+                        let itemId = this.dataset.id;
+                        let deleteUrl = this.dataset.url;
+
+                        Swal.fire({
+                            title: 'Apakah Anda yakin?',
+                            text: `Data ${entityName} ini akan dihapus secara permanen!`,
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#d33',
+                            cancelButtonColor: '#3085d6',
+                            confirmButtonText: 'Ya, hapus!',
+                            cancelButtonText: 'Batal'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                fetch(deleteUrl, {
+                                        method: 'POST', // Laravel butuh POST dengan _method DELETE
+                                        headers: {
+                                            'X-CSRF-TOKEN': document.querySelector(
+                                                'meta[name="csrf-token"]').content,
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({
+                                            _method: 'DELETE'
+                                        }) // Simulasi DELETE
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        console.log(
+                                            data
+                                        ); // Debugging untuk memastikan response diterima
+
+                                        if (data.success) {
+                                            Swal.fire('Terhapus!', data.message,
+                                                    'success')
+                                                .then(() => location.reload());
+                                        } else {
+                                            Swal.fire('Gagal!', data.message, 'error');
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error:',
+                                            error); // Debugging error
+                                        Swal.fire('Gagal!', 'Terjadi kesalahan server.',
+                                            'error');
+                                    });
+                            }
+                        });
+                    });
+                });
+            }
+
+            // Panggil fungsi untuk tabel kandang
+            handleDelete('.swal-delete-user-subarticle', 'Sub Artikel');
         });
     </script>
 
