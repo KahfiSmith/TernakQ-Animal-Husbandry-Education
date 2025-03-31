@@ -26,26 +26,21 @@
             <!-- Page Content -->
             <main class="lg:p-6 mt-16">
                 <div class="flex flex-col">
-                    @if (session('success') || session('error'))
+                    @if (session('status'))
                         <script>
                             document.addEventListener('DOMContentLoaded', function() {
-                                let successMessage = "{{ session('success') }}";
-                                let errorMessage = "{{ session('error') }}";
+                                let status = "{{ session('status') }}";
+                                let message = "{{ session('message') }}";
 
-                                if (successMessage) {
-                                    toastr.success(successMessage, "Success", {
-                                        "closeButton": true,
-                                        "progressBar": true,
-                                        "timeOut": "3000"
-                                    });
-                                }
-
-                                if (errorMessage) {
-                                    toastr.error(errorMessage, "Error", {
-                                        "closeButton": true,
-                                        "progressBar": true,
-                                        "timeOut": "3000"
-                                    });
+                                switch (status) {
+                                    case 'success':
+                                        toastr.success(message, "Success");
+                                        break;
+                                    case 'error':
+                                        toastr.error(message, "Error");
+                                        break;
+                                    default:
+                                        toastr.info(message, "Notification");
                                 }
                             });
                         </script>
@@ -70,7 +65,7 @@
                                             <i class="fa-solid fa-pen-to-square text-2xl"></i>
                                         </div>
                                     </div>
-                                    <h3 class="font-semibold text-xl text-orangeCrayola">Form Input Data Populasi
+                                    <h3 class="font-semibold text-2xl text-orangeCrayola">Form Input Data Populasi
                                         Ayam</h3>
                                     <div class="mt-4">
                                         <span
@@ -112,10 +107,10 @@
                                         <tr class="border-b-2 border-gray-700">
                                             <th class="px-4 py-3">No</th>
                                             <th class="px-4 py-3">Nama Kandang</th>
-                                            <th class="px-4 py-3">Kode Batch</th>
-                                            <th class="px-4 py-3">Nama Batch</th>
+                                            <th class="px-4 py-3">Kode Populasi</th>
+                                            <th class="px-4 py-3">Nama Populasi</th>
                                             <th class="px-4 py-3">Tanggal DOC</th>
-                                            <th class="px-4 py-3">Jumlah Ayam Masuk</th>
+                                            <th class="px-4 py-3">Jumlah Ayam</th>
                                             <th class="px-4 py-3">Status Ayam</th>
                                             <th class="px-4 py-3">Aksi</th>
                                             <th class="px-4 py-3">Cetak</th>
@@ -190,7 +185,7 @@
                                     <thead class="text-gray-600 uppercase text-sm tracking-wide">
                                         <tr class="border-b-2 border-gray-700">
                                             <th class="px-4 py-3">No</th>
-                                            <th class="px-4 py-3">Nama Batch</th>
+                                            <th class="px-4 py-3">Nama Populasi</th>
                                             <th class="px-4 py-3">Tanggal Input</th>
                                             <th class="px-4 py-3">Jumlah Ayam Sakit</th>
                                             <th class="px-4 py-3">Jumlah Ayam Mati</th>
