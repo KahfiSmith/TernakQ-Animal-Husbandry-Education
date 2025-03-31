@@ -36,7 +36,8 @@
             <h2 class="text-xl font-bold mb-2 text-orangeCrayola">
                 <span x-text="editMode ? 'Edit Kandang' : 'Tambah Kandang'"></span>
             </h2>
-            <form method="POST" :action="editMode ? '{{ url('cage-management') }}/' + kandangId : '{{ route('kandang.store') }}'"
+            <form method="POST"
+                :action="editMode ? '{{ url('cage-management') }}/' + kandangId : '{{ route('kandang.store') }}'"
                 class="space-y-6 max-full">
                 @csrf
                 <template x-if="editMode">
@@ -47,21 +48,21 @@
                     <div class="flex flex-col space-y-6">
                         <!-- Input Nama Kandang -->
                         <div class="flex flex-col space-y-1">
-                            <x-input-label for="nama_kandang" :value="__('Nama Kandang')" />
+                            <x-input-label for="nama_kandang" :value="__('Nama Kandang')" required />
                             <x-text-input id="nama_kandang" name="nama_kandang" type="text"
                                 class="block mt-1 w-full py-2.5" required x-model="namaKandang" />
                         </div>
 
                         <!-- Input Kapasitas -->
                         <div class="flex flex-col space-y-1">
-                            <x-input-label for="kapasitas" :value="__('Kapasitas')" />
-                            <x-text-input id="kapasitas" name="kapasitas" type="number" class="block mt-1 w-full py-2.5"
-                                required min="1" x-model="kapasitas" />
+                            <x-input-label for="kapasitas" :value="__('Kapasitas')" required />
+                            <x-text-input id="kapasitas" name="kapasitas" type="text" class="block mt-1 w-full py-2.5"
+                                required x-model="kapasitas" oninput="validateNumber(this)" />
                         </div>
 
                         <!-- Select Status Kandang -->
                         <div class="flex flex-col space-y-1">
-                            <x-input-label for="status_kandang" :value="__('Status Kandang')" />
+                            <x-input-label for="status_kandang" :value="__('Status Kandang')" required />
                             <select id="status_kandang" name="status_kandang"
                                 class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] 
                                 focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 
@@ -211,5 +212,12 @@
             // Panggil fungsi untuk tabel kandang
             handleDelete('.swal-delete-kandang', 'Kandang Ayam');
         });
+    </script>
+
+    <script>
+        function validateNumber(input) {
+            // Hanya menerima angka (menghapus karakter selain angka)
+            input.value = input.value.replace(/[^0-9]/g, '');
+        }
     </script>
 @endsection
