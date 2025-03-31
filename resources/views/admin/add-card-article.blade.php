@@ -130,7 +130,7 @@
         </div>
         <div class="flex space-x-6 items-center justify-between">
             <div>
-                <a href="{{ route('add-article-detail') }}" wire:navigate
+                <a href="{{ route('admin.add-article-detail') }}" wire:navigate
                     class="inline-flex justify-center items-center text-center font-medium text-base tracking-widest focus:outline-none focus-visible:outline-none transition ease-in-out duration-150 bg-pewterBlue ring-2
                 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] text-white hover:shadow-[2px_2px_0px_2px_#374151]
                 hover:translate-y-0.5 hover:translate-x-0.5 py-2.5 px-4 rounded">Tambah
@@ -270,7 +270,7 @@
             }
 
             // Panggil fungsi untuk tabel kandang
-            handleDelete('.swal-delete-user-article', 'Tambah Artikel');
+            handleDelete('.swal-delete-user-article', 'Grup Artikel');
         });
     </script>
 @endsection
