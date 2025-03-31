@@ -274,7 +274,7 @@
             }
 
             // Panggil fungsi untuk tabel kandang
-            handleDelete('.swal-delete-pakan', 'Management Pakan');
+            handleDelete('.swal-delete-pakan', 'Manajemen Pakan');
         });
     </script>
 
