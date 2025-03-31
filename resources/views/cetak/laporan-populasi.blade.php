@@ -33,8 +33,8 @@
 <body>
 
     <h2 style="text-align: center;">Laporan Manajemen Ayam</h2>
-    <p><strong>Kode Batch:</strong> {{ $populasi->kode_batch }}</p>
-    <p><strong>Nama Batch:</strong> {{ $populasi->nama_batch }}</p>
+    <p><strong>Kode Populasi:</strong> {{ $populasi->kode_batch }}</p>
+    <p><strong>Nama Populasi:</strong> {{ $populasi->nama_batch }}</p>
     <p><strong>Tanggal DOC:</strong> {{ \Carbon\Carbon::parse($populasi->tanggal_doc)->translatedFormat('d F Y') }}</p>
     <p><strong>Jumlah Ayam Masuk:</strong> {{ $populasi->jumlah_ayam_masuk }}</p>
     <p><strong>Status Ayam:</strong> {{ $populasi->status_ayam }}</p>
