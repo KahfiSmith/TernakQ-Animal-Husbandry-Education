@@ -177,7 +177,7 @@ public function showArticles(Request $request, $id)
     public function showArticleDetail($id)
 {
     $article = Article::with(['subArticles' => function ($query) {
-        $query->orderBy('order_number', 'asc'); // Mengurutkan dari terkecil ke terbesar
+        $query->orderBy('order_number', 'asc'); 
     }])->findOrFail($id);
 
     return view('livewire.pages.home.article-detail', compact('article'));
