@@ -32,7 +32,23 @@ class AdminArticleAccController extends Controller
     /**
      * Mengubah status artikel.
      */
-    public function updateArticle(Request $request, $id)
+
+    public function editArticle($id)
+{
+    try {
+        $article = Article::with(['subArticles' => function ($query) {
+            $query->orderBy('order_number', 'asc'); 
+        }])->findOrFail($id);
+        return view('admin.article-management-edit', compact('article'));
+    } catch (\Exception $e) {
+        Log::error('Gagal memuat artikel untuk edit: ' . $e->getMessage());
+        return redirect()->route('admin.article-management-edit')
+            ->with('status', 'error')
+            ->with('message', 'Terjadi kesalahan saat memuat artikel.');
+    }
+}
+
+public function updateArticle(Request $request, $id)
 {
     try {
         $validated = $request->validate([
@@ -53,19 +69,6 @@ class AdminArticleAccController extends Controller
             'status'  => 'error',
             'message' => 'Terjadi kesalahan saat memperbarui artikel.',
         ]);
-    }
-}
-
-    public function editArticle($id)
-{
-    try {
-        $article = Article::findOrFail($id);
-        return view('admin.article-management-edit', compact('article'));
-    } catch (\Exception $e) {
-        Log::error('Gagal memuat artikel untuk edit: ' . $e->getMessage());
-        return redirect()->route('admin.article-management-edit')
-            ->with('status', 'error')
-            ->with('message', 'Terjadi kesalahan saat memuat artikel.');
     }
 }
 
