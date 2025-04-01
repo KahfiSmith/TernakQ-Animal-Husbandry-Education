@@ -3,7 +3,47 @@
 @section('title', 'Admin - Edit Artikel')
 
 @section('content')
-    <main class="w-full">
+    <main class="w-full flex flex-col space-y-6">
+        <div class="p-6 bg-white/80 rounded-lg shadow-lg ring-2 ring-gray-700">
+            <h1 class="text-4xl font-extrabold text-gray-500 leading-tight mb-4">
+                {{ $article->title }}
+            </h1>
+            @if ($article->image)
+                <img src="{{ asset('storage/' . $article->image) }}" alt="Image"
+                    class="object-cover rounded-lg shadow-md mb-2 mx-auto max-h-[400px] min-h-[380px] w-full">
+            @else
+                No Image
+            @endif
+            <div class="flex items-center text-sm text-gray-500 mb-6 space-x-2">
+                <i class="fa-regular fa-calendar text-lg"></i>
+                <span>Dipublikasikan pada: {{ $article->created_at->format('d M Y') }}</span>
+            </div>
+            <div class="prose prose-lg text-gray-700 leading-relaxed mb-8 tracking-wide">
+                {{ $article->description }}
+            </div>
+            @if ($article->subArticles->count() > 0)
+                <div class="border-t border-gray-300 pt-6">
+                    <div class="space-y-6">
+                        @foreach ($article->subArticles as $subArticle)
+                            <div id="sub-article-{{ $subArticle->id }}"
+                                class="p-4 bg-cosmicLatte rounded-lg shadow-sm transition">
+                                <h3 class="text-xl font-semibold text-gray-700 mb-2">{{ $subArticle->title }}</h3>
+                                <p class="text-gray-600 leading-relaxed tracking-wide mb-1">
+                                    {{ $subArticle->content }}
+                                </p>
+                                @if ($subArticle->image)
+                                    <img src="{{ asset('storage/' . $subArticle->image) }}" alt="Image"
+                                        class="object-cover rounded mx-auto max-h-[400px] min-h-[380px] w-full">
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @else
+                <p class="text-gray-500 mt-6">Tidak ada sub-artikel untuk artikel ini.</p>
+            @endif
+        </div>
+        
         <div class="bg-white p-6 rounded-lg shadow-md w-full ring-2 ring-gray-700">
             <h2 class="text-xl font-bold mb-4 text-orangeCrayola">Edit Artikel</h2>
 
@@ -18,24 +58,7 @@
                 enctype="multipart/form-data" class="space-y-6">
                 @csrf
                 @method('PUT')
-
-                <!-- Judul Artikel -->
-                <div class="flex flex-col space-y-1">
-                    <x-input-label for="title" :value="__('Judul Artikel')" />
-                    <x-text-input id="title" name="title" type="text" value="{{ old('title', $article->title) }}"
-                        class="block mt-1 w-full py-2.5" readonly />
-                </div>
-
-                <!-- Deskripsi Artikel -->
-                <div class="flex flex-col space-y-1">
-                    <x-input-label for="description" :value="__('Deskripsi')" />
-                    <textarea id="description" name="description"
-                        class="block mt-1 w-full h-[100px] resize-none py-2.5 ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151]
-                                     focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5
-                                     rounded-md focus:outline-none focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out"
-                        readonly>{{ old('description', $article->description) }}</textarea>
-                </div>
-
+                
                 <!-- Status -->
                 <div class="flex flex-col space-y-1">
                     <x-input-label for="status" :value="__('Status Artikel')" />
@@ -57,23 +80,6 @@
                                      focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5
                                      rounded-md focus:outline-none focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out">{{ old('catatan', $article->catatan) }}</textarea>
                 </div>
-
-                <!-- Gambar (Read-Only) -->
-                <div class="flex flex-col space-y-1">
-                    <x-input-label for="image" :value="__('Gambar')" />
-
-                    <!-- Jika artikel memiliki gambar, tampilkan -->
-                    @if ($article->image)
-                        <img src="{{ asset('storage/' . $article->image) }}" alt="Image"
-                            class="w-[250px] h-[200px] rounded-md shadow-md object-cover" />
-                    @else
-                        <p class="text-gray-500">Tidak ada gambar</p>
-                    @endif
-
-                    <!-- Tidak menampilkan input file dan tombol hapus,
-             agar user tidak dapat mengubah atau menghapus gambar -->
-                </div>
-
 
                 <!-- Tombol Simpan -->
                 <div class="flex justify-start">
