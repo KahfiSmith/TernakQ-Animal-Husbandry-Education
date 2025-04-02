@@ -4,12 +4,9 @@
     <x-slot name="title">
         Dashboard TernakQ
     </x-slot>
-
     <main class="gap-6 flex flex-col">
         <div class="flex gap-6 w-full justify-between">
-            <!-- Kartu Informasi -->
             <div class="flex flex-col justify-between w-full space-y-6">
-                <!-- Jumlah Kandang -->
                 <div
                     class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center w-full space-y-6 ring-2 ring-gray-700">
                     <div class="flex justify-between w-full items-center">
@@ -34,8 +31,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Angka Kematian Ayam -->
                 <div
                     class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center w-full space-y-6 ring-2 ring-gray-700">
                     <div class="flex justify-between w-full items-center">
@@ -54,15 +49,11 @@
                         <div class="flex justify-between w-full items-center">
                             <div class="flex items-center space-x-1 justify-between w-full">
                                 @php
-                                    // Ambil nilai absolut untuk ditampilkan, karena tanda akan ditambahkan secara manual
                                     $formattedChange = number_format(abs($percentageChange), 2) . '%';
-                                    // Tentukan warna berdasarkan perubahan
                                     if ($percentageChange < 0) {
-                                        // Penurunan: kondisi baik, tampilkan dengan hijau dan tanda minus
                                         $changeColor = 'text-green-500';
                                         $sign = '-';
                                     } elseif ($percentageChange > 0) {
-                                        // Peningkatan: kondisi negatif, tampilkan dengan merah dan tanda plus
                                         $changeColor = 'text-red-500';
                                         $sign = '+';
                                     } else {
@@ -84,40 +75,43 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Chart Bulanan -->
             <div class="ring-2 ring-gray-700 bg-white p-6 rounded-lg shadow-lg w-3/4 gap-4 flex flex-col">
                 <h2 class="text-2xl font-semibold mb-4 text-slate-600 tracking-tight flex items-center">
                     Manajemen Keuangan Bulanan
                 </h2>
                 <div class="flex flex-col gap-3 backdrop-blur-sm bg-white/50 p-4 rounded-lg border-2 border-slate-300">
                     <h2 class="text-xl font-semibold text-green-400 flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clip-rule="evenodd" />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
+                            fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z"
+                                clip-rule="evenodd" />
                         </svg>
                         Pendapatan
                     </h2>
                     <div>
-                        <span class="text-green-400 text-3xl font-bold">Rp. {{ number_format($pendapatanBulanIni, 0, ',', '.') }}</span>
+                        <span class="text-green-400 text-3xl font-bold">Rp.
+                            {{ number_format($pendapatanBulanIni, 0, ',', '.') }}</span>
                     </div>
                 </div>
                 <div class="flex flex-col gap-3 backdrop-blur-sm bg-white/5 p-4 rounded-lg border-2 border-slate-300">
                     <h2 class="text-xl font-semibold text-red-400 flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M12 13a1 1 0 100 2h5a1 1 0 001-1v-5a1 1 0 10-2 0v2.586l-4.293-4.293a1 1 0 00-1.414 0L8 9.586 3.707 5.293a1 1 0 00-1.414 1.414l5 5a1 1 0 001.414 0L11 9.414 14.586 13H12z" clip-rule="evenodd" />
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
+                            fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M12 13a1 1 0 100 2h5a1 1 0 001-1v-5a1 1 0 10-2 0v2.586l-4.293-4.293a1 1 0 00-1.414 0L8 9.586 3.707 5.293a1 1 0 00-1.414 1.414l5 5a1 1 0 001.414 0L11 9.414 14.586 13H12z"
+                                clip-rule="evenodd" />
                         </svg>
                         Pengeluaran
                     </h2>
                     <div>
-                        <span class="text-red-400 text-3xl font-bold">Rp. {{ number_format($pengeluaranBulanIni, 0, ',', '.') }}</span>
+                        <span class="text-red-400 text-3xl font-bold">Rp.
+                            {{ number_format($pengeluaranBulanIni, 0, ',', '.') }}</span>
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="flex gap-6 w-full">
-
-            <!-- Tabel Manajemen Ayam -->
             <div class="bg-white p-6 rounded-lg shadow-md w-full ring-2 ring-gray-700">
                 <h2 class="text-lg font-semibold mb-4">Manajemen Ayam</h2>
                 <div class="overflow-x-auto">
@@ -182,7 +176,5 @@
                 </div>
             </div>
         </div>
-
     </main>
-
 </x-app-layout>
