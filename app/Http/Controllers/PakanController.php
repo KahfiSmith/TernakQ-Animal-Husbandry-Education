@@ -13,7 +13,6 @@ class PakanController extends Controller
     public function indexPakan(Request $request)
 {
     try {
-        // Paginasi untuk stok pakan
         $pakanPage = $request->get('pakan_page', 1);
         $pakan = Pakan::where('user_id', Auth::id())
                      ->latest()
@@ -52,7 +51,6 @@ public function storePakan(Request $request)
             'message' => 'Pakan berhasil ditambahkan.'
         ]);
     } catch (ValidationException $e) {
-        // Ambil pesan error pertama
         $errors = $e->validator->errors()->all();
         return redirect()->back()->with('status', 'error')->with('message', $errors[0]);
     } catch (\Exception $e) {
@@ -89,7 +87,6 @@ public function updatePakan(Request $request, $id)
         ]);
 
     } catch (ValidationException $e) {
-        // Ambil pesan error pertama
         $errors = $e->validator->errors()->all();
         return redirect()->back()->with('status', 'error')->with('message', $errors[0]);
     } catch (\Exception $e) {
@@ -113,6 +110,7 @@ public function destroyPakan($id)
             'success' => true,
             'message' => 'Pakan berhasil dihapus.'
         ]);
+
     } catch (\Exception $e) {
         Log::error('Gagal menghapus pakan: ' . $e->getMessage());
         return response()->json([
@@ -121,5 +119,4 @@ public function destroyPakan($id)
         ], 500);
     }
 }
-
 }
