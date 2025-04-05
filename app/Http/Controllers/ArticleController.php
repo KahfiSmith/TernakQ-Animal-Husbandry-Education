@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Article;
 use App\Models\CardArticle;
 use Illuminate\Http\Request;
@@ -54,9 +55,12 @@ class ArticleController extends Controller
         }
         // Tambahkan properti readingTime ke setiap card
         $card->readingTime = $totalReadingTime;
-    }    
+    }   
+    
+    $totalArticles = Article::where('status', 'Disetujui')->count();
+    $totalUsers = User::count();
 
-    return view('home', compact('cardArticles'));
+    return view('home', compact('cardArticles', 'totalArticles', 'totalUsers'));
 }
 
 public function showAllCards(Request $request)
