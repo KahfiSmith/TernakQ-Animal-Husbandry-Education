@@ -1,9 +1,8 @@
-@section('title', 'Dashboard TernakQ')
+@extends('layouts.dashboard-layout')
 
-<x-app-layout>
-    <x-slot name="title">
-        Dashboard TernakQ
-    </x-slot>
+@section('title', 'Dashboard')
+
+@section('content')
     <main class="gap-6 flex flex-col">
         <div class="flex gap-6 w-full justify-between">
             <div class="flex flex-col justify-between w-full space-y-6">
@@ -150,8 +149,7 @@
                                     <td class="px-4 py-4">{{ $kandang->kapasitas }}</td>
                                     <td class="px-4 py-4">
                                         @if ($maxPersen > 30)
-                                            <span
-                                                class="px-3 py-1 rounded text-xs font-semibold bg-red-100 text-red-700">
+                                            <span class="px-3 py-1 rounded text-xs font-semibold bg-red-100 text-red-700">
                                                 Darurat
                                             </span>
                                         @elseif ($maxPersen >= 10)
@@ -177,4 +175,4 @@
             </div>
         </div>
     </main>
-</x-app-layout>
+@endsection

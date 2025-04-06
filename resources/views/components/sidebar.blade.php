@@ -44,6 +44,12 @@
                     'icon' => asset('images/article.svg'),
                     'active' => request()->is('add-article*') || request()->is('add-article-sub/*'),
                 ],
+                [
+                    'title' => 'Forum',
+                    'url' => route('forum.index'),
+                    'icon' => asset('images/forum.svg'),
+                    'active' => request()->routeIs('forum*'),
+                ],
             ];
         @endphp
 
