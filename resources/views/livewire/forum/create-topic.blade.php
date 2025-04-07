@@ -14,7 +14,7 @@
                     topik</x-input-label>
                 <x-text-input wire:model="title" id="title" class="block mt-1 w-full py-2.5" type="text"
                     name="title" required />
-                @error('title') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                @error('title') <span class="text-red-500 text-sm mt-2">{{ $message }}</span> @enderror
             </div>
 
             <div class="mb-6">
@@ -24,7 +24,7 @@
                     focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5
                     rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-700
                     text-gray-700 leading-5 transition duration-150 ease-in-out"></textarea>
-                @error('content') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                @error('content') <span class="text-red-500 text-sm mt-2">{{ $message }}</span> @enderror
             </div>
 
             <div class="flex items-center justify-start w-full">
