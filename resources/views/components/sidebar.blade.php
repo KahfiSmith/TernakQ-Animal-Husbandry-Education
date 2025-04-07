@@ -48,7 +48,7 @@
                     'title' => 'Forum',
                     'url' => route('forum.index'),
                     'icon' => asset('images/forum.svg'),
-                    'active' => request()->routeIs('forum*'),
+                    'active' => request()->routeIs('forum.index') || request()->routeIs('topics.*'),
                 ],
             ];
         @endphp
