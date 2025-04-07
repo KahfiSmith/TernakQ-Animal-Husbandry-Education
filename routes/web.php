@@ -18,6 +18,9 @@ use App\Http\Controllers\AdminCardArticleController;
 use App\Http\Controllers\AdminArticleController;
 use App\Http\Controllers\AdminSubArticleController;
 use App\Http\Controllers\DashboardController;
+use App\Livewire\Forum\TopicList;
+use App\Livewire\Forum\CreateTopic;
+use App\Livewire\Forum\TopicView;
 
 // ROUTES
 Route::get('/redirect-after-login', function () {
@@ -28,6 +31,11 @@ Route::get('/redirect-after-login', function () {
 });
 
 Route::middleware(['auth', 'user'])->group(function () {
+
+    // FORUM
+    Route::get('/forum', TopicList::class)->name('forum.index');
+    Route::get('/forum/create', CreateTopic::class)->name('topics.create');
+    Route::get('/forum/topics/{topic}', TopicView::class)->name('topics.show');
 
     // DASHBOARD
     Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
