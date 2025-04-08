@@ -29,19 +29,18 @@ new #[Layout('layouts.guest')] class extends Component
     <form wire:submit="login">
         <!-- Email Address -->
         <div>
-            <x-input-label for="email" :value="__('Email')" required/>
-            <x-text-input wire:model="form.email" id="email" class="block mt-1 w-full py-2.5" type="email" name="email" required autofocus autocomplete="username" />
+            <x-input-label for="email" :value="__('Email')" />
+            <x-text-input wire:model="form.email" id="email" class="block mt-1 w-full py-2.5" type="email" name="email"
+                autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('form.email')" class="mt-2" />
         </div>
 
         <!-- Password -->
         <div class="mt-6">
-            <x-input-label for="password" :value="__('Kata Sandi')" required/>
+            <x-input-label for="password" :value="__('Kata Sandi')" />
 
-            <x-text-input wire:model="form.password" id="password" class="block mt-1 w-full py-2.5"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+            <x-text-input wire:model="form.password" id="password" class="block mt-1 w-full py-2.5" type="password"
+                name="password" autocomplete="current-password" />
 
             <x-input-error :messages="$errors->get('form.password')" class="mt-2" />
         </div>
@@ -49,11 +48,13 @@ new #[Layout('layouts.guest')] class extends Component
         <!-- Remember Me -->
         <div class="flex justify-between mt-4 mb-6">
             <label for="remember" class="inline-flex items-center">
-                <input wire:model="form.remember" id="remember" type="checkbox" class="rounded border-gray-300 text-gray-600 shadow-sm focus:ring-gray-500" name="remember">
+                <input wire:model="form.remember" id="remember" type="checkbox"
+                    class="rounded border-gray-300 text-gray-600 shadow-sm focus:ring-gray-500" name="remember">
                 <span class="ms-2 text-sm text-gray-600">{{ __('Ingatkan saya') }}</span>
             </label>
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500" href="{{ route('password.request') }}" wire:navigate>
+            @if(Route::has('password.request'))
+                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                    href="{{ route('password.request') }}" wire:navigate>
                     {{ __('lupa kata sandi?') }}
                 </a>
             @endif
@@ -67,7 +68,8 @@ new #[Layout('layouts.guest')] class extends Component
         </div>
 
         <div class="flex items-center">
-            <x-primary-button class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] text-white hover:shadow-[2px_2px_0px_2px_#374151] hover:translate-y-0.5 hover:translate-x-0.5 w-full text-center bg-orangeCrayola py-2.5">
+            <x-primary-button
+                class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] text-white hover:shadow-[2px_2px_0px_2px_#374151] hover:translate-y-0.5 hover:translate-x-0.5 w-full text-center bg-orangeCrayola py-2.5">
                 {{ __('Masuk') }}
             </x-primary-button>
         </div>

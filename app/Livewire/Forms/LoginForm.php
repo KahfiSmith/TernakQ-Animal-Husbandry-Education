@@ -12,14 +12,28 @@ use Livewire\Form;
 
 class LoginForm extends Form
 {
-    #[Validate('required|string|email')]
+    #[Validate('required|email:rfc,dns|string|max:255')]
     public string $email = '';
 
-    #[Validate('required|string')]
+    #[Validate('required|string|min:8')]
     public string $password = '';
 
     #[Validate('boolean')]
     public bool $remember = false;
+
+    /**
+     * Get custom validation messages.
+     */
+    protected function messages(): array
+    {
+        return [
+            'email.required' => 'Alamat email wajib diisi.',
+            'email.email' => 'Format alamat email tidak valid.',
+            'email.max' => 'Alamat email tidak boleh lebih dari 255 karakter.',
+            'password.required' => 'Kata sandi wajib diisi.',
+            'password.min' => 'Kata sandi minimal terdiri dari 8 karakter.',
+        ];
+    }
 
     /**
      * Attempt to authenticate the request's credentials.
@@ -28,13 +42,26 @@ class LoginForm extends Form
      */
     public function authenticate(): void
     {
+        $this->validate();
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only(['email', 'password']), $this->remember)) {
+        // Check if the email exists first
+        $user = \App\Models\User::where('email', $this->email)->first();
+        
+        if (!$user) {
             RateLimiter::hit($this->throttleKey());
-
+            
             throw ValidationException::withMessages([
-                'form.email' => trans('auth.failed'),
+                'form.email' => 'Email tidak terdaftar.',
+            ]);
+        }
+        
+        // If email exists but password is wrong
+        if (!Auth::attempt($this->only(['email', 'password']), $this->remember)) {
+            RateLimiter::hit($this->throttleKey());
+            
+            throw ValidationException::withMessages([
+                'form.password' => 'Kata sandi yang Anda masukkan salah.',
             ]);
         }
 
