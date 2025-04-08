@@ -15,6 +15,14 @@ class CreateTopic extends Component
         'content' => 'required|min:10',
     ];
 
+    // Menambahkan custom error messages
+    protected $messages = [
+        'title.required' => 'Judul topik tidak boleh kosong',
+        'title.min' => 'Judul topik minimal 3 karakter',
+        'content.required' => 'Isi topik tidak boleh kosong',
+        'content.min' => 'Isi topik minimal 10 karakter'
+    ];
+
     public function submit()
     {
         $validated = $this->validate();
@@ -25,7 +33,8 @@ class CreateTopic extends Component
             'user_id' => auth()->id(),
         ]);
         
-        session()->flash('message', 'Topic created successfully!');
+        session()->flash('status', 'success');
+        session()->flash('message', 'Topik berhasil dibuat!');
         return redirect()->route('forum.index');
     }
 
