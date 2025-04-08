@@ -3,6 +3,25 @@
 @section('title', 'Dashboard - Forum')
 @section('content')
     <main>
+        @if (session('status'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                let status = "{{ session('status') }}";
+                let message = "{{ session('message') }}";
+
+                switch (status) {
+                    case 'success':
+                        toastr.success(message, "Success");
+                        break;
+                    case 'error':
+                        toastr.error(message, "Error");
+                        break;
+                    default:
+                        toastr.info(message, "Notification");
+                }
+            });
+        </script>
+    @endif
         <div class="w-full">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-2xl font-semibold">Forum Diskusi</h3>
@@ -62,7 +81,7 @@
             </div>
 
             <div class="mt-4">
-                {{ $topics->links() }}
+                {{ $topics->links('pagination::tailwind') }}
             </div>
         </div>
     </main>
