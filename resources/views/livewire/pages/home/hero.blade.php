@@ -6,7 +6,7 @@
             <p class="font-medium text-base">Bangun Peternakan Ayam Broiler yang Sukses dan Berkelanjutan dengan
                 Ilmu, Dukungan, serta Solusi Praktis
                 yang Tepat untuk Setiap Tahap Usaha Anda.</p>
-            <a href="#artikel">
+            <a href="{{ url('/#article') }}">
                 <x-primary-button
                     class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] text-white hover:shadow-[2px_2px_0px_2px_#374151] hover:translate-y-0.5 hover:translate-x-0.5 bg-orangeCrayola">
                     Mulai Sekarang

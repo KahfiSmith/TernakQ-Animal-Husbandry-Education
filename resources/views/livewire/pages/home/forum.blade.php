@@ -26,7 +26,7 @@
                 yang <span class="text-orange-500">Solid dan Berdaya Saing</span></h1>
             <p class="font-medium text-lg">Temukan solusi, berbagi pengalaman, dan bangun kolaborasi dengan
                 sesama peternak untuk mencapai hasil yang lebih baik.</p>
-            <a href="#artikel">
+            <a href="{{ route('forum.index') }}">
                 <x-primary-button
                     class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] text-white hover:shadow-[2px_2px_0px_2px_#374151] hover:translate-y-0.5 hover:translate-x-0.5 bg-orangeCrayola">
                     Coba Forum
