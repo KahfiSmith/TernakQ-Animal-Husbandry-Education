@@ -1,6 +1,6 @@
 @extends('layouts.admin-layout')
 
-@section('title', 'Dashboard - Tambah Grup Artikel')
+@section('title', 'Tambah Grup Artikel')
 
 @section('content')
     <main class="flex flex-col space-y-6 w-full" x-data="{

@@ -1,6 +1,6 @@
 @extends('layouts.dashboard-layout')
 
-@section('title', 'Dashboard - Tambah Artikel')
+@section('title', 'Tambah Artikel')
 
 @section('content')
 <main class="flex flex-col space-y-6 w-full" x-data="{

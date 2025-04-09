@@ -1,6 +1,6 @@
 @extends('layouts.dashboard-layout')
 
-@section('title', 'Dashboard - Manajemen Pakan')
+@section('title', 'Manajemen Pakan')
 
 @section('content')
     <main class="flex space-x-6 w-full" x-data="{
@@ -38,31 +38,33 @@
             </h2>
             <form method="POST"
                 :action="editMode ? '{{ url('cage-management') }}/' + kandangId : '{{ route('kandang.store') }}'"
-                class="space-y-6 max-full">
+                class="space-y-4 max-full">
                 @csrf
                 <template x-if="editMode">
                     <input type="hidden" name="_method" value="PUT">
                 </template>
 
-                <div class="justify-between flex flex-col space-y-12">
-                    <div class="flex flex-col space-y-6">
+                <div class="justify-between flex flex-col space-y-10">
+                    <div class="flex flex-col space-y-4">
                         <!-- Input Nama Kandang -->
                         <div class="flex flex-col space-y-1">
-                            <x-input-label for="nama_kandang" :value="__('Nama Kandang')" required />
+                            <x-input-label for="nama_kandang" :value="__('Nama Kandang')" />
                             <x-text-input id="nama_kandang" name="nama_kandang" type="text"
-                                class="block mt-1 w-full py-2.5" required x-model="namaKandang" />
+                                class="block mt-1 w-full py-2.5" x-model="namaKandang" />
+                            <x-input-error :messages="$errors->get('nama_kandang')" class="mt-2" />
                         </div>
 
                         <!-- Input Kapasitas -->
                         <div class="flex flex-col space-y-1">
-                            <x-input-label for="kapasitas" :value="__('Kapasitas')" required />
+                            <x-input-label for="kapasitas" :value="__('Kapasitas')" />
                             <x-text-input id="kapasitas" name="kapasitas" type="text" class="block mt-1 w-full py-2.5"
-                                required x-model="kapasitas" oninput="validateNumber(this)" />
+                                x-model="kapasitas" oninput="validateNumber(this)" />
+                            <x-input-error :messages="$errors->get('kapasitas')" class="mt-2" />
                         </div>
 
                         <!-- Select Status Kandang -->
                         <div class="flex flex-col space-y-1">
-                            <x-input-label for="status_kandang" :value="__('Status Kandang')" required />
+                            <x-input-label for="status_kandang" :value="__('Status Kandang')" />
                             <select id="status_kandang" name="status_kandang"
                                 class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] 
                                 focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 

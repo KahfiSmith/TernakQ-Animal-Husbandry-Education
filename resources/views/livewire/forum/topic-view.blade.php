@@ -1,6 +1,6 @@
 @extends('layouts.dashboard-layout')
 
-@section('title', 'Dashboard - Topik Forum')
+@section('title', 'Topik Forum')
 @section('content')
 <main class="w-full">
     @if(session('error'))

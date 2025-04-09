@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="/images/logo.svg" type="image/png">
-    <title>@yield('title', config('app.name', 'Manajemen Ayam'))</title>
+    <title>Manajemen Ayam</title>
     @livewireStyles
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/charts/barChart.js'])
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -15,15 +15,9 @@
 
 <body class="font-sans antialiased">
     <div class="flex min-h-screen">
-        <!-- Sidebar -->
         @include('components.sidebar')
-
-        <!-- Main Content -->
         <div class="flex-1 flex flex-col ml-64">
-            <!-- Navigation -->
             <livewire:layout.navigation />
-
-            <!-- Page Content -->
             <main class="lg:p-6 mt-16">
                 <div class="flex flex-col">
                     @if (session('status'))
@@ -46,7 +40,6 @@
                         </script>
                     @endif
 
-                    <!-- Alpine.js Scope -->
                     <div x-data="harianHandler()" class="flex flex-col">
 
                         <div class="flex gap-6 mb-6">
@@ -54,8 +47,6 @@
                                 <h2 class="text-lg font-semibold mb-2">Manajemen Ayam Bulanan</h2>
                                 <canvas id="myBarChart" class="w-full h-64"></canvas>
                             </div>
-
-                            <!-- Card Tambah Data Populasi Ayam -->
                             <div class="flex flex-col justify-between gap-6">
                                 <div class="flex flex-col p-6 ring-2 ring-gray-700 rounded-lg bg-white hover:bg-orangeCrayola/10 hover:shadow-lg transition duration-300 w-full cursor-pointer h-full"
                                     @click="openModal = 'jumlahAyam'; console.log('Opened jumlahAyam modal')">
@@ -76,7 +67,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Card Tambah Data Harian Ayam -->
                                 <div class="flex flex-col p-6 ring-2 ring-gray-700 rounded-lg bg-white hover:bg-orangeCrayola/10 hover:shadow-lg transition duration-300 w-full cursor-pointer h-full"
                                     @click="openModal = 'harianAyam'; console.log('Opened harianAyam modal')">
                                     <div class="mb-4 text-orangeCrayola text-2xl">
@@ -98,7 +88,6 @@
                             </div>
                         </div>
 
-                        <!-- Tabel Data Populasi Ayam -->
                         <div class="bg-white p-6 rounded-lg shadow-md w-full mb-6 ring-2 ring-gray-700">
                             <h2 class="text-xl font-bold mb-2 text-orangeCrayola">Data Populasi Ayam</h2>
                             <div class="overflow-x-auto min-h-[220px]">
@@ -141,7 +130,7 @@
                                                         class="edit-btn-populasi px-3 py-3 rounded text-xs font-semibold bg-blue-100 text-blue-700 flex justify-center items-center w-12 h-12 cursor-pointer"
                                                         @click="$dispatch('open-edit-populasi', { 
                                                         id: {{ $item->id }},
-                                                        batchCodeSuffix: '{{ substr($item->kode_batch, 6) }}',
+                                                        batchCodeSuffix: '{{ substr($item->kode_batch, 9) }}',
                                                         nama_batch: '{{ addslashes($item->nama_batch) }}',
                                                         tanggal_doc: '{{ \Carbon\Carbon::parse($item->tanggal_doc)->format('Y-m-d') }}',
                                                         jumlah_ayam_masuk: {{ $item->jumlah_ayam_masuk }},
@@ -170,14 +159,11 @@
                                     </tbody>
                                 </table>
                             </div>
-
-                            <!-- Pagination -->
                             <div class="mt-4">
                                 {{ $populasi->links('pagination::tailwind') }}
                             </div>
                         </div>
 
-                        <!-- Tabel Data Harian Ayam -->
                         <div class="bg-white p-6 rounded-lg shadow-md w-full mb-6 ring-2 ring-gray-700">
                             <h2 class="text-xl font-bold mb-2 text-orangeCrayola">Data Harian Ayam</h2>
                             <div class="overflow-x-auto min-h-[220px]">
@@ -228,23 +214,21 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <!-- Pagination Harian -->
                             <div class="mt-4">
                                 {{ $harian->links('pagination::tailwind') }}
                             </div>
                         </div>
 
-                        <!-- Popup Components -->
                         <x-popup-form-jumlah-ayam :kandang="$kandang" />
                         <x-popup-form-harian-ayam :batches="$batches" />
                         <x-popup-form-edit-jumlah-ayam :kandang="$kandang" :batches="$batches" />
                         <x-popup-form-edit-harian-ayam :batches="$batches" />
                     </div>
-
                 </div>
             </main>
         </div>
     </div>
+
     <script>
         document.addEventListener('alpine:init', () => {
             Alpine.data('harianHandler', () => ({
@@ -253,7 +237,6 @@
 
                 init() {
                     this.$watch('editData.batchCodeSuffix', value => {
-                        // Membatasi hanya 3 karakter (huruf atau angka)
                         this.editData.batchCodeSuffix = value.replace(/[^a-zA-Z0-9]/g, '')
                             .slice(0, 3);
                     });
@@ -262,11 +245,8 @@
             }));
         });
     </script>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-
-            // Fungsi untuk menghapus data dengan SweetAlert2
             function handleDelete(buttonClass, entityName) {
                 document.querySelectorAll(buttonClass).forEach(button => {
                     button.addEventListener('click', function() {
@@ -308,17 +288,16 @@
                 });
             }
 
-            // Panggil fungsi untuk kedua tabel
             handleDelete('.swal-delete-btn', 'Populasi Ayam');
             handleDelete('.swal-delete-harian', 'Harian Ayam');
 
         });
     </script>
-
     <script>
         window.monthlyData = @json($monthlyData);
         window.todayData = @json($todayData);
     </script>
+    
 </body>
 
 </html>

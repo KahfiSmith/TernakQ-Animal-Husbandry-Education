@@ -1,6 +1,6 @@
 @extends('layouts.admin-layout')
 
-@section('title', 'Dashboard - Tambah Sub Artikel')
+@section('title', 'Tambah Sub Artikel')
 
 @section('content')
     <main class="flex flex-col space-y-6 w-full">

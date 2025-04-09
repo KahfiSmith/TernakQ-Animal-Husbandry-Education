@@ -1,6 +1,6 @@
 @extends('layouts.dashboard-layout')
 
-@section('title', 'Dashboard - Forum')
+@section('title', 'Forum')
 @section('content')
     <main>
         @if (session('status'))
