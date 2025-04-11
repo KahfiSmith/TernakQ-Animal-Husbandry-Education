@@ -56,6 +56,9 @@ Route::middleware(['auth', 'user'])->group(function () {
     Route::put('/harian/{id}', [PopulasiHarianController::class, 'updateHarian'])->name('harian.update');
     Route::get('/populasi/{id}/cetak', [PopulasiHarianController::class, 'cetak'])->name('populasi.cetak');
 
+    Route::get('/get-available-chicken-count/{batchId}/{recordId?}', [PopulasiHarianController::class, 'getAvailableChickenCount'])->name('get-available-chicken-count');
+    Route::get('/get-harian-record/{id}', [PopulasiHarianController::class, 'getHarianRecord']);
+    
     // MANAJEMEN PAKAN
     Route::get('/food-management', [PakanController::class, 'indexPakan'])->name('food-management');
     Route::post('/food-management', [PakanController::class, 'storePakan'])->name('pakan.store');
