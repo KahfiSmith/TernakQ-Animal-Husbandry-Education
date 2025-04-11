@@ -79,6 +79,20 @@ class KandangAyamController extends Controller
 
         try {
             $kandang = KandangAyam::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
+            
+            if ($kandang->status_kandang === 'Aktif' && $validated['status_kandang'] === 'Tidak Aktif') {
+                $activePopulations = $kandang->populasiAyam()
+                    ->whereIn('status_ayam', ['Proses', 'Siap Panen'])
+                    ->count();
+                    
+                if ($activePopulations > 0) {
+                    return redirect()->back()->with([
+                        'status' => 'warning',
+                        'message' => "Kandang ini memiliki $activePopulations populasi ayam aktif. Pastikan semua populasi sudah dipanen sebelum menonaktifkan kandang.",
+                    ]);
+                }
+            }
+            
             $kandang->update($validated);   
             return redirect()->route('cage-management')->with([
                 'status' => 'success',

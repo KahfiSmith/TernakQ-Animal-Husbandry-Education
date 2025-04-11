@@ -1,7 +1,6 @@
 import './bootstrap'; 
 import toastr from 'toastr'; 
 
-// Konfigurasi opsi toastr
 toastr.options = {
     closeButton: true,
     progressBar: true,
