@@ -90,7 +90,7 @@
                     </div>
                 </div>
             </a>
-            <div class="p-6 bg-white ring-2 ring-gray-700 rounded-lg shadow-md hover:bg-blue-100 hover:shadow-lg">
+            <div class="p-6 bg-white ring-2 ring-gray-700 rounded-lg shadow-md">
                 <h3 class="text-xl font-semibold text-blue-600">Laba Bersih</h3>
                 <p class="text-2xl font-bold text-blue-700 mt-2">Rp {{ number_format($labaBersih, 0, ',', '.') }}</p>
             </div>

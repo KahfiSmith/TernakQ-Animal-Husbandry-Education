@@ -55,7 +55,6 @@
             </ol>
         </nav>
 
-        <!-- Form Tambah/Edit Pengeluaran -->
         <div class="flex flex-col p-4 sm:p-6 bg-white shadow sm:rounded-lg ring-2 ring-gray-700 border-b-gray-200">
             <h2 class="text-xl font-bold mb-2 text-orangeCrayola">
                 <span x-text="editMode ? 'Edit Pengeluaran' : 'Tambah Pengeluaran'"></span>
@@ -72,7 +71,6 @@
 
                 <div class="justify-between flex flex-col space-y-6">
                     <div class="flex flex-col space-y-6">
-                        <!-- Kategori Pengeluaran -->
                         <div class="flex flex-col space-y-1">
                             <x-input-label for="category" :value="__('Kategori')" required />
                             <select id="category" name="category"
@@ -81,27 +79,28 @@
                                 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-700 
                                 text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5"
                                 x-model="category">
+                                <option value="" disabled selected>Pilih Kategori</option>
                                 <option value="Pembelian Ayam">Pembelian Ayam DOC</option>
                                 <option value="Pakan Ayam">Pembelian Pakan Ayam</option>
                                 <option value="Obat, Vitamin, Vaksin">Obat, Vitamin, Vaksin</option>
                             </select>
+                            <x-input-error :messages="$errors->get('category')" class="mt-1" />
                         </div>
 
-                        <!-- Deskripsi -->
                         <div class="flex flex-col space-y-1">
                             <x-input-label for="description" :value="__('Deskripsi Pengeluaran')" required />
                             <x-text-input id="description" name="description" type="text"
-                                class="block mt-1 w-full py-2.5" required x-model="description" />
+                                class="block mt-1 w-full py-2.5" x-model="description" />
+                            <x-input-error :messages="$errors->get('description')" class="mt-1" />
                         </div>
 
-                        <!-- Jumlah -->
                         <div class="flex flex-col space-y-1">
                             <x-input-label for="jumlah" :value="__('Jumlah')" required />
                             <x-text-input id="jumlah" name="jumlah" type="number" class="block mt-1 w-full py-2.5"
-                                required x-model="jumlah" oninput="validateNumber(this)" />
+                                x-model="jumlah" oninput="validateNumber(this)" />
+                            <x-input-error :messages="$errors->get('jumlah')" class="mt-1" />
                         </div>
 
-                        <!-- Satuan -->
                         <div class="flex flex-col space-y-1">
                             <x-input-label for="satuan" :value="__('Satuan')" required />
                             <select id="satuan" name="satuan"
@@ -110,6 +109,7 @@
                                 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-700 
                                 text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5"
                                 x-model="satuan">
+                                <option value="" disabled selected>Pilih Satuan</option>
                                 <option value="ekor">Ekor</option>
                                 <option value="kg">Kilogram</option>
                                 <option value="karung">Karung</option>
@@ -117,32 +117,32 @@
                                 <option value="unit">Unit</option>
                                 <option value="paket">Paket</option>
                             </select>
+                            <x-input-error :messages="$errors->get('satuan')" class="mt-1" />
                         </div>
 
-                        <!-- Harga per Satuan -->
                         <div class="flex flex-col space-y-1">
                             <x-input-label for="harga_per_satuan" :value="__('Harga per Satuan (IDR)')" required />
                             <x-text-input id="harga_per_satuan" name="harga_per_satuan" type="number"
-                                class="block mt-1 w-full py-2.5" required min="0" x-model="hargaPerSatuan"
+                                class="block mt-1 w-full py-2.5" min="0" x-model="hargaPerSatuan"
                                 oninput="validateNumber(this)" />
+                            <x-input-error :messages="$errors->get('harga_per_satuan')" class="mt-1" />
                         </div>
 
-                        <!-- Tanggal Pembelian -->
                         <div class="flex flex-col space-y-1">
                             <x-input-label for="tanggal_pembelian" :value="__('Tanggal Pembelian')" required />
                             <x-text-input id="tanggal_pembelian" name="tanggal_pembelian" type="date"
-                                class="block mt-1 w-full py-2.5" required x-model="tanggalPembelian" />
+                                class="block mt-1 w-full py-2.5" x-model="tanggalPembelian" />
+                            <x-input-error :messages="$errors->get('tanggal_pembelian')" class="mt-1" />
                         </div>
 
-                        <!-- Supplier (Opsional) -->
                         <div class="flex flex-col space-y-1">
                             <x-input-label for="supplier" :value="__('Supplier (Opsional)')" />
                             <x-text-input id="supplier" name="supplier" type="text" class="block mt-1 w-full py-2.5"
                                 x-model="supplier" />
+                            <x-input-error :messages="$errors->get('supplier')" class="mt-1" />
                         </div>
                     </div>
 
-                    <!-- Tombol Submit -->
                     <div class="flex justify-start">
                         <x-primary-button type="submit"
                             class="bg-orangeCrayola ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] 
@@ -161,7 +161,6 @@
             </form>
         </div>
 
-        <!-- Tabel Data Pengeluaran -->
         <div class="bg-white p-6 rounded-lg shadow-md w-full ring-2 ring-gray-700">
             <h2 class="text-xl font-bold mb-2 text-orangeCrayola">Data Pengeluaran</h2>
             <div class="overflow-x-auto">
@@ -211,7 +210,6 @@
                                         <i class="fa-solid fa-pen-to-square text-lg"></i>
                                     </button>
 
-                                    <!-- Tombol Hapus -->
                                     <button type="button"
                                         class="swal-delete-pengeluaran px-3 py-3 bg-red-100 text-red-700 rounded w-12 h-12 cursor-pointer"
                                         data-id="{{ $item->id }}"
@@ -249,7 +247,7 @@
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 fetch(deleteUrl, {
-                                        method: 'POST', // Laravel butuh POST dengan _method DELETE
+                                        method: 'POST',
                                         headers: {
                                             'X-CSRF-TOKEN': document.querySelector(
                                                 'meta[name="csrf-token"]').content,
@@ -257,14 +255,13 @@
                                         },
                                         body: JSON.stringify({
                                             _method: 'DELETE'
-                                        }) // Simulasi DELETE
+                                        })
                                     })
                                     .then(response => response.json())
                                     .then(data => {
                                         console.log(
                                             data
-                                        ); // Debugging untuk memastikan response diterima
-
+                                        );
                                         if (data.success) {
                                             Swal.fire('Terhapus!', data.message,
                                                     'success')
@@ -275,7 +272,7 @@
                                     })
                                     .catch(error => {
                                         console.error('Error:',
-                                            error); // Debugging error
+                                            error);
                                         Swal.fire('Gagal!', 'Terjadi kesalahan server.',
                                             'error');
                                     });
@@ -285,14 +282,12 @@
                 });
             }
 
-            // Panggil fungsi untuk tabel kandang
             handleDelete('.swal-delete-pengeluaran', 'Pengeluaran');
         });
     </script>
 
     <script>
         function validateNumber(input) {
-            // Hanya menerima angka (menghapus karakter selain angka)
             input.value = input.value.replace(/[^0-9]/g, '');
         }
     </script>
