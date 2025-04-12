@@ -52,26 +52,26 @@
                 </template>
 
                 <div class="flex flex-col space-y-1">
-                    <x-input-label for="title" :value="__('Judul Grup Artikel')" required/>
-                    <x-text-input id="title" name="title" type="text" class="block mt-1 w-full py-2.5" required
+                    <x-input-label for="title" :value="__('Judul Grup Artikel')" required />
+                    <x-text-input id="title" name="title" type="text" class="block mt-1 w-full py-2.5"
                         x-model="title" />
+                    <x-input-error :messages="$errors->get('title')" class="mt-1" />
                 </div>
 
-                <!-- Input Deskripsi -->
                 <div class="flex flex-col space-y-1">
-                    <x-input-label for="description" :value="__('Deskripsi Grup Artikel')" required/>
+                    <x-input-label for="description" :value="__('Deskripsi Grup Artikel')" required />
                     <textarea id="description" name="description"
                         class="block mt-1 w-full h-[100px] resize-none py-2.5 ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151]
                         focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5
                         rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-700
                         text-gray-700 leading-5 transition duration-150 ease-in-out"
-                        x-model="description"></textarea>
+                        x-model="description">
+                    </textarea>
+                    <x-input-error :messages="$errors->get('description')" class="mt-1" />
                 </div>
 
-                <!-- Input Gambar -->
                 <div class="flex flex-col space-y-1">
-                    <x-input-label for="image" :value="__('Gambar Grup Artikel')" required/>
-
+                    <x-input-label for="image" :value="__('Gambar Grup Artikel')" required />
                     <div x-data="{ imagePreview: null }" class="relative w-full">
                         <label for="image"
                             class="cursor-pointer flex flex-col items-center justify-center border-2 border-gray-700 
@@ -82,18 +82,16 @@
                                 <span class="text-gray-700 font-medium">Klik Gambar di Sini</span>
                             </div>
 
-                            <!-- Preview Image -->
                             <div x-show="imagePreview" class="relative w-full flex justify-center">
                                 <img :src="imagePreview" class="w-[250px] h-[200px] rounded-md shadow-md object-cover" />
                                 <button type="button"
                                     class="absolute top-0 right-0 bg-gray-800 text-white rounded-full p-1 
                                     -mt-2 -mr-2 shadow-md hover:bg-red-600 transition w-8 h-8"
                                     @click="imagePreview = null; document.getElementById('image').value = ''">
-                                    <i class="fa-solid fa-xmark"></i> <!-- FontAwesome X icon -->
+                                    <i class="fa-solid fa-xmark"></i>
                                 </button>
                             </div>
 
-                            <!-- Menampilkan gambar yang sudah ada -->
                             <div x-show="!imagePreview && image">
                                 <img :src="image" alt="Image"
                                     class="w-[250px] h-[200px] rounded-md shadow-md object-cover" />
@@ -108,9 +106,9 @@
                                          reader.readAsDataURL(file);
                                      }" />
                     </div>
+                    <x-input-error :messages="$errors->get('image')" class="mt-1" />
                 </div>
 
-                <!-- Tombol Submit -->
                 <div class="flex justify-start">
                     <x-primary-button type="submit"
                         class="bg-orangeCrayola ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] 
@@ -137,20 +135,20 @@
                     Artikel</a>
             </div>
             <div class="flex space-x-6 items-center">
-                <!-- Artikel Tertunda -->
-                <div class="flex flex-col justify-center items-center space-y-1 bg-orange-200 py-2 px-4 rounded-md ring-2 ring-orange-400">
+                <div
+                    class="flex flex-col justify-center items-center space-y-1 bg-orange-200 py-2 px-4 rounded-md ring-2 ring-orange-400">
                     <h3 class="font-medium text-normal text-orange-700">Artikel Tertunda</h3>
                     <span class="font-semibold text-xl text-orange-700">{{ $pendingCount }}</span>
                 </div>
 
-                <!-- Artikel Disetujui -->
-                <div class="flex flex-col justify-center items-center space-y-1 bg-blue-200 py-2 px-4 rounded-md ring-2 ring-blue-400">
+                <div
+                    class="flex flex-col justify-center items-center space-y-1 bg-blue-200 py-2 px-4 rounded-md ring-2 ring-blue-400">
                     <h3 class="font-medium text-normal text-blue-700">Artikel Disetujui</h3>
                     <span class="font-semibold text-xl text-blue-700">{{ $approvedCount }}</span>
                 </div>
 
-                <!-- Artikel Ditolak -->
-                <div class="flex flex-col justify-center items-center space-y-1 bg-red-200 py-2 px-4 rounded-md ring-2 ring-red-400">
+                <div
+                    class="flex flex-col justify-center items-center space-y-1 bg-red-200 py-2 px-4 rounded-md ring-2 ring-red-400">
                     <h3 class="font-medium text-normal text-red-700">Artikel Ditolak</h3>
                     <span class="font-semibold text-xl text-red-700">{{ $rejectedCount }}</span>
                 </div>
@@ -194,7 +192,6 @@
                                         <i class="fa-solid fa-pen-to-square text-lg"></i>
                                     </button>
 
-                                    <!-- Tombol Hapus Artikel -->
                                     <button type="button"
                                         class="swal-delete-user-article px-3 py-3 rounded bg-red-100 text-red-700 flex justify-center items-center w-12 h-12 cursor-pointer"
                                         data-id="{{ $article->id }}"
@@ -232,7 +229,7 @@
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 fetch(deleteUrl, {
-                                        method: 'POST', // Laravel butuh POST dengan _method DELETE
+                                        method: 'POST',
                                         headers: {
                                             'X-CSRF-TOKEN': document.querySelector(
                                                 'meta[name="csrf-token"]').content,
@@ -240,13 +237,13 @@
                                         },
                                         body: JSON.stringify({
                                             _method: 'DELETE'
-                                        }) // Simulasi DELETE
+                                        })
                                     })
                                     .then(response => response.json())
                                     .then(data => {
                                         console.log(
                                             data
-                                        ); // Debugging untuk memastikan response diterima
+                                        );
 
                                         if (data.success) {
                                             Swal.fire('Terhapus!', data.message,
@@ -258,7 +255,7 @@
                                     })
                                     .catch(error => {
                                         console.error('Error:',
-                                            error); // Debugging error
+                                            error);
                                         Swal.fire('Gagal!', 'Terjadi kesalahan server.',
                                             'error');
                                     });
@@ -267,8 +264,6 @@
                     });
                 });
             }
-
-            // Panggil fungsi untuk tabel kandang
             handleDelete('.swal-delete-user-article', 'Grup Artikel');
         });
     </script>
