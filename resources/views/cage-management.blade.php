@@ -30,7 +30,6 @@
             </script>
         @endif
 
-        <!-- Form Input Kandang (Tambah & Edit) -->
         <div
             class="flex flex-col p-4 sm:p-6 bg-white shadow sm:rounded-lg ring-2 ring-gray-700 border-b-gray-200 w-1/2 max-h-[480px]">
             <h2 class="text-xl font-bold mb-2 text-orangeCrayola">
@@ -46,25 +45,22 @@
 
                 <div class="justify-between flex flex-col space-y-10">
                     <div class="flex flex-col space-y-4">
-                        <!-- Input Nama Kandang -->
                         <div class="flex flex-col space-y-1">
-                            <x-input-label for="nama_kandang" :value="__('Nama Kandang')" />
+                            <x-input-label for="nama_kandang" :value="__('Nama Kandang')" required/>
                             <x-text-input id="nama_kandang" name="nama_kandang" type="text"
                                 class="block mt-1 w-full py-2.5" x-model="namaKandang" />
                             <x-input-error :messages="$errors->get('nama_kandang')" class="mt-2" />
                         </div>
 
-                        <!-- Input Kapasitas -->
                         <div class="flex flex-col space-y-1">
-                            <x-input-label for="kapasitas" :value="__('Kapasitas')" />
+                            <x-input-label for="kapasitas" :value="__('Kapasitas')" required/>
                             <x-text-input id="kapasitas" name="kapasitas" type="text" class="block mt-1 w-full py-2.5"
                                 x-model="kapasitas" oninput="validateNumber(this)" />
                             <x-input-error :messages="$errors->get('kapasitas')" class="mt-2" />
                         </div>
 
-                        <!-- Select Status Kandang -->
                         <div class="flex flex-col space-y-1">
-                            <x-input-label for="status_kandang" :value="__('Status Kandang')" />
+                            <x-input-label for="status_kandang" :value="__('Status Kandang')" required/>
                             <select id="status_kandang" name="status_kandang"
                                 class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] 
                                 focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 
@@ -77,7 +73,6 @@
                         </div>
                     </div>
 
-                    <!-- Tombol Submit -->
                     <div class="flex justify-start">
                         <x-primary-button type="submit"
                             class="bg-orangeCrayola ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] 
@@ -97,7 +92,6 @@
             </form>
         </div>
 
-        <!-- Tabel Data Kandang -->
         <div class="bg-white p-6 rounded-lg shadow-md w-full ring-2 ring-gray-700">
             <h2 class="text-xl font-bold mb-2 text-orangeCrayola">Data Kandang Ayam</h2>
             <div class="overflow-x-auto">
@@ -117,11 +111,12 @@
                                 <td class="px-4 py-3">{{ $loop->iteration }}</td>
                                 <td class="px-4 py-3">{{ $kdg->nama_kandang }}</td>
                                 <td class="px-4 py-3">{{ $kdg->kapasitas }}</td>
-                                <td class="px-4 py-3"><span
-                                        class="px-3 py-1 rounded text-xs font-semibold {{ $kdg->status_kandang == 'Aktif' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">{{ $kdg->status_kandang }}</span>
+                                <td class="px-4 py-3">
+                                    <span
+                                        class="px-3 py-1 rounded text-xs font-semibold {{ $kdg->status_kandang == 'Aktif' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">{{ $kdg->status_kandang }}
+                                    </span>
                                 </td>
                                 <td class="px-4 py-3 flex gap-3 justify-center items-center">
-                                    <!-- Tombol Edit -->
                                     <button type="button"
                                         class="px-3 py-3 rounded text-xs font-semibold bg-blue-100 text-blue-700 
                                         flex justify-center items-center w-12 h-12 cursor-pointer"
@@ -135,7 +130,6 @@
                                         <i class="fa-solid fa-pen-to-square text-lg"></i>
                                     </button>
 
-                                    <!-- Tombol Hapus -->
                                     <button type="button"
                                         class="swal-delete-kandang px-3 py-3 rounded bg-red-100 text-red-700 
                                             flex justify-center items-center w-12 h-12 cursor-pointer"
@@ -175,7 +169,7 @@
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 fetch(deleteUrl, {
-                                        method: 'POST', // Laravel butuh POST dengan _method DELETE
+                                        method: 'POST',
                                         headers: {
                                             'X-CSRF-TOKEN': document.querySelector(
                                                 'meta[name="csrf-token"]').content,
@@ -183,13 +177,13 @@
                                         },
                                         body: JSON.stringify({
                                             _method: 'DELETE'
-                                        }) // Simulasi DELETE
+                                        })
                                     })
                                     .then(response => response.json())
                                     .then(data => {
                                         console.log(
                                             data
-                                        ); // Debugging untuk memastikan response diterima
+                                        );
 
                                         if (data.success) {
                                             Swal.fire('Terhapus!', data.message,
@@ -201,7 +195,7 @@
                                     })
                                     .catch(error => {
                                         console.error('Error:',
-                                            error); // Debugging error
+                                            error);
                                         Swal.fire('Gagal!', 'Terjadi kesalahan server.',
                                             'error');
                                     });
@@ -211,14 +205,12 @@
                 });
             }
 
-            // Panggil fungsi untuk tabel kandang
             handleDelete('.swal-delete-kandang', 'Kandang Ayam');
         });
     </script>
 
     <script>
         function validateNumber(input) {
-            // Hanya menerima angka (menghapus karakter selain angka)
             input.value = input.value.replace(/[^0-9]/g, '');
         }
     </script>
