@@ -9,17 +9,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class AdminArticleController extends Controller
 {
-    // Menampilkan halaman form untuk menambah artikel
     public function indexAdminArtikel(Request $request)
     {
         try {
-            // Tangkap parameter query string untuk paginasi
             $articlePage = $request->get('article_page', 1);
 
-            // Paginasi dengan appends untuk menjaga parameter query saat halaman berubah
             $articles = Article::with('cardArticle')
             ->where('user_id', Auth::id())
             ->latest()
@@ -28,7 +26,6 @@ class AdminArticleController extends Controller
             $cardArticles = CardArticle::where('user_id', Auth::id())->get();
             $tags = Tag::all();
 
-            // Menambahkan parameter yang sama dengan query untuk pagination
             $articles->appends(['article_page' => $articlePage]);
 
             $totalArticles = Article::where('user_id', Auth::id())->count();
@@ -47,19 +44,32 @@ class AdminArticleController extends Controller
         }
     }
 
-    // Menyimpan artikel dan tag terkait
-    public function storeAdminArtikel(Request $request)
+    public function storeUserArtikel(Request $request)
     {
         try {
-            // Validasi inputan
             $validated = $request->validate([
-                'card_id' => 'required|exists:card_articles,id', // Pilih grup artikel
+                'card_id' => 'required|exists:card_articles,id',
                 'title' => 'required|string|max:255',
                 'description' => 'required|string',
                 'status' => 'required|string|in:Tertunda,Disetujui,Ditolak',
-                'tags' => 'required|array', // Untuk multiple tags
+                'tags' => 'required|array|min:1|max:3', 
                 'tags.*' => 'exists:tags,id', 
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ], [
+                'card_id.required' => 'Artikel grup harus dipilih',
+                'card_id.exists' => 'Artikel grup yang dipilih tidak valid',
+                'title.required' => 'Judul artikel harus diisi',
+                'title.max' => 'Judul artikel maksimal 255 karakter',
+                'description.required' => 'Deskripsi artikel harus diisi',
+                'tags.required' => 'Minimal satu tag harus dipilih',
+                'tags.array' => 'Format tag tidak valid',
+                'tags.min' => 'Minimal satu tag harus dipilih',
+                'tags.max' => 'Maksimal tiga tag yang dapat dipilih',
+                'tags.*.exists' => 'Tag yang dipilih tidak valid',
+                'image.required' => 'Gambar artikel harus diunggah',
+                'image.image' => 'File harus berupa gambar',
+                'image.mimes' => 'Format gambar harus jpeg, png, jpg, atau gif',
+                'image.max' => 'Ukuran gambar maksimal 2MB',
             ]);
 
             $imagePath = null;
@@ -67,9 +77,6 @@ class AdminArticleController extends Controller
                 $imagePath = $request->file('image')->store('articles', 'public');
             }
 
-            $validated['user_id'] = Auth::id();
-
-            // Simpan artikel
             $article = Article::create([
                 'card_id' => $validated['card_id'],
                 'title' => $validated['title'],
@@ -79,7 +86,6 @@ class AdminArticleController extends Controller
                 'user_id' => Auth::id(),
             ]);
 
-            // Jika ada tag yang dipilih, simpan relasi antara artikel dan tag
             if (!empty($validated['tags'])) {
                 $article->tags()->attach($validated['tags']);
             }
@@ -88,69 +94,90 @@ class AdminArticleController extends Controller
                 'status' => 'success',
                 'message' => 'Artikel berhasil dibuat!',
             ]);
+        } catch (ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
         } catch (\Exception $e) {
             Log::error('Gagal menyimpan artikel: ' . $e->getMessage());
 
-            return redirect()->route('admin.add-article-detail')->with([
+            return redirect()->back()->withInput()->with([
                 'status' => 'error',
-                'message' => 'Terjadi kesalahan saat menyimpan artikel.',
+                'message' => 'Terjadi kesalahan saat menyimpan artikel: ' . $e->getMessage(),
             ]);
         }
     }
 
-    // Mengupdate artikel dan tag terkait
-    public function updateAdminArtikel(Request $request, $id)
-{
-    try {
-        $validated = $request->validate([
-            'card_id' => 'required|exists:card_articles,id',
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'status' => 'required|string|in:Tertunda,Disetujui,Ditolak',
-            'tags' => 'required|array',
-            'tags.*' => 'exists:tags,id',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+    public function updateUserArtikel(Request $request, $id)
+    {
+        try {
+            $validated = $request->validate([
+                'card_id' => 'required|exists:card_articles,id',
+                'title' => 'required|string|max:255',
+                'description' => 'required|string',
+                'status' => 'required|string|in:Tertunda,Disetujui,Ditolak',
+                'tags' => 'required|array|min:1|max:3', 
+                'tags.*' => 'exists:tags,id',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ], [
+                'card_id.required' => 'Artikel grup harus dipilih',
+                'card_id.exists' => 'Artikel grup yang dipilih tidak valid',
+                'title.required' => 'Judul artikel harus diisi',
+                'title.max' => 'Judul artikel maksimal 255 karakter',
+                'description.required' => 'Deskripsi artikel harus diisi',
+                'tags.required' => 'Minimal satu tag harus dipilih',
+                'tags.array' => 'Format tag tidak valid',
+                'tags.min' => 'Minimal satu tag harus dipilih',
+                'tags.max' => 'Maksimal tiga tag yang dapat dipilih',
+                'tags.*.exists' => 'Tag yang dipilih tidak valid',
+                'image.image' => 'File harus berupa gambar',
+                'image.mimes' => 'Format gambar harus jpeg, png, jpg, atau gif',
+                'image.max' => 'Ukuran gambar maksimal 2MB',
+            ]);
 
-        $article = Article::where('id', $id)
-                ->where('user_id', Auth::id())
-                ->firstOrFail();
+            $article = Article::where('id', $id)
+                    ->where('user_id', Auth::id())
+                    ->firstOrFail();
 
-        // Pastikan hanya update artikel tanpa merubah card title
-        $imagePath = $article->image;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('articles', 'public');
+            $imagePath = $article->image;
+            if ($request->hasFile('image')) {
+                if ($article->image && Storage::disk('public')->exists($article->image)) {
+                    Storage::disk('public')->delete($article->image);
+                }
+                $imagePath = $request->file('image')->store('articles', 'public');
+            }
+
+            $article->update([
+                'card_id' => $validated['card_id'],  
+                'title' => $validated['title'], 
+                'description' => $validated['description'],
+                'status' => $validated['status'],
+                'image' => $imagePath,
+            ]);
+
+            if (!empty($validated['tags'])) {
+                $article->tags()->sync($validated['tags']);
+            } else {
+                $article->tags()->detach(); 
+            }
+
+            return redirect()->route('admin.add-article-detail')->with([
+                'status' => 'success',
+                'message' => 'Artikel berhasil diperbarui!',
+            ]);
+        } catch (ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
+        } catch (\Exception $e) {
+            Log::error('Gagal memperbarui artikel: ' . $e->getMessage());
+            return redirect()->back()->withInput()->with([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan saat memperbarui artikel: ' . $e->getMessage(),
+            ]);
         }
-
-        $article->update([
-            'card_id' => $validated['card_id'],  // Hanya merubah card_id
-            'title' => $validated['title'],  // Mengubah title artikel
-            'description' => $validated['description'],
-            'status' => $validated['status'],
-            'image' => $imagePath,
-        ]);
-
-        // Update tags
-        if (!empty($validated['tags'])) {
-            $article->tags()->sync($validated['tags']);
-        }
-
-        return redirect()->route('admin.add-article-detail')->with([
-            'status' => 'success',
-            'message' => 'Artikel berhasil diperbarui!',
-        ]);
-    } catch (\Exception $e) {
-        Log::error('Gagal memperbarui artikel: ' . $e->getMessage());
-        return redirect()->route('admin.add-article-detail')->with([
-            'status' => 'error',
-            'message' => 'Terjadi kesalahan saat memperbarui artikel.',
-        ]);
     }
-}
 
-    /**
-     * Menghapus artikel dan relasi terkait.
-     */
     public function deleteAdminArtikel($id)
     {
         try {
@@ -158,7 +185,6 @@ class AdminArticleController extends Controller
             ->where('user_id', Auth::id())
             ->firstOrFail();
 
-            // Hapus artikel dan relasi dengan tags
             $article->tags()->detach();
             if ($article->image) {
                 Storage::disk('public')->delete($article->image);
