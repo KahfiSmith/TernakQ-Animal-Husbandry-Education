@@ -9,10 +9,10 @@
             <h2 class="text-2xl font-medium">Informasi</h2>
             <ul class="flex flex-col space-y-2">
                 <li>
-                    <a href="#tentang-kami" class="font-medium text-gray-700 hover:font-semibold">Tentang Kami</a>
+                    <a href="{{ url('/#about-us') }}" class="font-medium text-gray-700 hover:font-semibold">Tentang Kami</a>
                 </li>
                 <li>
-                    <a href="#tentang-kami" class="font-medium text-gray-700 hover:font-semibold">FAQ</a>
+                    <a href="{{ url('/#faq') }}" class="font-medium text-gray-700 hover:font-semibold">FAQ</a>
                 </li>
             </ul>
         </div>
@@ -20,10 +20,10 @@
             <h2 class="text-2xl font-medium">Layanan</h2>
             <ul class="flex flex-col space-y-2">
                 <li>
-                    <a href="#tentang-kami" class="font-medium text-gray-700 hover:font-semibold">Artikel</a>
+                    <a href="{{ url('/#article') }}" class="font-medium text-gray-700 hover:font-semibold">Artikel</a>
                 </li>
                 <li>
-                    <a href="#tentang-kami" class="font-medium text-gray-700 hover:font-semibold">Forum</a>
+                    <a href="{{ url('/#forum') }}" class="font-medium text-gray-700 hover:font-semibold">Forum</a>
                 </li>
             </ul>
         </div>
@@ -31,14 +31,14 @@
             <h2 class="text-2xl font-medium">Kontak Kami</h2>
             <ul class="flex flex-col space-y-2">
                 <li>
-                    <a href="#tentang-kami"
+                    <a href="tel:+6281264385621"
                         class="flex space-x-2 font-medium text-gray-700 hover:font-semibold items-center">
                         <i class="fa-solid fa-phone"></i>
                         <span>+6281264385621</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#tentang-kami"
+                    <a href="mailto:ternakq@gmail.com"
                         class="flex space-x-2 font-medium text-gray-700 hover:font-semibold items-center">
                         <i class="fa-solid fa-envelope"></i>
                         <span>ternakq@gmail.com</span>
@@ -51,21 +51,21 @@
     <div class="flex justify-between items-start pt-4">
         <div class="flex space-x-4">
             <a href="https://www.linkedin.com/in/mohamad-al-kahfi-b48107271/" target="_blank"
-            class="bg-cosmicLatte w-8 h-8 rounded-full flex justify-center items-center">
-             <i class="fa-brands fa-linkedin text-polishedPine text-lg"></i>
-         </a>
-         <a href="https://www.facebook.com/profile.php?id=100028652941985" target="_blank"
-            class="bg-cosmicLatte w-8 h-8 rounded-full flex justify-center items-center">
-             <i class="fa-brands fa-facebook text-polishedPine text-lg"></i>
-         </a>
-         <a href="https://www.instagram.com/alkaahfi__/" target="_blank"
-            class="bg-cosmicLatte w-8 h-8 rounded-full flex justify-center items-center">
-             <i class="fa-brands fa-instagram text-polishedPine text-lg"></i>
-         </a>
-         <a href="https://github.com/KahfiSmith" target="_blank"
-            class="bg-cosmicLatte w-8 h-8 rounded-full flex justify-center items-center">
-             <i class="fa-brands fa-github text-polishedPine text-lg"></i>
-         </a>
+                class="bg-cosmicLatte w-8 h-8 rounded-full flex justify-center items-center">
+                <i class="fa-brands fa-linkedin text-polishedPine text-lg"></i>
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=100028652941985" target="_blank"
+                class="bg-cosmicLatte w-8 h-8 rounded-full flex justify-center items-center">
+                <i class="fa-brands fa-facebook text-polishedPine text-lg"></i>
+            </a>
+            <a href="https://www.instagram.com/alkaahfi__/" target="_blank"
+                class="bg-cosmicLatte w-8 h-8 rounded-full flex justify-center items-center">
+                <i class="fa-brands fa-instagram text-polishedPine text-lg"></i>
+            </a>
+            <a href="https://github.com/KahfiSmith" target="_blank"
+                class="bg-cosmicLatte w-8 h-8 rounded-full flex justify-center items-center">
+                <i class="fa-brands fa-github text-polishedPine text-lg"></i>
+            </a>
         </div>
         <span x-data="{ year: new Date().getFullYear() }" class="font-medium">
             &copy;<span x-text="year"></span> TernakQ

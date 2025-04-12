@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', config('app.name', 'Laravel'))</title>
+    <title>@yield('title', config('app.name', 'Artikel Detail'))</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -52,7 +52,7 @@
             </nav>
         </div>
         <!-- Judul Artikel -->
-        <h1 class="text-4xl font-extrabold text-gray-500 leading-tight mb-4">
+        <h1 class="text-4xl font-bold text-gray-500 leading-tight mb-4">
             {{ $article->title }}
         </h1>
 

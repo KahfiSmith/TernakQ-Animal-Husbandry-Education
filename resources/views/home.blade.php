@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="/images/logo.svg" type="image/png">
 
-    <title>Laravel</title>
-
-    <!-- Scripts -->
+    <title>TernakQ</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
@@ -17,7 +15,6 @@
     <div class="flex flex-col">
         <x-navbar />
         @livewire('pages.home.hero')
-
         <section id="article" class="flex flex-col px-14 mb-20 pt-20">
             <div class="flex flex-col mb-7">
                 <h2 class="text-3xl font-semibold mb-1">Artikel Terbaru</h2>
