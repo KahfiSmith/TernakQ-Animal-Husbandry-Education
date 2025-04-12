@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class UserCardArticleController extends Controller
 {
@@ -41,81 +42,113 @@ class UserCardArticleController extends Controller
     }
 
     public function storeUserArtikel(Request $request)
-{
-    try {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Gambar opsional
-        ]);
+    {
+        try {
+            $validated = $request->validate([
+                'title' => 'required|string|max:255',
+                'description' => 'required|string',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', 
+            ], [
+                'title.required' => 'Judul grup artikel harus diisi.',
+                'title.max' => 'Judul grup artikel maksimal 255 karakter.',
+                'description.required' => 'Deskripsi grup artikel harus diisi.',
+                'image.required' => 'Gambar grup artikel harus diunggah.',
+                'image.image' => 'File harus berupa gambar.',
+                'image.mimes' => 'Format gambar harus jpeg, png, jpg, atau gif.',
+                'image.max' => 'Ukuran gambar maksimal 2MB.'
+            ]);
 
-        // Simpan gambar jika ada
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('card_articles', 'public');
-            Log::info('Gambar berhasil disimpan di: ' . $imagePath); 
+            $imagePath = null;
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('card_articles', 'public');
+            }
+
+            $cardArticle = CardArticle::create([
+                'title' => $validated['title'],
+                'description' => $validated['description'],
+                'image' => $imagePath,
+                'user_id' => Auth::id(),
+            ]);
+
+            return redirect()->route('add-article')->with([
+                'status' => 'success',
+                'message' => 'Artikel grup berhasil ditambahkan!',
+            ]);
+        } catch (ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
+        } catch (\Exception $e) {
+            Log::error('Gagal menyimpan artikel: ' . $e->getMessage());
+
+            return redirect()->route('add-article')->with([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan saat menyimpan artikel.',
+            ]);
         }
-
-        // Simpan artikel ke dalam 'card_articles'
-        $cardArticle = CardArticle::create([
-            'title' => $validated['title'],
-            'description' => $validated['description'],
-            'image' => $imagePath,
-            'user_id' => Auth::id(),
-        ]);
-
-        return redirect()->route('add-article')->with([
-            'status' => 'success',
-            'message' => 'Artikel grup berhasil ditambahkan!',
-        ]);
-    } catch (\Exception $e) {
-        Log::error('Gagal menyimpan artikel: ' . $e->getMessage());
-
-        return redirect()->route('add-article')->with([
-            'status' => 'error',
-            'message' => 'Terjadi kesalahan saat menyimpan artikel.',
-        ]);
     }
-}
 
-public function updateUserArtikel(Request $request, $id)
-{
-    try {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Gambar opsional
-        ]);
+    public function updateUserArtikel(Request $request, $id)
+    {
+        try {
+            $validated = $request->validate([
+                'title' => 'required|string|max:255',
+                'description' => 'required|string',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
+            ], [
+                'title.required' => 'Judul grup artikel harus diisi.',
+                'title.max' => 'Judul grup artikel maksimal 255 karakter.',
+                'description.required' => 'Deskripsi grup artikel harus diisi.',
+                'image.image' => 'File harus berupa gambar.',
+                'image.mimes' => 'Format gambar harus jpeg, png, jpg, atau gif.',
+                'image.max' => 'Ukuran gambar maksimal 2MB.'
+            ]);
 
-        $card = CardArticle::where('id', $id)
-                ->where('user_id', Auth::id())
-                ->firstOrFail();
+            $card = CardArticle::where('id', $id)
+                    ->where('user_id', Auth::id())
+                    ->firstOrFail();
 
-        $imagePath = $card->image;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('card_articles', 'public');
-            Log::info('Gambar berhasil disimpan di: ' . $imagePath); 
+            $imagePath = $card->image;
+            
+            if ($request->hasFile('image')) {
+                if ($imagePath && Storage::disk('public')->exists($imagePath)) {
+                    Storage::disk('public')->delete($imagePath);
+                    Log::info('Gambar lama berhasil dihapus: ' . $imagePath);
+                }
+                
+                $newImagePath = $request->file('image')->store('card_articles', 'public');
+                Log::info('Gambar baru berhasil disimpan: ' . $newImagePath);
+                $imagePath = $newImagePath;
+            }
+
+            $card->update([
+                'title' => $validated['title'],
+                'description' => $validated['description'],
+                'image' => $imagePath,
+            ]);
+
+            return redirect()->route('add-article')->with([
+                'status' => 'success',
+                'message' => 'Artikel grup berhasil diperbarui!',
+            ]);
+        } catch (ValidationException $e) {
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('add-article')->with([
+                'status' => 'error',
+                'message' => 'Artikel grup tidak ditemukan.',
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Gagal memperbarui artikel grup: ' . $e->getMessage());
+
+            return redirect()->route('add-article')->with([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan saat memperbarui artikel grup.',
+            ]);
         }
-
-        $card->update([
-            'title' => $validated['title'],
-            'description' => $validated['description'],
-            'image' => $imagePath,
-        ]);
-
-        return redirect()->route('add-article')->with([
-            'status' => 'success',
-            'message' => 'Card berhasil diperbarui!',
-        ]);
-    } catch (\Exception $e) {
-        Log::error('Gagal memperbarui Card: ' . $e->getMessage());
-
-        return redirect()->route('add-article')->with([
-            'status' => 'error',
-            'message' => 'Terjadi kesalahan saat memperbarui Card.',
-        ]);
     }
-}
 
     public function deleteUserArtikel($id)
     {
