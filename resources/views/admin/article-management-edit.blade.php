@@ -4,8 +4,27 @@
 
 @section('content')
     <main class="w-full flex flex-col space-y-6">
+        <nav class="text-sm text-gray-600 font-medium" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                <li class="inline-flex items-center">
+                    <a href="{{ route('admin.article-management') }}" wire:navigate
+                        class="text-gray-500 hover:text-gray-700  inline-flex items-center ease-in-out duration-300 hover:underline">
+                        Manajemen Artikel
+                    </a>
+                </li>
+                <li>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </li>
+                <li aria-current="page" class="text-gray-500 font-normal">
+                    Artikel
+                </li>
+            </ol>
+        </nav>
         <div class="p-6 bg-white/80 rounded-lg shadow-lg ring-2 ring-gray-700">
-            <h1 class="text-4xl font-extrabold text-gray-500 leading-tight mb-4">
+            <h1 class="text-4xl font-bold text-gray-500 leading-tight mb-4">
                 {{ $article->title }}
             </h1>
             @if ($article->image)

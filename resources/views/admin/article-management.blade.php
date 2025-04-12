@@ -3,7 +3,14 @@
 @section('title', 'Admin - Manajemen Artikel')
 
 @section('content')
-    <main class="w-full">
+    <main class="w-full flex flex-col space-y-6">
+        <nav class="text-sm text-gray-600 font-medium" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                <li class="inline-flex items-center">
+                    Manajemen Artikel
+                </li>
+            </ol>
+        </nav>
         <div class="bg-white p-6 rounded-lg shadow-md w-full ring-2 ring-gray-700">
             <h2 class="text-xl font-bold mb-2 text-orangeCrayola">Data Artikel</h2>
 
@@ -33,7 +40,8 @@
                                 <td class="px-4 py-3">{{ $loop->iteration }}</td>
                                 <td class="px-4 py-3">{{ $article->title }}</td>
                                 <td class="px-4 py-3">{{ Str::limit($article->description, 100) }}</td>
-                                <td class="px-4 py-3">{{ $article->catatan ? Str::limit($article->catatan, 100) : '-' }}</td>
+                                <td class="px-4 py-3">{{ $article->catatan ? Str::limit($article->catatan, 100) : '-' }}
+                                </td>
                                 <td class="px-4 py-3">
                                     <span
                                         class="px-3 py-1 rounded text-xs font-semibold 
@@ -54,7 +62,7 @@
                                         class="px-2 py-3 rounded font-semibold bg-gray-300 text-white-700 flex justify-center items-center gap-2 cursor-pointer">
                                         <span><i class="fa-solid fa-pen-clip"></i></span>
                                         <p>Review</p>
-                                     </a>                                     
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach
