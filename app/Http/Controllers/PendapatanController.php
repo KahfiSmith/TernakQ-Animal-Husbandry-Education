@@ -10,16 +10,12 @@ use Illuminate\Validation\ValidationException;
 
 class PendapatanController extends Controller
 {
-    /**
-     * Menampilkan daftar pendapatan dengan pagination.
-     */
+
     public function indexPendapatan(Request $request)
     {
         try {
-            // Tangkap parameter query string untuk paginasi
             $pendapatanPage = $request->get('pendapatan_page', 1);
 
-            // Ambil data pendapatan dengan pagination (10 item per halaman)
             $pendapatan = Pendapatan::where('user_id', Auth::id())
                 ->orderBy('tanggal_transaksi', 'desc')
                 ->paginate(10, ['*'], 'pendapatan_page', $pendapatanPage);
@@ -35,9 +31,6 @@ class PendapatanController extends Controller
         }
     }
 
-    /**
-     * Menyimpan data pendapatan baru.
-     */
     public function storePendapatan(Request $request)
     {
         try {
@@ -50,8 +43,20 @@ class PendapatanController extends Controller
                 'nama_pembeli' => 'nullable|string|max:255',
                 'nama_perusahaan' => 'nullable|string|max:255',
             ], [
-                'jumlah.min' => 'jumlah minimal 1.',
-                'harga_per_satuan.min' => 'Harga per kilogram harus minimal memiliki 4 digit (misalnya, 1000 atau lebih).'
+                'kategori.required' => 'Kategori harus dipilih.',
+                'kategori.in' => 'Kategori tidak valid.',
+                'jumlah.required' => 'Jumlah harus diisi.',
+                'jumlah.numeric' => 'Jumlah harus berupa angka.',
+                'jumlah.min' => 'Jumlah minimal 1.',
+                'satuan.required' => 'Satuan harus dipilih.',
+                'satuan.in' => 'Satuan tidak valid.',
+                'harga_per_satuan.required' => 'Harga per satuan harus diisi.',
+                'harga_per_satuan.numeric' => 'Harga per satuan harus berupa angka.',
+                'harga_per_satuan.min' => 'Harga per satuan minimal Rp 1.000.',
+                'tanggal_transaksi.required' => 'Tanggal transaksi harus diisi.',
+                'tanggal_transaksi.date' => 'Format tanggal transaksi tidak valid.',
+                'nama_pembeli.max' => 'Nama pembeli maksimal 255 karakter.',
+                'nama_perusahaan.max' => 'Nama perusahaan maksimal 255 karakter.'
             ]);
 
             $validated['user_id'] = Auth::id();
@@ -64,9 +69,9 @@ class PendapatanController extends Controller
             ]);
 
         } catch (ValidationException $e) {
-            // Ambil pesan error pertama
-            $errors = $e->validator->errors()->all();
-            return redirect()->back()->with('status', 'error')->with('message', $errors[0]);
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
         } catch (\Exception $e) {
             Log::error('Gagal menyimpan pendapatan: ' . $e->getMessage());
 
@@ -77,9 +82,6 @@ class PendapatanController extends Controller
         }
     }
 
-    /**
-     * Memperbarui data pendapatan.
-     */
     public function updatePendapatan(Request $request, $id)
     {
         try {
@@ -92,9 +94,22 @@ class PendapatanController extends Controller
                 'nama_pembeli' => 'nullable|string|max:255',
                 'nama_perusahaan' => 'nullable|string|max:255',
             ], [
-                'jumlah.min' => 'jumlah minimal 1.',
-                'harga_per_satuan.min' => 'Harga per kilogram harus minimal memiliki 4 digit (misalnya, 1000 atau lebih).'
+                'kategori.required' => 'Kategori harus dipilih.',
+                'kategori.in' => 'Kategori tidak valid.',
+                'jumlah.required' => 'Jumlah harus diisi.',
+                'jumlah.numeric' => 'Jumlah harus berupa angka.',
+                'jumlah.min' => 'Jumlah minimal 1.',
+                'satuan.required' => 'Satuan harus dipilih.',
+                'satuan.in' => 'Satuan tidak valid.',
+                'harga_per_satuan.required' => 'Harga per satuan harus diisi.',
+                'harga_per_satuan.numeric' => 'Harga per satuan harus berupa angka.',
+                'harga_per_satuan.min' => 'Harga per satuan minimal Rp 1.000.',
+                'tanggal_transaksi.required' => 'Tanggal transaksi harus diisi.',
+                'tanggal_transaksi.date' => 'Format tanggal transaksi tidak valid.',
+                'nama_pembeli.max' => 'Nama pembeli maksimal 255 karakter.',
+                'nama_perusahaan.max' => 'Nama perusahaan maksimal 255 karakter.'
             ]);
+            
             $pendapatan = Pendapatan::where('id', $id)
                 ->where('user_id', Auth::id())
                 ->firstOrFail();
@@ -107,9 +122,14 @@ class PendapatanController extends Controller
             ]);
 
         } catch (ValidationException $e) {
-            // Ambil pesan error pertama
-            $errors = $e->validator->errors()->all();
-            return redirect()->back()->with('status', 'error')->with('message', $errors[0]);
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('finance-management-income')->with([
+                'status' => 'error',
+                'message' => 'Data pendapatan tidak ditemukan.',
+            ]);
         } catch (\Exception $e) {
             Log::error('Gagal memperbarui pendapatan: ' . $e->getMessage());
 
@@ -120,9 +140,6 @@ class PendapatanController extends Controller
         }
     }
 
-    /**
-     * Menghapus data pendapatan.
-     */
     public function destroyPendapatan(Request $request, $id)
     {
         try {

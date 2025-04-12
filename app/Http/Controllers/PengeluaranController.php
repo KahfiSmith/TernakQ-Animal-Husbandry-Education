@@ -10,16 +10,10 @@ use Illuminate\Validation\ValidationException;
 
 class PengeluaranController extends Controller
 {
-    /**
-     * Menampilkan daftar pengeluaran dengan pagination.
-     */
     public function indexPengeluaran(Request $request)
     {
         try {
-            // Tangkap parameter query string untuk paginasi
             $pengeluaranPage = $request->get('pengeluaran_page', 1);
-
-            // Ambil data pengeluaran dengan pagination (10 item per halaman)
             $pengeluaran = Pengeluaran::where('user_id', Auth::id())
                 ->orderBy('tanggal_pembelian', 'desc')
                 ->paginate(10, ['*'], 'pengeluaran_page', $pengeluaranPage);
@@ -35,26 +29,37 @@ class PengeluaranController extends Controller
         }
     }
 
-    /**
-     * Menyimpan data pengeluaran baru.
-     */
     public function storePengeluaran(Request $request)
     {
         try {
             $validated = $request->validate([
-                'category' => 'required|in:Pembelian Ayam,Pakan Ayam,"Obat, Vitamin, Vaksin"',
+                'category' => 'required|in:Pembelian Ayam,Pakan Ayam,Obat, Vitamin, Vaksin',
                 'description' => 'required|string|max:255',
                 'jumlah' => 'required|numeric|min:1',
-                'satuan' => 'required|string|max:50',
-                'harga_per_satuan' => 'required|numeric|min:1000',
+                'satuan' => 'required|in:ekor,kg,karung,botol,unit,paket',
+                'harga_per_satuan' => 'required|numeric|min:1',
                 'tanggal_pembelian' => 'required|date',
                 'supplier' => 'nullable|string|max:255',
             ], [
-                'jumlah.min' => 'jumlah minimal 1.',
-                'harga_per_satuan.min' => 'Harga per kilogram harus minimal memiliki 4 digit (misalnya, 1000 atau lebih).'
+                'category.required' => 'Kategori harus dipilih.',
+                'category.in' => 'Kategori tidak valid.',
+                'description.required' => 'Deskripsi pengeluaran harus diisi.',
+                'description.max' => 'Deskripsi pengeluaran maksimal 255 karakter.',
+                'jumlah.required' => 'Jumlah harus diisi.',
+                'jumlah.numeric' => 'Jumlah harus berupa angka.',
+                'jumlah.min' => 'Jumlah minimal 1.',
+                'satuan.required' => 'Satuan harus dipilih.',
+                'satuan.in' => 'Satuan tidak valid.',
+                'harga_per_satuan.required' => 'Harga per satuan harus diisi.',
+                'harga_per_satuan.numeric' => 'Harga per satuan harus berupa angka.',
+                'harga_per_satuan.min' => 'Harga per satuan minimal Rp 1.',
+                'tanggal_pembelian.required' => 'Tanggal pembelian harus diisi.',
+                'tanggal_pembelian.date' => 'Format tanggal pembelian tidak valid.',
+                'supplier.max' => 'Nama supplier maksimal 255 karakter.',
             ]);
 
             $validated['user_id'] = Auth::id();
+            $validated['total_biaya'] = $request->jumlah * $request->harga_per_satuan;
 
             Pengeluaran::create($validated);
 
@@ -64,9 +69,9 @@ class PengeluaranController extends Controller
             ]);
 
         } catch (ValidationException $e) {
-            // Ambil pesan error pertama
-            $errors = $e->validator->errors()->all();
-            return redirect()->back()->with('status', 'error')->with('message', $errors[0]);
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
         } catch (\Exception $e) {
             Log::error('Gagal menyimpan pengeluaran: ' . $e->getMessage());
 
@@ -77,29 +82,40 @@ class PengeluaranController extends Controller
         }
     }
 
-    /**
-     * Memperbarui data pengeluaran.
-     */
     public function updatePengeluaran(Request $request, $id)
     {
         try {
             $validated = $request->validate([
-                'category' => 'required|in:Pembelian Ayam,Pakan Ayam,"Obat, Vitamin, Vaksin"',
+                'category' => 'required|in:Pembelian Ayam,Pakan Ayam,Obat, Vitamin, Vaksin',
                 'description' => 'required|string|max:255',
                 'jumlah' => 'required|numeric|min:1',
-                'satuan' => 'required|string|max:50',
-                'harga_per_satuan' => 'required|numeric|min:1000',
+                'satuan' => 'required|in:ekor,kg,karung,botol,unit,paket',
+                'harga_per_satuan' => 'required|numeric|min:1',
                 'tanggal_pembelian' => 'required|date',
                 'supplier' => 'nullable|string|max:255',
             ], [
-                'jumlah.min' => 'jumlah minimal 1.',
-                'harga_per_satuan.min' => 'Harga per kilogram harus minimal memiliki 4 digit (misalnya, 1000 atau lebih).'
+                'category.required' => 'Kategori harus dipilih.',
+                'category.in' => 'Kategori tidak valid.',
+                'description.required' => 'Deskripsi pengeluaran harus diisi.',
+                'description.max' => 'Deskripsi pengeluaran maksimal 255 karakter.',
+                'jumlah.required' => 'Jumlah harus diisi.',
+                'jumlah.numeric' => 'Jumlah harus berupa angka.',
+                'jumlah.min' => 'Jumlah minimal 1.',
+                'satuan.required' => 'Satuan harus dipilih.',
+                'satuan.in' => 'Satuan tidak valid.',
+                'harga_per_satuan.required' => 'Harga per satuan harus diisi.',
+                'harga_per_satuan.numeric' => 'Harga per satuan harus berupa angka.',
+                'harga_per_satuan.min' => 'Harga per satuan minimal Rp 1.',
+                'tanggal_pembelian.required' => 'Tanggal pembelian harus diisi.',
+                'tanggal_pembelian.date' => 'Format tanggal pembelian tidak valid.',
+                'supplier.max' => 'Nama supplier maksimal 255 karakter.',
             ]);
-
+            
             $pengeluaran = Pengeluaran::where('id', $id)
-            ->where('user_id', Auth::id())
-            ->firstOrFail();
-
+                ->where('user_id', Auth::id())
+                ->firstOrFail();
+                
+            $validated['total_biaya'] = $request->jumlah * $request->harga_per_satuan;
             $pengeluaran->update($validated);
 
             return redirect()->route('finance-management-outcome')->with([
@@ -108,9 +124,14 @@ class PengeluaranController extends Controller
             ]);
 
         } catch (ValidationException $e) {
-            // Ambil pesan error pertama
-            $errors = $e->validator->errors()->all();
-            return redirect()->back()->with('status', 'error')->with('message', $errors[0]);
+            return redirect()->back()
+                ->withErrors($e->validator)
+                ->withInput();
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('finance-management-outcome')->with([
+                'status' => 'error',
+                'message' => 'Data pengeluaran tidak ditemukan.',
+            ]);
         } catch (\Exception $e) {
             Log::error('Gagal memperbarui pengeluaran: ' . $e->getMessage());
 
@@ -121,9 +142,6 @@ class PengeluaranController extends Controller
         }
     }
 
-    /**
-     * Menghapus data pengeluaran.
-     */
     public function destroyPengeluaran(Request $request, $id)
     {
         try {
