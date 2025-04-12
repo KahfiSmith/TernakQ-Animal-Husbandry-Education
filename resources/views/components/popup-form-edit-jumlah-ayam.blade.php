@@ -20,10 +20,10 @@
 
             <div class="space-y-4 mb-8">
                 <div>
-                    <x-input-label for="kandang_id" :value="__('Pilih Kandang')" />
+                    <x-input-label for="kandang_id" :value="__('Pilih Kandang')" required />
                     <select id="kandang_id" name="kandang_id"
                         class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5"
-                     x-model="editData.kandang_id">
+                        x-model="editData.kandang_id">
                         <option value="" disabled selected>Pilih Kandang</option>
                         @foreach ($kandang as $item)
                             <option value="{{ $item->id }}">{{ $item->nama_kandang }} ({{ $item->kapasitas }}
@@ -32,7 +32,7 @@
                     </select>
                 </div>
                 <div>
-                    <x-input-label for="batchCodeSuffix" :value="__('Kode Populasi')" />
+                    <x-input-label for="batchCodeSuffix" :value="__('Kode Populasi')" required />
                     <div class="flex space-x-4">
                         <x-text-input id="batchPrefix" name="batchPrefix" type="text" class="w-1/3"
                             value="POPULASI-" readonly />
@@ -43,26 +43,26 @@
                     </div>
                 </div>
                 <div>
-                    <x-input-label for="nama_batch" :value="__('Nama Populasi')" />
+                    <x-input-label for="nama_batch" :value="__('Nama Populasi')" required />
                     <x-text-input id="nama_batch" name="nama_batch" type="text" class="block mt-1 w-full py-2.5"
-                     x-model="editData.nama_batch" />
+                        x-model="editData.nama_batch" />
                 </div>
                 <div>
-                    <x-input-label for="tanggal_doc" :value="__('Tanggal DOC')" />
+                    <x-input-label for="tanggal_doc" :value="__('Tanggal DOC')" required />
                     <x-text-input id="tanggal_doc" name="tanggal_doc" type="date" class="block mt-1 w-full py-2.5"
-                     x-model="editData.tanggal_doc" />
+                        x-model="editData.tanggal_doc" />
                 </div>
                 <div>
-                    <x-input-label for="jumlah_ayam_masuk" :value="__('Jumlah Ayam Masuk')" />
+                    <x-input-label for="jumlah_ayam_masuk" :value="__('Jumlah Ayam Masuk')" required />
                     <x-text-input id="jumlah_ayam_masuk" name="jumlah_ayam_masuk" type="text"
                         class="block mt-1 w-full py-2.5" x-model="editData.jumlah_ayam_masuk"
                         oninput="validateNumber(this)" />
                 </div>
                 <div>
-                    <x-input-label for="status_ayam" :value="__('Status Ayam')" />
+                    <x-input-label for="status_ayam" :value="__('Status Ayam')" required />
                     <select id="status_ayam" name="status_ayam"
                         class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5"
-                     x-model="editData.status_ayam">
+                        x-model="editData.status_ayam">
                         <option value="" disabled>Pilih Status Ayam</option>
                         <option value="Proses">Proses</option>
                         <option value="Siap Panen">Siap Panen</option>
