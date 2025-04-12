@@ -47,47 +47,45 @@
 
                     <div class="justify-between flex flex-col space-y-12">
                         <div class="flex flex-col space-y-6">
-                            <!-- Input Nama Pakan (Dropdown/Text) -->
                             <div class="flex flex-col space-y-1">
                                 <x-input-label for="nama_pakan" :value="__('Nama Pakan')" required />
                                 <x-text-input id="nama_pakan" name="nama_pakan" type="text"
-                                    class="block mt-1 w-full py-2.5" required x-model="namaPakan"
+                                    class="block mt-1 w-full py-2.5" x-model="namaPakan"
                                     placeholder="Masukkan Nama Pakan" />
+                                <x-input-error :messages="$errors->get('nama_pakan')" class="mt-2" />
                             </div>
 
-                            <!-- Input Jenis Pakan -->
                             <div class="flex flex-col space-y-1">
                                 <x-input-label for="jenis_pakan" :value="__('Jenis Pakan')" required />
                                 <x-text-input id="jenis_pakan" name="jenis_pakan" type="text"
-                                    class="block mt-1 w-full py-2.5" required x-model="jenisPakan"
+                                    class="block mt-1 w-full py-2.5" x-model="jenisPakan"
                                     placeholder="Masukkan Jenis Pakan" />
+                                <x-input-error :messages="$errors->get('jenis_pakan')" class="mt-2" />
                             </div>
 
-                            <!-- Input Berat (kg) -->
                             <div class="flex flex-col space-y-1">
                                 <x-input-label for="berat" :value="__('Berat (kg)')" required />
                                 <x-text-input id="berat" name="berat" type="text" class="block mt-1 w-full py-2.5"
-                                    required x-model="berat" placeholder="Masukkan berat dalam kg"
-                                    oninput="validateNumber(this)" />
+                                    x-model="berat" placeholder="Masukkan berat dalam kg" oninput="validateNumber(this)" />
+                                <x-input-error :messages="$errors->get('berat')" class="mt-2" />
                             </div>
 
-                            <!-- Input Tanggal Masuk -->
                             <div class="flex flex-col space-y-1">
                                 <x-input-label for="tanggal_masuk" :value="__('Tanggal Masuk')" required />
                                 <x-text-input id="tanggal_masuk" name="tanggal_masuk" type="date"
-                                    class="block mt-1 w-full py-2.5" required x-model="tanggalMasuk" />
+                                    class="block mt-1 w-full py-2.5" x-model="tanggalMasuk" />
+                                <x-input-error :messages="$errors->get('tanggal_masuk')" class="mt-2" />
                             </div>
 
-                            <!-- Input Harga per kg (IDR) -->
                             <div class="flex flex-col space-y-1">
                                 <x-input-label for="harga_per_kg" :value="__('Harga per kg (IDR)')" required />
                                 <x-text-input id="harga_per_kg" name="harga_per_kg" type="text"
-                                    class="block mt-1 w-full py-2.5" required x-model="hargaPerKg"
-                                    placeholder="Masukkan harga" oninput="validateNumber(this)" />
+                                    class="block mt-1 w-full py-2.5" x-model="hargaPerKg" placeholder="Masukkan harga"
+                                    oninput="validateNumber(this)" />
+                                <x-input-error :messages="$errors->get('harga_per_kg')" class="mt-2" />
                             </div>
                         </div>
 
-                        <!-- Tombol Submit -->
                         <div class="flex justify-start space-x-4">
                             <x-primary-button type="submit"
                                 class="bg-orangeCrayola ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] 
@@ -115,36 +113,33 @@
                     @csrf
 
                     <div class="flex flex-col space-y-6">
-                        <!-- Input Nama Pakan (Dropdown) -->
                         <div class="flex flex-col space-y-1">
                             <x-input-label for="nama_pakan" :value="__('Nama Pakan')" required />
                             <select id="nama_pakan" name="nama_pakan"
-                                class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5"
-                                required>
+                                class="ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] focus:shadow-[2px_2px_0px_2px_#374151] focus:translate-y-0.5 focus:translate-x-0.5 rounded-md focus:outline-none focus:border-none focus:ring-2 focus:ring-gray-700 text-gray-700 leading-5 transition duration-150 ease-in-out block mt-1 w-full py-2.5">
                                 <option value="" disabled selected>Pilih Nama Pakan</option>
                                 @foreach ($pakan as $pkn)
                                     <option value="{{ $pkn->nama_pakan }}">{{ $pkn->nama_pakan }} ({{ $pkn->berat }} kg
                                         tersedia)</option>
                                 @endforeach
                             </select>
+                            <x-input-error :messages="$errors->get('nama_pakan')" class="mt-1" />
                         </div>
 
-                        <!-- Input Tanggal Pakai -->
                         <div class="flex flex-col space-y-1">
                             <x-input-label for="tanggal_pakai" :value="__('Tanggal Pakai')" required />
                             <x-text-input id="tanggal_pakai" name="tanggal_pakai" type="date"
-                                class="block mt-1 w-full py-2.5" required />
+                                class="block mt-1 w-full py-2.5" />
+                            <x-input-error :messages="$errors->get('tanggal_pakai')" class="mt-1" />
                         </div>
 
-                        <!-- Input Jumlah yang Dipakai (kg) -->
                         <div class="flex flex-col space-y-1">
                             <x-input-label for="jumlah_pakai" :value="__('Jumlah yang Dipakai (kg)')" required />
                             <x-text-input id="jumlah_pakai" name="jumlah_pakai" type="text"
-                                class="block mt-1 w-full py-2.5" required oninput="validateNumber(this)" />
+                                class="block mt-1 w-full py-2.5" oninput="validateNumber(this)" />
+                            <x-input-error :messages="$errors->get('jumlah_pakai')" class="mt-1" />
                         </div>
                     </div>
-
-                    <!-- Tombol Submit -->
                     <div class="mt-12 flex justify-start">
                         <button type="submit"
                             class="bg-orangeCrayola ring-2 ring-gray-700 shadow-[4px_4px_0px_2px_#374151] 
