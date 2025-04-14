@@ -34,7 +34,7 @@ class PengeluaranController extends Controller
         try {
             $validated = $request->validate([
                 'category' => 'required|in:Pembelian Ayam,Pakan Ayam,Obat, Vitamin, Vaksin',
-                'description' => 'required|string|max:255',
+                'description' => 'string|max:255',
                 'jumlah' => 'required|numeric|min:1',
                 'satuan' => 'required|in:ekor,kg,karung,botol,unit,paket',
                 'harga_per_satuan' => 'required|numeric|min:1',
@@ -43,7 +43,6 @@ class PengeluaranController extends Controller
             ], [
                 'category.required' => 'Kategori harus dipilih.',
                 'category.in' => 'Kategori tidak valid.',
-                'description.required' => 'Deskripsi pengeluaran harus diisi.',
                 'description.max' => 'Deskripsi pengeluaran maksimal 255 karakter.',
                 'jumlah.required' => 'Jumlah harus diisi.',
                 'jumlah.numeric' => 'Jumlah harus berupa angka.',
