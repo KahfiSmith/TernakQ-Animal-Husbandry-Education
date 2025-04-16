@@ -43,7 +43,7 @@ new class extends Component
         <form wire:submit="deleteUser" class="p-6">
 
             <h2 class="text-lg font-medium text-gray-900">
-                {{ __('Are you sure you want to delete your account?') }}
+                {{ __('Apakah Anda yakin ingin menghapus akun Anda?') }}
             </h2>
 
             <p class="mt-1 text-sm text-gray-600">
