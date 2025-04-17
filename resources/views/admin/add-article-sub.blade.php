@@ -208,15 +208,18 @@
                                 @endif
 
                                 <div class="mt-4">
-                                    <a href="{{ route('admin.user-article-sub.edit', ['id' => $sub->id]) }}"
-                                        class="text-blue-500 hover:underline font-medium">Edit</a>
+                                    <a href="{{ route('admin.user-article-sub.edit', ['id' => $subArticle->id]) }}"
+                                        class="text-blue-500 hover:underline">Edit</a>
 
-                                    <button type="button"
-                                        class="swal-delete-user-subarticle text-red-500 hover:underline ml-4 font-medium"
-                                        data-id="{{ $sub->id }}"
-                                        data-url="{{ route('admin.user-article-sub.destroy', $sub->id) }}">
-                                        Hapus
-                                    </button>
+                                    <form action="{{ route('admin.user-article-sub.destroy', ['id' => $subArticle->id]) }}"
+                                        method="POST" class="inline-block ml-4">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="text-red-500 hover:underline swal-delete-user-subarticle">
+                                            Hapus
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         @elseif ($subArticles->isNotEmpty())
