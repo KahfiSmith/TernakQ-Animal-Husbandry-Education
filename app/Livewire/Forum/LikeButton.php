@@ -37,20 +37,15 @@ class LikeButton extends Component
                 ->first();
 
             if ($existingLike) {
-                // Unlike
                 $existingLike->delete();
             } else {
-                // Like
                 $this->model->likes()->create([
                     'user_id' => auth()->id()
                 ]);
             }
 
-            // Refresh the like status
             $this->updateLikeStatus();
 
-            // Optional: dispatch an event if needed
-            $this->dispatch('like-toggled');
         } catch (\Exception $e) {
             Log::error('Like Toggle Error', [
                 'error' => $e->getMessage(),

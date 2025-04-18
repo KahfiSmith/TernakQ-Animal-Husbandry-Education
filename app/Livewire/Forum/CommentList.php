@@ -11,6 +11,8 @@ class CommentList extends Component
 {
     public $topic;
     public $newComment = '';
+    public $replyingTo = null;
+    public $parentComment = null;
     
     protected $rules = [
         'newComment' => 'required|min:3|max:500'
@@ -19,12 +21,26 @@ class CommentList extends Component
     #[On('commentAdded')]
     public function refreshComments()
     {
-        // You can add additional logic here if needed
+        $this->topic = Topic::with(['comments' => function($query) {
+            $query->with(['user', 'replies.user']);
+        }])->find($this->topic->id);
     }
     
     public function mount(Topic $topic)
     {
         $this->topic = $topic;
+    }
+
+    public function startReply($commentId)
+    {
+        $this->replyingTo = $commentId;
+        $this->parentComment = Comment::find($commentId);
+    }
+
+    public function cancelReply()
+    {
+        $this->replyingTo = null;
+        $this->parentComment = null;
     }
     
     public function addComment()
@@ -34,24 +50,28 @@ class CommentList extends Component
         $comment = Comment::create([
             'topic_id' => $this->topic->id,
             'user_id' => auth()->id(),
-            'content' => $this->newComment
+            'content' => $this->newComment,
+            'parent_id' => $this->replyingTo
         ]);
         
-        // Optional: Broadcast or additional event handling
-        // event(new \App\Events\NewCommentAdded($comment));
-        
         $this->reset('newComment');
+        $this->cancelReply();
         
-        // Dispatch event to potentially refresh the comments
-        $this->dispatch('commentAdded');
+        return redirect(request()->header('Referer'));
     }
+
+    protected $listeners = [
+        'commentAdded' => '$refresh',
+        'refreshComponent' => '$refresh'
+    ];
     
     public function render()
     {
         $comments = $this->topic->comments()
-            ->with('user')
-            ->latest()
-            ->get();
+        ->with(['user', 'likes', 'replies.user', 'replies.likes']) 
+        ->whereNull('parent_id')
+        ->latest()
+        ->get();
         
         return view('livewire.forum.comment-list', [
             'comments' => $comments

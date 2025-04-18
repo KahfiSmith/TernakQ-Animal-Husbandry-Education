@@ -9,7 +9,7 @@ class Comment extends Model
 {
     use HasFactory;
     
-    protected $fillable = ['user_id', 'topic_id', 'content'];
+    protected $fillable = ['user_id', 'topic_id', 'content', 'parent_id'];
     
     public function user()
     {
@@ -24,5 +24,15 @@ class Comment extends Model
     public function likes()
     {
         return $this->morphMany(Like::class, 'likeable');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Comment::class, 'parent_id');
+    }
+
+    public function replies()
+    {
+        return $this->hasMany(Comment::class, 'parent_id');
     }
 }
